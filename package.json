@@ -1,0 +1,32 @@
+{
+  "name": "skins-monster",
+  "private": true,
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare",
+    "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs --fix --ignore-path .gitignore"
+  },
+  "engines": {
+    "node": "20.x"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "latest",
+    "@rushstack/eslint-patch": "^1.2.0",
+    "@types/node": "^20.12.12",
+    "@vue/eslint-config-prettier": "^9.0.0",
+    "eslint": "^9.2.0",
+    "eslint-plugin-vue": "^9.26.0",
+    "nuxt": "^3.11.2",
+    "prettier": "^3.2.5",
+    "stylus": "^0.63.0",
+    "stylus-loader": "^8.1.0"
+  },
+  "dependencies": {
+    "@pinia/nuxt": "^0.5.1",
+    "eslint-plugin-graphql": "^4.0.0",
+    "pinia": "^2.1.7"
+  }
+}
