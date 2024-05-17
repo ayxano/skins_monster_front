@@ -1,0 +1,337 @@
+.btn {
+  background none
+  border none
+  border-radius var(--big-radius, 20px)
+  display inline-flex
+  align-items center
+  justify-content center
+  cursor pointer
+  outline none
+  font-family var(--font-regular)
+  transition color var(--transition), background var(--transition), border-color var(--transition)
+
+  .icon {
+    max-width 32px
+    max-height 32px
+  }
+
+  &:disabled {
+    background: var(--gray-5)
+    cursor not-allowed
+    color: var(--text-disabled)
+  }
+
+  &--main {
+    background var(--main)
+    color var(--white)
+
+    .icon svg {
+      path,
+      rect {
+        fill var(--white)
+      }
+
+      circle {
+        stroke var(--white)
+      }
+    }
+
+    &:hover:not(:disabled) {
+      background var(--main-darker)
+      color var(--white)
+    }
+
+    &.active,
+    &:active:not(:disabled) {
+      background var(--main-dark)
+      color var(--white)
+    }
+  }
+
+  &--main-hollow {
+    background var(--white)
+    color var(--main)
+    border: 1px solid var(--red);
+    border-radius  28px
+
+    .icon svg {
+      path {
+        fill var(--main)
+      }
+
+      circle {
+        stroke var(--main)
+      }
+    }
+
+    &:hover:not(:disabled) {
+      background var(--main-darker)
+      color var(--white)
+
+      .icon svg {
+        path {
+          fill var(--white)
+        }
+
+        circle {
+          stroke var(--white)
+        }
+      }
+    }
+
+    &:active:not(:disabled) {
+      background var(--main-dark)
+      color var(--white)
+
+      .icon svg {
+        path {
+          fill var(--white)
+        }
+
+        circle {
+          stroke var(--white)
+        }
+      }
+    }
+  }
+
+  &--white {
+    background var(--white)
+    color var(--main)
+
+    .icon svg {
+      path {
+        fill var(--main)
+      }
+
+      circle {
+        stroke var(--main)
+      }
+    }
+
+    &:hover:not(:disabled) {
+      background var(--main-darker)
+      color var(--white)
+    }
+
+    &:active:not(:disabled) {
+      background var(--main-dark)
+      color var(--white)
+    }
+  }
+
+  &--pink {
+    background var(--pink)
+    color var(--red)
+
+    .icon svg {
+      path {
+        fill currentColor
+      }
+
+      circle {
+        stroke currentColor
+      }
+    }
+
+    &:hover:not(:disabled) {
+      background var(--red-light)
+    }
+
+    &:active:not(:disabled) {
+      background var(--red)
+      color var(--white)
+    }
+  }
+
+  &--gray {
+    background var(--gray-10)
+    color var(--dark)
+
+    .icon svg {
+      path {
+        fill var(--dark)
+      }
+
+      rect {
+        fill var(--dark)
+      }
+
+      circle {
+        stroke var(--dark)
+      }
+    }
+
+    &:hover:not(:disabled) {
+      background var(--gray-20)
+    }
+
+    &:active:not(:disabled) {
+      background var(--gray-30)
+    }
+  }
+
+  &--gray-dark {
+    background var(--gray-20)
+    color var(--dark)
+
+    .icon svg {
+      path {
+        fill var(--gray-20)
+      }
+
+      rect {
+        fill var(--gray-20)
+      }
+
+      circle {
+        stroke var(--gray-20)
+      }
+    }
+
+    &:hover:not(:disabled) {
+      background var(--gray-40)
+    }
+
+    &:active:not(:disabled) {
+      background var(--gray-30)
+    }
+  }
+
+  &--gray-s-red {
+    background var(--gray-10)
+    color var(--red)
+
+    .icon svg {
+      path {
+        fill var(--red)
+      }
+
+      rect {
+        fill var(--red)
+      }
+
+      circle {
+        stroke var(--red)
+      }
+    }
+
+    &:hover:not(:disabled) {
+      background var(--gray-20)
+    }
+
+    &:active:not(:disabled) {
+      background var(--gray-30)
+    }
+  }
+
+  &--gray-hollow {
+    background var(--white)
+    border 1px solid var(--gray-30)
+    color var(--dark-2)
+
+    .icon svg {
+      path {
+        fill var(--dark-2)
+      }
+
+      rect {
+        fill var(--dark-2)
+      }
+
+      circle {
+        stroke var(--dark-2)
+      }
+    }
+
+    &:hover:not(:disabled) {
+      background var(--gray-20)
+    }
+
+    &:active:not(:disabled) {
+      background var(--gray-30)
+    }
+  }
+
+  &--link {
+    background var(--gray-10)
+    color: var(--text-link, #007AFF);
+    font-size: 0.875em !important
+    font-weight: 400 !important
+    border none
+
+    .icon svg {
+      path {
+        fill var(--dark)
+      }
+
+      rect {
+        fill var(--dark)
+      }
+
+      circle {
+        stroke var(--dark)
+      }
+    }
+
+    &:hover:not(:disabled) {
+      background none
+      color: var(--text-link, #007AFF);
+    }
+
+    &:active:not(:disabled) {
+      background none
+      color: var(--text-link, #007AFF);
+    }
+  }
+
+  &--lg {
+    padding 0 20px
+    height var(--btn-lg-height)
+    gap 10px
+    font-size 1em
+    //border-radius: 28px
+    //+below(540px) {
+    //  height 40px
+    //  font-size 0.875rem
+    //}
+
+    .icon,
+    .file-icon {
+      width 24px
+      height 24px
+      +below(540px) {
+        width: 18px
+        height: 18px
+      }
+    }
+  }
+
+  &--md {
+    padding 0 20px
+    height var(--btn-md-height)
+    gap 12px
+    font-weight: 700;
+    font-size 0.875rem
+    line-height: 1.125
+
+    .icon {
+      width 16px
+      height 16px
+    }
+  }
+
+  &--sm {
+    padding 0 14px
+    height var(--btn-sm-height)
+    gap 6px
+    font-weight: normal;
+    font-size: 0.875rem;
+    line-height: normal;
+
+    .icon {
+      width 16px
+      height 16px
+    }
+  }
+}

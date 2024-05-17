@@ -1,0 +1,37 @@
+.col {
+  display grid
+  grid-gap 20px
+}
+
+.col-1 {
+  grid-template-columns 1fr
+}
+
+.col-2 {
+  grid-template-columns 1fr 1fr
+
+  +below(628px) {
+    grid-template-columns 1fr
+  }
+}
+
+.col-3 {
+  grid-template-columns repeat(3, 1fr)
+}
+
+.col-4 {
+  grid-template-columns repeat(4, 1fr)
+}
+
+.col-top {
+  align-items flex-start
+}
+
+// ячейки, которые занимают несколько колонок грида
+.cell-2 {
+  grid-column: auto / span 2;
+}
+
+.cell-3 {
+  grid-column: auto / span 3;
+}

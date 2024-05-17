@@ -1,0 +1,23 @@
+svg(color = var(--main)) {
+  path[fill],
+  rect[fill],
+  circle[fill] {
+    transition var(--transition)
+    fill color
+  }
+
+  path[stroke],
+  rect[stroke],
+  circle[stroke] {
+    transition var(--transition)
+    stroke color
+  }
+
+  rect[stroke][fill],
+  path[stroke][fill],
+  circle[stroke][fill] {
+    transition var(--transition)
+    fill transparent
+    stroke color
+  }
+}

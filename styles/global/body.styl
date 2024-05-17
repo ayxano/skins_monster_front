@@ -1,0 +1,424 @@
+* {
+  margin 0
+  padding 0
+  box-sizing border-box
+  min-height 0
+  min-width 0
+  font-family var(--font-regular)
+  backface-visibility hidden
+  +above(1025px) {
+    scrollbar-width thin
+    scrollbar-color var(--gray-dark) var(--gray-30)
+
+    &::-webkit-scrollbar {
+      width 3px
+      height 3px
+    }
+
+    &::-webkit-scrollbar-track {
+      background transparent
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color var(--text-gray-2)
+      border-radius 16px
+
+      &:hover {
+        background-color var(--gray-30)
+      }
+    }
+  }
+  +below(1024px) {
+    scrollbar-width none
+  }
+}
+
+html
+body {
+  scroll-behavior smooth
+  margin 0
+  padding 0
+  background var(--bg-color)
+  color var(--body-color)
+  font-size var(--font-size-desktop)
+  line-height 22px
+  scrollbar-width auto
+}
+
+body {
+  overflow-y scroll
+  min-width 320px
+  +above(1025px) {
+    scrollbar-width auto
+    scrollbar-color var(--dark) var(--dark-light)
+
+    &::-webkit-scrollbar {
+      width var(--scrollbar-width)
+      height 10px
+    }
+
+    &::-webkit-scrollbar-track {
+      background transparent
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background-color var(--black-o3)
+      border-radius 16px
+
+      &:hover {
+        background-color var(--black-o5)
+      }
+    }
+  }
+
+  &.no-scroll {
+    +above(1026px) {
+      padding-right var(--scrollbar-width)
+    }
+  }
+}
+
+a {
+  text-decoration none
+  position relative
+  transition var(--transition)
+  cursor pointer
+  color inherit
+
+  &:not(.no-hover) {
+    &:hover,
+    &.active,
+    &.router-link.router-link-active {
+      color var(--main)
+
+      .icon svg {
+        path[fill], rect[fill] {
+          fill var(--main)
+        }
+
+        path[stroke], rect[stroke] {
+          stroke var(--main)
+        }
+
+        path[stroke],
+        circle[stroke] {
+          stroke var(--main)
+        }
+      }
+    }
+
+    .icon svg path, rect, circle {
+      transition var(--transition)
+    }
+
+    .icon svg path[fill], rect[fill] {
+      fill currentColor
+    }
+
+    .icon svg path[stroke], rect[stroke] {
+      stroke currentColor
+    }
+  }
+
+  &:focus
+  &:active {
+    text-decoration none
+  }
+}
+
+//::selection {
+//  background var(--main)
+//  color var(--white)
+//  text-shadow none
+//}
+//
+//::-moz-selection {
+//  background var(--main)
+//  color var(--white)
+//  text-shadow none
+//}
+
+h1
+h2
+h3
+h4
+h5
+h6 {
+  margin-top 30px
+  margin-bottom 30px
+  font-weight 700
+  line-height: normal
+  +below(540px) {
+    margin-top 30px
+    margin-bottom 30px
+  }
+
+  &.no-margin {
+    margin 0
+  }
+
+  &:first-child {
+    margin-top 0
+  }
+}
+
+h1 {
+  font-size: 1.875rem
+  +below(1024px) {
+    font-size: 25px;
+    margin 0
+  }
+}
+
+h2 {
+  font-size: 1.875rem
+  font-weight: 600;
+
+}
+
+h3 {
+  font-size: 1.375rem;
+  margin-bottom 25px
+}
+
+h4 {
+  font-size: 1.125rem;
+  margin-top 15px
+  margin-bottom 15px
+  text-transform none
+
+  &:first-child {
+    margin-top 0
+  }
+}
+
+h5
+h6 {
+  font-weight: 500;
+  font-size 1rem
+  line-height: normal;
+}
+
+b
+strong
+dt {
+  font-family var(--font-regular)
+  font-weight 700
+  line-height normal
+}
+
+i
+em {
+  font-weight normal
+  font-family var(--font-regular)
+
+  &:before {
+    margin 0
+    width auto
+  }
+}
+
+pre
+code {
+  margin 0
+  border none
+  background none
+}
+
+p {
+  margin-bottom 16px
+
+  &:last-child {
+    margin-bottom 0
+  }
+}
+
+img {
+  vertical-align middle
+  width 100%
+  height 100%
+  max-width 100%
+  max-height 100%
+
+  &[data-src]
+  &[data-srcset] {
+    display block
+    min-height 1px
+  }
+}
+
+ul
+ol {
+  margin 0
+  padding 0
+  list-style none
+}
+
+blockquote {
+  background var(--gray-3-dark)
+  padding 15px
+  margin 10px 0 30px
+  font-family var(--font-regular)
+  position relative
+  overflow hidden
+
+  p {
+    position relative
+  }
+}
+
+details {
+  margin-bottom 30px
+  background var(--gray-3-dark)
+  border-radius var(--main-radius, 10px)
+
+  summary {
+    background var(--gray-3-dark)
+    font-family var(--font-regular)
+    padding 15px
+    border-top-right-radius var(--main-radius, 10px)
+    border-top-left-radius var(--main-radius, 10px)
+    cursor pointer
+  }
+
+  > div {
+    padding 30px
+  }
+}
+
+audio
+canvas
+progress
+video {
+  display inline-block
+  vertical-align baseline
+}
+
+video {
+  object-fit contain
+}
+
+figure {
+  margin 0
+  display inline-flex
+  align-items center
+  justify-content center
+  flex-shrink 0
+}
+
+textarea {
+  resize vertical
+}
+
+.icon {
+  min-width 10px
+  min-height 10px
+
+  svg {
+    width 100%
+    height 100%
+  }
+}
+
+#__nuxt {
+  display flex
+  flex-direction column
+  min-height 100vh
+  min-width 320px
+  +below(1024px) {
+    padding-bottom var(--navigation-bar-height)
+  }
+}
+
+.container {
+  position relative
+  box-sizing content-box
+  max-width var(--main-width)
+  width 100%
+  margin 0 auto
+
+  &-padding {
+    position relative
+    box-sizing border-box
+    max-width calc(var(--main-width) + var(--sides-padding) * 2)
+    width 100%
+    margin 0 auto
+    padding-left var(--sides-padding)
+    padding-right var(--sides-padding)
+  }
+}
+
+.page {
+  flex-grow 1
+  padding 30px 0 50px
+  +below(860px) {
+    padding 30px 0 30px
+  }
+
+  &-enter-active, &-leave-active {
+    transition var(--transition)
+  }
+
+  &-enter, &-leave-to {
+    opacity 0
+  }
+
+  &__inner {
+    display flex
+    flex-direction column
+    grid-gap 80px
+    +below(1024px) {
+      gap: 64px
+    }
+  }
+}
+
+.hover-image {
+  img {
+    transition var(--transition)
+  }
+
+  &:hover img {
+    filter brightness(0.9)
+  }
+}
+
+.hidden {
+  display none
+}
+
+.no-scroll {
+  overflow hidden
+}
+
+.no-events {
+  pointer-events none
+}
+
+.mobile {
+  +above(1025px) {
+     display none !important
+  }
+}
+
+.desktop {
+  +below(1024px) {
+    display none !important
+  }
+}
+
+.icon--sm {
+  width 16px
+  height 16px
+}
+
+.icon--md {
+  width 20px
+  height 20px
+}
+
+.icon--lg {
+  width 24px
+  height 24px
+}
+
