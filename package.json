@@ -16,23 +16,24 @@
     "@nuxt/devtools": "latest",
     "@rushstack/eslint-patch": "^1.2.0",
     "@types/node": "^20.12.12",
-    "@vue/eslint-config-prettier": "^9.0.0",
+    "@vue/eslint-config-prettier": "^7.0.0",
     "dayjs": "^1.11.7",
-    "eslint": "^9.2.0",
-    "eslint-plugin-vue": "^9.26.0",
-    "nuxt": "^3.11.2",
-    "prettier": "^3.2.5",
+    "eslint": "^8.43.0",
+    "eslint-plugin-vue": "^9.8.0",
+    "nuxt": "3.6.5",
+    "prettier": "^2.8.8",
     "rupture": "^0.7.1",
     "stylus": "^0.63.0",
     "stylus-loader": "^8.1.0"
   },
   "dependencies": {
     "@pinia/nuxt": "^0.5.1",
-    "pinia": "^2.1.7",
     "click-outside-vue3": "^4.0.1",
     "maska": "^2.1.10",
+    "pinia": "^2.1.7",
     "plural-ru": "^2.0.2",
     "vue-client-only": "^2.1.0",
-    "vue-inline-svg": "^3.1.2"
+    "vue-inline-svg": "^3.1.2",
+    "vue3-perfect-scrollbar": "^2.0.0"
   }
 }
