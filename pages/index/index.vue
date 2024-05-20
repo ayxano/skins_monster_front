@@ -1,8 +1,7 @@
 <template>
-  <div class="test">
-    Работает
-    <img src="/assets/images/logo.svg" alt="" />
-  </div>
+  <main class="page home-page">
+    Главная
+  </main>
 </template>
 
 <script setup>
@@ -14,11 +13,7 @@ useHead({
 </script>
 
 <style lang="stylus">
-.test {
+.home-page {
 	background black
-	padding 20px
-	color white
-	text-align center
-	height 120vh
 }
 </style>

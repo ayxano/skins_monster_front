@@ -1,6 +1,6 @@
 import rupture from "rupture";
+import { defineNuxtConfig } from "nuxt/config";
 
-// eslint-disable-next-line no-undef
 export default defineNuxtConfig({
   devtools: { enabled: true },
   nitro: {

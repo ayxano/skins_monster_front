@@ -10,7 +10,6 @@
 
 <script setup>
 import { useHead } from "#app";
-import { PerfectScrollbar } from "vue3-perfect-scrollbar";
 
 useHead({
   title: "Skins Monster - Buy CS2/Dota 2 skins",
