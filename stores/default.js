@@ -1,9 +1,11 @@
-import { defineStore } from 'pinia'
+import { defineStore } from "pinia";
 
-export const useStore = defineStore({
-  id: 'default',
+export const useDefaultStore = defineStore({
+  id: "default",
   state: () => ({
+    HOST_ENDPOINT: process.env.HOST_ENDPOINT,
+    MEDIA_ENDPOINT: process.env.MEDIA_ENDPOINT,
     modals: [],
-    types: {}
-  })
-})
+    types: {},
+  }),
+});

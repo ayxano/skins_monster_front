@@ -1,5 +1,5 @@
-import rupture from "rupture";
 import { defineNuxtConfig } from "nuxt/config";
+import rupture from "rupture";
 
 export default defineNuxtConfig({
   devtools: { enabled: true },

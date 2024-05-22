@@ -41,6 +41,7 @@ body {
   font-size var(--font-size-desktop)
   line-height 22px
   scrollbar-width auto
+  scrollbar-gutter stable
 }
 
 body {
@@ -107,14 +108,6 @@ a {
 
     .icon svg path, rect, circle {
       transition var(--transition)
-    }
-
-    .icon svg path[fill], rect[fill] {
-      fill currentColor
-    }
-
-    .icon svg path[stroke], rect[stroke] {
-      stroke currentColor
     }
   }
 
@@ -297,9 +290,8 @@ textarea {
   }
 }
 
-#__nuxt {
+#app {
   display flex
-  flex-direction column
   min-height 100vh
   min-width 320px
   +below(1024px) {
@@ -382,6 +374,14 @@ textarea {
   +below(1024px) {
     display none !important
   }
+}
+
+.icon svg path[fill], rect[fill] {
+  fill currentColor
+}
+
+.icon svg path[stroke], rect[stroke] {
+  stroke currentColor
 }
 
 .icon--sm {

@@ -1,7 +1,5 @@
 <template>
-  <main class="page home-page">
-    Главная
-  </main>
+  <main class="page home-page">Главная</main>
 </template>
 
 <script setup>
@@ -14,6 +12,6 @@ useHead({
 
 <style lang="stylus">
 .home-page {
-	background black
+
 }
 </style>

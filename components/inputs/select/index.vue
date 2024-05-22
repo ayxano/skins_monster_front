@@ -33,11 +33,11 @@
           <label :for="id"></label>
           <button type="button" v-for="(value, i) in modelValue" :key="i" @click="remove(i)">
             <span>{{ getOptionTitle(value) }}</span>
-            <IconComponent name="close" />
+            <IconComponent name="close-circle" />
           </button>
         </div>
         <button class="select__clear" type="button" @click="clear" v-if="canShowClear">
-          <IconComponent name="close" />
+          <IconComponent name="close-circle" />
         </button>
         <label :for="id" class="select__arrow">
           <IconComponent name="arrow-down" />
