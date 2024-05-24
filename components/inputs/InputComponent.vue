@@ -135,39 +135,30 @@ export default {
   &__container {
     display flex
     position relative
-    background: var(--white);
-    border: 1px solid var(--text-disabled, #C3C3C3);
+		background: var(--white-o05);
+		border: 2px solid var(--dark-light-2, #1F3B4B);
     box-sizing: border-box;
-    border-radius: 16px
-    height 40px
+    border-radius: var(--small-radius)
+    height 50px
     transition var(--transition)
     overflow hidden
 
     &:hover {
-      border-color var(--dark-light)
+      border-color var(--gray-dark-2)
     }
   }
 
   &:focus-within {
     & ^[0]__container {
-      border-color var(--dark)
-    }
+			box-shadow: 0 0 0 3px var(--green-o3);
 
-    & .icon svg path {
-      fill var(--black)
-      opacity: 1;
+			&:hover {
+				border-color var(--dark-light-2, #1F3B4B)
+			}
     }
   }
 
   &--filled:not(:focus-within) {
-    //& ^[0]__container {
-    //  border-color var(--brown-light)
-    //}
-
-    & .icon svg path {
-      fill var(--black)
-      opacity: 0.5;
-    }
   }
 
   &--error& {
@@ -185,12 +176,6 @@ export default {
       &::placeholder {
         color: var(--red);
       }
-    }
-  }
-
-  &--focused {
-    & ^[0]__container {
-      border-color var(--dark)
     }
   }
 
@@ -232,7 +217,7 @@ export default {
   }
 
   &--icon-right &__field {
-    padding 15px 40px 15px 15px
+    padding 15px 50px 15px 18px
   }
 
   &__title {
@@ -267,7 +252,7 @@ export default {
   &__action {
     background none
     border none
-    width 32px
+    width 60px
     height 100%
     display inline-flex
     align-items center
@@ -299,13 +284,9 @@ export default {
   }
 
   .icon {
-    width 16px
-    height 16px
-
-    svg path {
-      transition var(--transition)
-      fill var(--text-disabled)
-    }
+    width 20px
+    height 20px
+		color var(--gray-dark)
   }
 
   &__errors {

@@ -1,8 +1,8 @@
 <template>
   <aside class="aside">
-    <a href="#" class="aside__logo">
+    <nuxt-link :to="{ name: 'index' }" class="aside__logo">
       <ImgComponent src="/images/logo.svg" class="aside__logo-img" :loader="false" />
-    </a>
+    </nuxt-link>
     <AsideNavComponent />
     <AsideFavoritesComponent />
     <div class="aside__footer">
@@ -16,7 +16,6 @@
 
 <style lang="stylus">
 .aside {
-	width var(--aside-width)
 	padding-right 40px
 	padding-bottom 50px
 	display flex

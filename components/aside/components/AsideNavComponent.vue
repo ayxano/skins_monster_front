@@ -99,7 +99,7 @@ function isRouteActive(route) {
 			flex-grow 1
 		}
 
-		&-menu {
+		&-menu.btn {
 			position absolute
 			right 0
 			top 50%
@@ -107,6 +107,14 @@ function isRouteActive(route) {
 			width: 30px
 			height: 30px
 			border-radius 50%
+
+			&:hover {
+				border-color var(--main)
+
+				.icon svg path {
+					fill var(--main)
+				}
+			}
 		}
 	}
 }

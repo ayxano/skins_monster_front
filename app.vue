@@ -39,14 +39,10 @@ useHead({
 <style lang="stylus">
 .app {
 	&__inner {
-		display flex
+		display grid
+		grid-template-columns var(--aside-width) 1fr
 		gap: 40px
 		height 100%
-	}
-
-	&__aside {
-		width var(--aside-width)
-		padding-right 40px
 	}
 
 	&__content {

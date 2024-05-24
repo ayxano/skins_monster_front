@@ -96,10 +96,10 @@ const skins = [
 
 		&-title {
 			flex-grow 1
-			font-size 0.8rem
+			font-size 0.8125rem
 			line-height normal
 			font-weight 700
-			//maxlines(2)
+			maxlines(2)
 		}
 
 		&-icon {
