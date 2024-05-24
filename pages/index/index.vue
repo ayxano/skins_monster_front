@@ -2,6 +2,10 @@
   <main class="page home-page">
     <SkinsListComponent title="Popular" />
     <BenefitsComponent />
+    <FaqComponent />
+    <ReviewsComponent />
+    <PaymentsComponent />
+    <BottomPageBannerComponent />
   </main>
 </template>
 
