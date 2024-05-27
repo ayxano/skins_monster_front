@@ -5,7 +5,7 @@
     loading="lazy"
     class="img"
     decoding="async"
-    :class="{ lazy: loader, loaded, 'img--contain': contain }"
+    :class="{ lazy: loader && !src, loaded, 'img--contain': contain }"
     @load="loaded = true"
     @error="loaded = true"
   />

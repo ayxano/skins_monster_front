@@ -9,7 +9,7 @@ export default defineNuxtConfig({
   build: {
     transpile: ["tslib"],
   },
-  modules: ["@pinia/nuxt", "vue3-perfect-scrollbar/nuxt"],
+  modules: ["@pinia/nuxt", "vue3-perfect-scrollbar/nuxt", "nuxt-swiper"],
   app: {
     head: {
       htmlAttrs: {

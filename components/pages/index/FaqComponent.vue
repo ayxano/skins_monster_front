@@ -1,5 +1,5 @@
 <template>
-  <div class="faq">
+  <div class="faq" id="faq">
     <h3 class="faq-title">Additional information</h3>
     <div class="faq-content">
       <TabsComponent @update:model-value="activeItemIndex = null" v-model="activeTab" :tabs="tabs" />
@@ -8,10 +8,10 @@
           v-for="(item, i) in activeTab.list"
           :key="i"
           class="faq-list__item"
-          :class="{ 'faq-list__item--active': isActive(item) }"
+          :class="{ 'faq-list__item--active': isActive(i) }"
         >
           <div @click="setActive(i)" class="faq-list__item-header">
-            <div class="faq-list__item-title">{{ item.title }}</div>
+            <span class="faq-list__item-title">{{ item.title }}</span>
             <IconComponent v-if="isActive(i)" name="minus" />
             <IconComponent v-else name="add" />
           </div>
@@ -64,16 +64,10 @@ const tabs = [
     title: "FAQ",
     list: [
       {
-        title: "Experience the thrill of real-time trading with CS2 Live Trading",
+        title: "CS2 Skin Exchange Made Easy",
         description:
           "Select your items: Choose what you want to trade from your inventory.\n" +
           "Select wanted items from SkinMonster inventory: Pick the items selection of over 200k skins.",
-      },
-      {
-        title: "Begin Your CS2 Trading Journey with SkinMonster",
-        description:
-          "Select your items: Choose what you want to trade from your inventory.\n" +
-          "Select wanted items from SkinMonster inventory: Pick the items you desire from our wide selection of over 200k skins.\n",
       },
       {
         title: "How to trade skins instantly with Tradeit",
@@ -83,7 +77,13 @@ const tabs = [
           "Receive a trade offer instantly: Confirm the trade, and your items will be on their way.",
       },
       {
-        title: "CS2 Skin Exchange Made Easy",
+        title: "Begin Your CS2 Trading Journey with SkinMonster",
+        description:
+          "Select your items: Choose what you want to trade from your inventory.\n" +
+          "Select wanted items from SkinMonster inventory: Pick the items you desire from our wide selection of over 200k skins.\n",
+      },
+      {
+        title: "Experience the thrill of real-time trading with CS2 Live Trading",
         description:
           "Select your items: Choose what you want to trade from your inventory.\n" +
           "Select wanted items from SkinMonster inventory: Pick the items selection of over 200k skins.",
@@ -155,7 +155,7 @@ function toggleStyles(el, show) {
 
 			&--active {
 				.faq-list__item-header {
-					color (--main)
+					color var(--main)
 				}
 			}
 

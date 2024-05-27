@@ -1,5 +1,6 @@
 <template>
   <main class="page home-page">
+    <WelcomeBannersComponent />
     <SkinsListComponent title="Popular" />
     <BenefitsComponent />
     <FaqComponent />

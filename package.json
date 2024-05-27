@@ -33,6 +33,7 @@
     "@pinia/nuxt": "^0.5.1",
     "click-outside-vue3": "^4.0.1",
     "maska": "^2.1.10",
+    "nuxt-swiper": "^1.2.2",
     "pinia": "^2.1.7",
     "plural-ru": "^2.0.2",
     "vue": "^3.3.4",

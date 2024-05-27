@@ -9,24 +9,6 @@
   +above(1025px) {
     scrollbar-width thin
     scrollbar-color var(--gray-dark) var(--gray-30)
-
-    &::-webkit-scrollbar {
-      width 3px
-      height 3px
-    }
-
-    &::-webkit-scrollbar-track {
-      background transparent
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background-color var(--text-gray-2)
-      border-radius 16px
-
-      &:hover {
-        background-color var(--gray-30)
-      }
-    }
   }
   +below(1024px) {
     scrollbar-width none
@@ -44,30 +26,30 @@ body {
   scrollbar-gutter stable
 }
 
+html {
+  &::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-clip: padding-box;
+    -webkit-border-radius: 7px;
+    background-color: var(--gray-dark-2);
+    cursor pointer
+
+    &:hover {
+      background-color var(--dark-light-2)
+    }
+  }
+}
+
+
 body {
   overflow-y scroll
   min-width 320px
   +above(1025px) {
     scrollbar-width auto
     scrollbar-color var(--dark) var(--dark-light)
-
-    &::-webkit-scrollbar {
-      width var(--scrollbar-width)
-      height 10px
-    }
-
-    &::-webkit-scrollbar-track {
-      background transparent
-    }
-
-    &::-webkit-scrollbar-thumb {
-      background-color var(--black-o3)
-      border-radius 16px
-
-      &:hover {
-        background-color var(--black-o5)
-      }
-    }
   }
 
   &.no-scroll {
@@ -398,3 +380,10 @@ textarea {
   height 24px
 }
 
+.swiper-wrapper {
+  width max-content
+}
+
+.swiper-slide {
+  width auto
+}

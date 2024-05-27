@@ -8,7 +8,7 @@
       >
         <IconComponent class="aside-nav__link-icon" :name="link.icon" />
         <span class="aside-nav__link-title">{{ link.title }}</span>
-        <button v-if="link.menu" class="aside-nav__link-menu btn btn--sm btn--dark-light">
+        <button @click.prevent v-if="link.menu" class="aside-nav__link-menu btn btn--sm btn--dark-light">
           <IconComponent name="menu-1" class="icon--sm" />
         </button>
       </nuxt-link>
