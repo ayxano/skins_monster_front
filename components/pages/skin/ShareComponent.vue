@@ -17,6 +17,9 @@
       <a href="#" class="share-item">
         <IconComponent category="default" name="tiktok" />
       </a>
+      <a href="#" class="share-item">
+        <IconComponent name="copy" />
+      </a>
     </div>
   </div>
 </template>
