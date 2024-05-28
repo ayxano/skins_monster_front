@@ -1,10 +1,13 @@
 <template>
   <div class="breadcrumbs">
-    <h1 class="breadcrumbs__page-title">{{ title }}</h1>
+    <h1 class="breadcrumbs__title">
+			<span>{{ title }}</span>
+      <span v-if="subtitle" class="breadcrumbs__subtitle">{{ subtitle }}</span>
+    </h1>
     <ul class="breadcrumbs__list">
       <li v-if="!hideHome">
         <nuxt-link to="/">
-          <span>Главная</span>
+          <span>Home</span>
         </nuxt-link>
         <span v-show="links && links.length">/</span>
       </li>
@@ -25,6 +28,7 @@ export default {
   props: {
     links: Array,
     title: String,
+    subtitle: [String, Number],
     hideHome: Boolean,
   },
 };
@@ -71,12 +75,22 @@ export default {
     }
   }
 
-  &__page-title {
+  &__title {
+		display flex
+		align-items center
+		gap: 15px
 		flex-grow: 1
     margin 0
 		font-size: 1.375rem
 		font-weight: 900;
 		line-height: normal;
   }
+
+	&__subtitle {
+		color: var(--gray-dark-2, #516D7D);
+		font-size: 1rem
+		font-weight: 400;
+		line-height: 26px; /* 162.5% */
+	}
 }
 </style>

@@ -1,8 +1,17 @@
 <template>
   <ul v-show="total && total > 1" class="pagination">
-    <li v-show="page !== 1">
-      <button class="pagination__link" type="button" @click="$emit('change', 1)">Назад</button>
-    </li>
+    <template v-if="page >= maxPages">
+      <li>
+        <button class="pagination__link" type="button" @click="$emit('change', 1)">
+          <IconComponent name="arrow-left-duo-chevron" />
+        </button>
+      </li>
+      <li>
+        <button class="pagination__link" type="button" @click="$emit('change', page - 1)">
+          <IconComponent name="arrow-left-chevron" />
+        </button>
+      </li>
+    </template>
     <li v-for="p in currentPages" :key="p">
       <button
         :class="{ 'pagination__link--active': page === p }"
@@ -14,8 +23,18 @@
       </button>
     </li>
     <li>
+      <button
+        v-show="page !== total"
+        class="pagination__link"
+        type="button"
+        @click="$emit('change', page + 1)"
+      >
+        <IconComponent name="arrow-right-chevron" />
+      </button>
+    </li>
+    <li>
       <button v-show="page !== total" class="pagination__link" type="button" @click="$emit('change', total)">
-        Дальше
+        <IconComponent name="arrow-right-duo-chevron" />
       </button>
     </li>
   </ul>
@@ -24,20 +43,25 @@
 <script>
 export default {
   name: "PaginationComponent",
+  emits: ["change"],
   props: {
     page: Number,
-    list: Object, // объект с data и paginatorInfo
+    meta: Object, // объект с data и paginatorInfo
+    maxPages: {
+      type: Number,
+      default: 4,
+    },
   },
   computed: {
     total() {
-      if (this.list && this.list.paginatorInfo) {
-        return Math.ceil(this.list.paginatorInfo.total / this.list.paginatorInfo.perPage);
+      if (this.meta) {
+        return Math.ceil(this.meta.total / this.meta.perPage);
       }
       return 0;
     },
     currentPages() {
       let startPage, endPage;
-      const maxPages = 4;
+      const maxPages = this.maxPages;
       if (this.total <= maxPages) {
         // total pages less than max so show all pages
         startPage = 1;
@@ -78,47 +102,38 @@ export default {
     display flex
     align-items center
     justify-content: center;
-    width 100%
-    height 35px
-    padding 6px 12px
+    width 40px
+    height 40px
+    padding 5px
     background none
     cursor pointer
     border none
     transition var(--transition)
-    border-radius: 5px;
-    background: var(--surface-white, #FFF);
-    color: var(--text-link, #007AFF);
-    font-family: Commissioner;
-    font-size: 1em
+    border-radius: 50%;
+    background: transparent;
+    color: var(--gray-dark-2, #516D7D);
+    font-size: 0.875rem
     line-height: 1
-    font-style: normal;
-    font-weight: 500;
 
     &--disabled {
       cursor: initial;
     }
 
     .icon {
-      width 20px
-      height 20px
+      width 18px
+      height 18px
     }
 
     &:not(&--disabled):not(&--active):hover {
-      border-color var(--brown)
-
-      & ^[0]__icon svg path {
-        stroke var(--gray)
-      }
+			background: var(--dark-light-2)
+			color: var(--white)
     }
 
     &--active {
       cursor initial
-      background var(--red)
-      color var(--white)
+      background var(--main)
+      color var(--dark)
       pointer-events none
-    }
-    &:hover {
-      background: var(--surface-gray-20, #EDEDED);
     }
   }
 }
