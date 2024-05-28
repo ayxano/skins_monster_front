@@ -3,9 +3,11 @@
     <div class="page__inner catalog-page__inner">
       <BreadcrumbsComponent title="Catalog" subtitle="1,080" />
       <div class="catalog-page__body">
+        <CatalogFiltersComponent />
         <SkinsListComponent :list="list" />
         <PaginationComponent @change="paginate" :page="meta.page" :meta="meta" />
       </div>
+      <BottomPageBannerComponent />
     </div>
   </main>
 </template>
