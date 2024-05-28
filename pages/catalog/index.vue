@@ -2,7 +2,7 @@
   <main class="page catalog-page">
     <div class="page__inner catalog-page__inner">
       <BreadcrumbsComponent title="Catalog" subtitle="1,080" />
-      <div class="catalog-page__body">
+      <div class="catalog-page__content">
         <CatalogFiltersComponent />
         <SkinsListComponent :list="list" />
         <PaginationComponent @change="paginate" :page="meta.page" :meta="meta" />
