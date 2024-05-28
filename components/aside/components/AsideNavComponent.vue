@@ -56,7 +56,10 @@ const links = [
 ];
 
 function isRouteActive(route) {
-  return route.name === currentRoute.name && route.hash === currentRoute.hash;
+  if (route.hash) {
+    return route.name === currentRoute.name && route.hash === currentRoute.hash;
+  }
+  return route.name === currentRoute.name;
 }
 </script>
 

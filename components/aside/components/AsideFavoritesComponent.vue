@@ -7,11 +7,11 @@
       </button>
     </a>
     <div class="aside-favorites__list">
-      <a href="#" v-for="(item, i) in skins" :key="i" class="aside-favorites__item">
+      <nuxt-link :to="{ name: 'skin' }" v-for="(item, i) in skins" :key="i" class="aside-favorites__item">
         <ImgComponent class="aside-favorites__item-img" :src="item.img" :loader="false" />
         <span class="aside-favorites__item-title">{{ item.title }}</span>
         <IconComponent class="aside-favorites__item-icon" name="arrow-right-1" />
-      </a>
+      </nuxt-link>
     </div>
   </div>
 </template>

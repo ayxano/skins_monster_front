@@ -205,7 +205,7 @@ function paginate(page) {
 
 <style lang="stylus">
 .catalog-page {
-	&__body {
+	&__content {
 		display flex
 		flex-direction column
 		gap: var(--gap)

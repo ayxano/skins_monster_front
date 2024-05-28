@@ -1,5 +1,5 @@
 <template>
-  <div class="reviews">
+  <div id="reviews" class="reviews">
     <h3 class="reviews-title">Reviews</h3>
     <div class="reviews-content">
       <SliderComponent :slider-options="sliderOptions" :items="list" v-slot="{ item }" class="reviews-slider">

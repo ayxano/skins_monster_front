@@ -36,6 +36,7 @@ main_class = ".tabs"
 
 	&--small {
 		height 40px
+		padding: 3px
 
 		{ main_class } {
 			&__item {
