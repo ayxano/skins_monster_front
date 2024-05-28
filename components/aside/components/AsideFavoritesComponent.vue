@@ -57,9 +57,10 @@ const skins = [
 			flex-grow 1
 		}
 
-		&-btn {
+		&-btn.btn {
 			width 30px
 			height 30px
+			border-radius 50%
 		}
 	}
 

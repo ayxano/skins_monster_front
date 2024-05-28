@@ -1,5 +1,5 @@
 <template>
-  <a href="#" class="bottom-banner">
+  <a href="#" class="bottom-banner hover-image">
     <ImgComponent class="bottom-banner__img" src="/images/tmp/bottom_banner.jpg" />
   </a>
 </template>

@@ -1,45 +1,43 @@
 <template>
   <footer class="footer">
-    <div class="container-padding">
-      <div class="footer__inner">
-        <div class="footer-left">
-          <span class="footer-left__title">Contacts</span>
-          <div class="footer-left__blocks">
-            <div class="footer-left__block">
-              <span class="footer-left__block-title">Legal</span>
-              <span class="footer-left__block-description">
-                2nd floor, flat/office 205, 1061, Nicosia, Cyprus
-              </span>
-            </div>
-            <div class="footer-left__block">
-              <span class="footer-left__block-title">Email</span>
-              <span class="footer-left__block-description">
-                Support: help@skinmonster.com <br />
-                Privacy: privacy@skinmonster.com <br />
-                Official inquiries: official-inquiries@skinmonster.com <br />
-                Partners: partner@skinmonster.com
-              </span>
-            </div>
-            <div class="footer-left__block">
-              <span class="footer-left__block-title">Phones</span>
-              <span class="footer-left__block-description"> +101 77 2347 9985 </span>
-            </div>
-            <SocialsComponent />
+    <div class="footer__inner">
+      <div class="footer-left">
+        <span class="footer-left__title">Contacts</span>
+        <div class="footer-left__blocks">
+          <div class="footer-left__block">
+            <span class="footer-left__block-title">Legal</span>
+            <span class="footer-left__block-description">
+              2nd floor, flat/office 205, 1061, Nicosia, Cyprus
+            </span>
           </div>
+          <div class="footer-left__block">
+            <span class="footer-left__block-title">Email</span>
+            <span class="footer-left__block-description">
+              Support: help@skinmonster.com <br />
+              Privacy: privacy@skinmonster.com <br />
+              Official inquiries: official-inquiries@skinmonster.com <br />
+              Partners: partner@skinmonster.com
+            </span>
+          </div>
+          <div class="footer-left__block">
+            <span class="footer-left__block-title">Phones</span>
+            <span class="footer-left__block-description"> +101 77 2347 9985 </span>
+          </div>
+          <SocialsComponent />
         </div>
-        <div class="footer-right">
-          <div class="footer-columns">
-            <div v-for="(col, i) in columns" :key="i" class="footer-column">
-              <span class="footer-column__title">{{ col.title }}</span>
-              <ul class="footer-column__links">
-                <li v-for="(link, index) in col.links" :key="index">
-                  <nuxt-link class="footer-column__links-link" :to="link.route">
-                    <IconComponent name="arrow-right-3" />
-                    <span>{{ link.title }}</span>
-                  </nuxt-link>
-                </li>
-              </ul>
-            </div>
+      </div>
+      <div class="footer-right">
+        <div class="footer-columns">
+          <div v-for="(col, i) in columns" :key="i" class="footer-column">
+            <span class="footer-column__title">{{ col.title }}</span>
+            <ul class="footer-column__links">
+              <li v-for="(link, index) in col.links" :key="index">
+                <nuxt-link class="footer-column__links-link" :to="link.route">
+                  <IconComponent name="arrow-right-3" />
+                  <span>{{ link.title }}</span>
+                </nuxt-link>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -113,6 +111,10 @@ const columns = [
   }
 
 	&-left {
+		display flex
+		flex-direction column
+		gap: 20px
+
 		&__title {
 			font-size: 0.875rem
 			text-transform: uppercase;

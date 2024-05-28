@@ -1,6 +1,6 @@
 <template>
   <div class="skin-card">
-    <a class="skin-card__link" href="#"></a>
+    <nuxt-link :to="{ name: 'skin' }" class="skin-card__link"></nuxt-link>
     <div class="skin-card__header">
       <ImgComponent :src="data.img" class="skin-card__img" :loader="false" />
       <div class="skin-card__header-cover">

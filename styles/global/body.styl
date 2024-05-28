@@ -300,6 +300,8 @@ textarea {
 }
 
 .page {
+  display flex
+  flex-direction column
   flex-grow 1
   padding-bottom 50px
 
@@ -314,10 +316,7 @@ textarea {
   &__inner {
     display flex
     flex-direction column
-    grid-gap 80px
-    +below(1024px) {
-      gap: 64px
-    }
+    grid-gap 50px
   }
 }
 
