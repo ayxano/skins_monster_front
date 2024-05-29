@@ -63,7 +63,7 @@ export default {
     },
     rows: {
       type: String,
-      // default: "10",
+      default: "4",
     },
     modelValue: [String, Number],
     errors: {
@@ -113,25 +113,23 @@ export default {
   &__container {
     display flex
     position relative
-    background: var(--white);
-    border: 1px solid var(--border-color);
+		background: var(--white-o05);
+		border: 2px solid var(--dark-light-2, #1F3B4B);
     box-sizing: border-box;
-    border-radius: 16px;
-    height auto
+		border-radius: var(--small-radius)
+		height: auto
+		min-height: 100px
     transition var(--transition)
 
     &:hover {
-      border-color var(--dark-light)
+			border-color: var(--gray-dark-2)
     }
   }
 
   &:focus-within {
     & ^[0]__container {
-      border-color var(--brown-light)
-    }
-
-    & .icon svg path {
-      stroke var(--gray-3-dark)
+			box-shadow: 0 0 0 3px var(--green-o3);
+			border-color: var(--gray-dark-2)
     }
   }
 
@@ -223,13 +221,6 @@ export default {
     grid-gap 5px
   }
 
-  //&__error {
-  //  font-weight: normal;
-  //  font-size: 0.75rem;
-  //  line-height: 20px;
-  //  color: var(--red);
-  //}
-
   &__action {
     background none
     border none
@@ -253,10 +244,8 @@ export default {
     resize none
 
     &::placeholder {
-      color: var(--text-gray-3, #828282);
-      font-size: 0.9375em;
-      font-weight: 300;
-      line-height: 19px;
+			color: var(--gray-dark, #D4F0FF);
+			font-size: 0.875rem
     }
   }
 

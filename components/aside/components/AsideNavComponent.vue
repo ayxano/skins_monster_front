@@ -45,7 +45,7 @@ const links = [
   },
   {
     title: "Cancellations & Refunds",
-    route: { name: "about" },
+    route: { name: "dynamic" },
     icon: "convertshape-2",
   },
   {

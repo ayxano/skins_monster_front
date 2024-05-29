@@ -207,6 +207,11 @@ const details = [
 				}
 			}
 
+			&:last-child {
+				padding: 10px
+				width 60px
+			}
+
 			.icon {
 				width 24px
 				height 24px

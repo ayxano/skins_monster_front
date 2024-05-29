@@ -22,6 +22,7 @@
 		height 50px
 		border-radius 50%
 		flex-shrink 0
+		padding: 10px
 
 		.icon {
 			width 24px

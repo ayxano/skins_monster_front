@@ -151,10 +151,7 @@ export default {
   &:focus-within {
     & ^[0]__container {
 			box-shadow: 0 0 0 3px var(--green-o3);
-
-			&:hover {
-				border-color var(--dark-light-2, #1F3B4B)
-			}
+			border-color: var(--gray-dark-2)
     }
   }
 
@@ -278,8 +275,8 @@ export default {
     color: var(--body-color);
 
     &::placeholder {
-      font-weight: normal;
-      color var(--gray-dark)
+			color: var(--gray-dark, #D4F0FF);
+			font-size: 0.875rem
     }
   }
 
