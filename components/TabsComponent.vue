@@ -39,7 +39,7 @@ main_class = ".tabs"
 		padding: 3px
 
 		{ main_class } {
-			&__item {
+			&__item.btn {
 				padding 3px 10px
 				gap: 5px
 				height 100%
