@@ -53,19 +53,21 @@ main_class = ".tabs"
 	}
 
 	&__item {
-		border-radius: var(--small-radius)
-		padding: 15px 30px
-		font-size: 0.875rem
-		font-weight: 700;
-		display flex
-		align-items center
-		gap: 10px
+		&.btn {
+			border-radius: var(--small-radius)
+			padding: 15px 30px
+			font-size: 0.875rem
+			font-weight: 700;
+			display flex
+			align-items center
+			gap: 10px
+		}
 
 		&:not(&--active):hover {
 			background var(--dark-light-2)
 		}
 
-		&--active {
+		&--active.btn {
 			background var(--main)
 			color var(--dark)
 		}
