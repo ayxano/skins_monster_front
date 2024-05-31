@@ -250,12 +250,12 @@ function addToFavorites() {
 		}
 	}
 
-	&__action-cart {
+	&__action-cart.btn {
 		flex-grow 1
 		border-radius: var(--small-radius) 0 0 var(--small-radius)
 	}
 
-	&__action-more {
+	&__action-more.btn {
 		width 50px
 		border-radius: 0 var(--small-radius) var(--small-radius) 0
 	}
