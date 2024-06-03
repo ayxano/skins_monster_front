@@ -4,10 +4,7 @@
   </div>
 </template>
 
-<script setup>
-import { onMounted } from "vue";
-import { useRoute } from "#app";
-</script>
+<script setup></script>
 
 <style lang="stylus">
 .cabinet-profile {
