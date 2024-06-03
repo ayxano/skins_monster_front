@@ -1,6 +1,6 @@
 <template>
   <nav class="aside-nav">
-    <div v-for="(link, i) in links" :key="i" class="aside__nav-item">
+    <div v-for="(link, i) in links" :key="i" class="aside-nav__item">
       <nuxt-link
         :to="link.route"
         class="aside-nav__link no-hover"
@@ -19,41 +19,11 @@
 <script setup>
 import { useRoute } from "#app";
 
-const currentRoute = useRoute();
+defineProps({
+  links: Array,
+});
 
-const links = [
-  {
-    title: "Catalog",
-    route: { name: "catalog" },
-    icon: "category-2",
-    menu: true,
-  },
-  {
-    title: "About",
-    route: { name: "about" },
-    icon: "cpu-charge",
-  },
-  {
-    title: "Reviews",
-    route: { name: "index", hash: "#reviews" },
-    icon: "message",
-  },
-  {
-    title: "FAQ",
-    route: { name: "index", hash: "#faq" },
-    icon: "messages-3",
-  },
-  {
-    title: "Cancellations & Refunds",
-    route: { name: "dynamic" },
-    icon: "convertshape-2",
-  },
-  {
-    title: "Contacts",
-    route: { name: "contacts" },
-    icon: "sms-edit",
-  },
-];
+const currentRoute = useRoute();
 
 function isRouteActive(route) {
   if (route.hash) {
@@ -64,61 +34,5 @@ function isRouteActive(route) {
 </script>
 
 <style lang="stylus">
-.aside-nav {
-	display flex
-	flex-direction column
-
-	&__item {
-		padding: 5px
-		padding-right 20px
-		font-size 0.875rem
-	}
-
-	&__link {
-		position relative
-		display flex
-		align-items center
-		gap: 10px
-		padding: 10px
-		border-radius var(--small-radius)
-		color var(--gray)
-
-		&:not(&--active):hover {
-			background var(--dark-light-2)
-		}
-
-		&--active {
-			background var(--main)
-			color var(--dark)
-		}
-
-		&-icon {
-			padding: 5px
-			width 30px
-			height 30px
-		}
-
-		&-title {
-			flex-grow 1
-		}
-
-		&-menu.btn {
-			position absolute
-			right 0
-			top 50%
-			transform translate(50%, -50%)
-			width: 30px
-			height: 30px
-			border-radius 50%
-
-			&:hover {
-				border-color var(--main)
-
-				.icon svg path {
-					fill var(--main)
-				}
-			}
-		}
-	}
-}
+@import "../styles/parts/aside-nav.styl"
 </style>

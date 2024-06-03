@@ -5,7 +5,9 @@
         <AsideComponent />
         <div class="app__content">
           <HeaderComponent />
-          <NuxtPage />
+          <NuxtLayout>
+            <NuxtPage />
+          </NuxtLayout>
           <FooterComponent />
         </div>
       </div>

@@ -3,7 +3,7 @@
     <nuxt-link :to="{ name: 'index' }" class="aside__logo">
       <ImgComponent src="/images/logo.svg" class="aside__logo-img" :loader="false" />
     </nuxt-link>
-    <AsideNavComponent />
+    <AsideNavComponent :links="links" />
     <AsideFavoritesComponent />
     <div class="aside__footer">
       © 2024. Skin Monster. <br />
@@ -12,7 +12,41 @@
   </aside>
 </template>
 
-<script setup></script>
+<script setup>
+const links = [
+  {
+    title: "Catalog",
+    route: { name: "catalog" },
+    icon: "category-2",
+    menu: true,
+  },
+  {
+    title: "About",
+    route: { name: "about" },
+    icon: "cpu-charge",
+  },
+  {
+    title: "Reviews",
+    route: { name: "index", hash: "#reviews" },
+    icon: "message",
+  },
+  {
+    title: "FAQ",
+    route: { name: "index", hash: "#faq" },
+    icon: "messages-3",
+  },
+  {
+    title: "Cancellations & Refunds",
+    route: { name: "dynamic" },
+    icon: "convertshape-2",
+  },
+  {
+    title: "Contacts",
+    route: { name: "contacts" },
+    icon: "sms-edit",
+  },
+];
+</script>
 
 <style lang="stylus">
 .aside {

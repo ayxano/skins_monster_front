@@ -10,6 +10,9 @@ export default defineNuxtConfig({
     transpile: ["tslib"],
   },
   modules: ["@pinia/nuxt", "vue3-perfect-scrollbar/nuxt", "nuxt-swiper"],
+  routeRules: {
+    "/cabinet": { redirect: "/cabinet/profile" },
+  },
   app: {
     head: {
       htmlAttrs: {

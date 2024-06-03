@@ -2,7 +2,7 @@
   <main class="page skin-page">
     <div class="page__inner">
       <BreadcrumbsComponent title="Doppler Phase 1" :links="breadcrumbs" />
-      <div class="skin-page__body">
+      <div class="skin-page__content">
         <SkinPagePreviewComponent />
         <SkinPageAsideComponent />
       </div>
@@ -74,7 +74,7 @@ const similar_skins = [
 
 <style lang="stylus">
 .skin-page {
-	&__body {
+	&__content {
 		display grid
 		grid-template-columns 6fr 4fr
 		grid-gap var(--gap)

@@ -1,0 +1,57 @@
+.aside-nav {
+  display flex
+  flex-direction column
+
+  &__item {
+    padding: 5px
+    padding-right 20px
+    font-size 0.875rem
+  }
+
+  &__link {
+    position relative
+    display flex
+    align-items center
+    gap: 10px
+    padding: 10px
+    border-radius var(--small-radius)
+    color var(--gray)
+
+    &:not(&--active):hover {
+      background var(--dark-light-2)
+    }
+
+    &--active {
+      background var(--main)
+      color var(--dark)
+    }
+
+    &-icon {
+      padding: 5px
+      width 30px
+      height 30px
+    }
+
+    &-title {
+      flex-grow 1
+    }
+
+    &-menu.btn {
+      position absolute
+      right 0
+      top 50%
+      transform translate(50%, -50%)
+      width: 30px
+      height: 30px
+      border-radius 50%
+
+      &:hover {
+        border-color var(--main)
+
+        .icon svg path {
+          fill var(--main)
+        }
+      }
+    }
+  }
+}

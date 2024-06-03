@@ -126,26 +126,28 @@ function addToFavorites() {
 	}
 
 	&__favorite {
-		position absolute
-		right 15px
-		top 15px
-		width 40px
-		height 40px
-		border-radius: var(--small-radius)
-		border: 1px solid var(--dark-light-2, #1F3B4B);
-		background: var(--dark-light, #011D2D);
+		&.btn {
+			position absolute
+			right 15px
+			top 15px
+			width 40px
+			height 40px
+			border-radius: var(--small-radius)
+			border: 1px solid var(--dark-light-2, #1F3B4B);
+			background: var(--dark-light, #011D2D);
 
-		&:hover {
-			background var(--gray-dark-2)
+			&:hover {
+				background var(--gray-dark-2)
+			}
+
+			.icon {
+				width 20px
+				height 20px
+				color var(--gray-dark)
+			}
 		}
 
-		.icon {
-			width 20px
-			height 20px
-			color var(--gray-dark)
-		}
-
-		&--active {
+		&--active.btn {
 			.icon svg path {
 				fill var(--main)
 			}

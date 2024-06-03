@@ -1,14 +1,14 @@
 <template>
   <main class="page home-page">
-		<div class="page__inner">
-			<WelcomeBannersComponent />
-			<SkinsListComponent title="Popular" :list="popular_skins" />
-			<BenefitsComponent />
-			<FaqComponent />
-			<ReviewsComponent />
-			<PaymentsComponent />
-			<BottomPageBannerComponent />
-		</div>
+    <div class="page__inner">
+      <WelcomeBannersComponent />
+      <SkinsListComponent title="Popular" :list="popular_skins" />
+      <BenefitsComponent />
+      <FaqComponent />
+      <ReviewsComponent />
+      <PaymentsComponent />
+      <BottomPageBannerComponent />
+    </div>
   </main>
 </template>
 

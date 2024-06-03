@@ -200,6 +200,7 @@ const details = [
 
 			&:first-child {
 				flex-grow 1
+				box-shadow 0 10px 20px 0 var(--green-o3)
 
 				&:hover {
 					background-color var(--green-o8)

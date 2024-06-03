@@ -3,9 +3,9 @@
     <a class="header-actions__item header-actions__item--cart btn" href="#">
       <IconComponent class="icon--lg" name="bag-2" />
     </a>
-    <a class="header-actions__item btn btn--lg btn--dark-light" href="#">
+    <nuxt-link to="/cabinet/profile" class="header-actions__item btn btn--lg btn--dark-light">
       <IconComponent class="icon--lg" name="frame-1" />
-    </a>
+    </nuxt-link>
   </div>
 </template>
 
