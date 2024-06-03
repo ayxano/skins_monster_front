@@ -341,7 +341,7 @@ export default {
     }
 
     &::placeholder {
-      color var(--gray)
+			color: var(--gray-dark-2, #516D7D);
     }
 
     &--one {

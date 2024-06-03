@@ -244,7 +244,7 @@ export default {
     resize none
 
     &::placeholder {
-			color: var(--gray-dark, #D4F0FF);
+			color: var(--gray-dark-2, #516D7D);
 			font-size: 0.875rem
     }
   }

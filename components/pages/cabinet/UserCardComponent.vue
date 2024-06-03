@@ -1,29 +1,70 @@
 <template>
-  <div class="user-card">
-    <div class="user-card__top"></div>
+  <div class="user-card" :class="{ 'user-card--settings': settings }">
+    <div class="user-card__top">
+      <div class="user-card__actions">
+        <button class="btn btn--sm btn--dark-light">Upload cover</button>
+        <button class="btn btn--sm btn--dark-light">Remove</button>
+      </div>
+    </div>
     <div class="user-card__content">
-      <ImgComponent class="user-card__img" src="/images/tmp/user.jpg" />
+      <ImgComponent class="user-card__avatar" src="/images/tmp/user.jpg" />
       <div class="user-card__info">
         <span class="user-card__name">Eva Jones</span>
         <span class="user-card__registered">Registered on October 5, 2020, 08:52</span>
+      </div>
+      <div class="user-card__actions">
+        <button class="btn btn--sm btn--main">Choose avatar</button>
+        <button class="btn btn--sm btn--dark-light">Remove</button>
       </div>
     </div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+defineProps({
+  settings: Boolean,
+});
+</script>
 
 <style lang="stylus">
+main_class = ".user-card"
 .user-card {
 	border-radius: var(--main-radius)
 	background var(--dark-light, #011D2D)
 	display flex
 	flex-direction column
 
+	&--settings {
+		border-radius var(--main-radius) var(--main-radius) 0 0
+
+		{ main_class } {
+			&__actions {
+				display flex
+			}
+
+			&__info {
+				display none
+			}
+		}
+	}
+
 	&__top {
 		background url("/images/tmp/user_bg.jpg")
 		border-radius: var(--main-radius)
 		height 200px
+		padding: 20px
+		display flex
+		justify-content flex-end
+	}
+
+	&__actions {
+		display none
+		gap: 10px
+
+		.btn {
+			padding: 0 15px
+			height 32px
+		}
 	}
 
 	&__content {
@@ -34,7 +75,7 @@
 		margin-top -75px
 	}
 
-	&__img {
+	&__avatar {
 		width 150px
 		height 150px
 		flex-shrink 0

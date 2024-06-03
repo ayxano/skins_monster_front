@@ -376,7 +376,7 @@ export default {
       font-weight: 400;
       font-size: 0.875rem
       line-height: 16px;
-      color: var(--gray-2)
+			color: var(--gray-dark-2, #516D7D);
     }
 
     ^[0]--values-visible & {

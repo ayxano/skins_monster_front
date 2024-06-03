@@ -12,6 +12,9 @@
     <span class="input__title" v-if="title">
       <span>{{ title }}</span>
       <span class="input__required" v-if="required">*</span>
+      <span class="input__title-external" v-if="$slots.title">
+        <slot name="title" />
+      </span>
     </span>
     <span class="input__container">
       <button
@@ -43,6 +46,7 @@
         :max="max"
       />
     </span>
+    <div class="input__"></div>
     <span v-if="subtitle" class="input__subtitle">{{ subtitle }}</span>
     <div v-if="errors && errors.length" class="input__errors">
       <pre v-for="(e, i) in errors" :key="i">{{ e }}</pre>
@@ -218,12 +222,29 @@ export default {
   }
 
   &__title {
-    color: var(--text-gray, #6F6F6F);
+    color: var(--gray-dark, #D4F0FF);
     font-size: 0.8125em;
     font-weight: 300;
     line-height: 17px;
     display flex
-    gap 4px
+		align-items: baseline
+		justify-content: space-between
+    gap 10px
+
+		a {
+			color var(--main)
+			border-bottom 1px solid
+			display flex
+			align-items flex-end
+			gap: 5px
+
+			.icon {
+				width 14px
+				height 14px
+				color var(--main)
+				margin-bottom 2px
+			}
+		}
   }
 
   &__subtitle {
@@ -275,7 +296,7 @@ export default {
     color: var(--body-color);
 
     &::placeholder {
-			color: var(--gray-dark, #D4F0FF);
+			color: var(--gray-dark-2, #516D7D);
 			font-size: 0.875rem
     }
   }

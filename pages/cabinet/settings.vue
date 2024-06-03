@@ -1,17 +1,11 @@
 <template>
   <div class="cabinet-settings">
-    <h1>settings</h1>
+    <UserCardComponent settings />
+    <UserSettingsFormComponent />
   </div>
 </template>
 
-<script setup>
-const breadcrumbs = [
-  {
-    title: "profile",
-    route: "/cabinet/profile",
-  },
-];
-</script>
+<script setup></script>
 
 <style lang="stylus">
 .cabinet-settings {
