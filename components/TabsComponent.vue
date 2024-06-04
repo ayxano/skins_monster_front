@@ -1,5 +1,5 @@
 <template>
-  <div class="tabs" :class="{ 'tabs--small': small }">
+  <div class="tabs" :class="{ 'tabs--small': small, 'tabs--dark': dark }">
     <button
       v-for="(item, i) in tabs"
       :key="i"
@@ -19,6 +19,7 @@ defineProps({
   tabs: Array,
   modelValue: Object,
   small: Boolean,
+  dark: Boolean,
 });
 </script>
 
@@ -52,6 +53,24 @@ main_class = ".tabs"
 		}
 	}
 
+	&--dark {
+		width 100%
+		height 62px
+		border none
+		background: var(--dark, #00141F);
+
+		{ main_class } {
+			&__item {
+				flex 1
+
+				&--active.btn {
+					background var(--dark-light)
+					color var(--main)
+				}
+			}
+		}
+	}
+
 	&__item {
 		&.btn {
 			border-radius: var(--small-radius)
@@ -61,6 +80,7 @@ main_class = ".tabs"
 			display flex
 			align-items center
 			gap: 10px
+			height 100%
 		}
 
 		&:not(&--active):hover {

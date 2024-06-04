@@ -13,7 +13,6 @@
 </template>
 
 <script setup>
-import PaginationComponent from "~/components/Pagination.vue";
 import { ref } from "vue";
 
 const meta = ref({
