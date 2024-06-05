@@ -1,8 +1,8 @@
 <template>
   <div class="header-actions">
-    <a class="header-actions__item header-actions__item--cart btn" href="#">
+    <nuxt-link :to="{ name: 'checkout' }" class="header-actions__item header-actions__item--cart btn">
       <IconComponent class="icon--lg" name="bag-2" />
-    </a>
+    </nuxt-link>
     <nuxt-link to="/cabinet/profile" class="header-actions__item btn btn--lg btn--dark-light">
       <IconComponent class="icon--lg" name="frame-1" />
     </nuxt-link>

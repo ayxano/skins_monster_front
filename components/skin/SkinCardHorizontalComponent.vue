@@ -22,7 +22,10 @@
 
 <script setup>
 defineProps({
-  data: Object,
+  data: {
+    type: Object,
+    default: () => ({}),
+  },
 });
 </script>
 

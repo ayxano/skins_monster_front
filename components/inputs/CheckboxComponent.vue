@@ -12,7 +12,7 @@
   >
     <label class="checkbox__field" @click.shift="$emit('update:shift:modelValue', modelValue)">
       <span class="checkbox__icon">
-        <IconComponent name="subtract-line" v-if="indeterminate" />
+        <IconComponent name="minus" v-if="indeterminate" />
         <IconComponent name="check-line" v-else-if="isChecked" />
       </span>
       <input
@@ -92,15 +92,14 @@ export default {
   transition color var(--transition)
 
   &__icon {
-    background: var(--white);
-    border: 1px solid var(--border-color);
-    border-radius: 4px;
+		border: 2px solid var(--gray-dark-2, #516D7D);
+    border-radius: 3px;
     display flex
     align-items center
     justify-content center
-    width 18px
-    height 18px
-    transition .2s
+    width 15px
+    height 15px
+    transition var(--transition)
     flex-shrink 0
 
     ^[0]--big & {
@@ -109,23 +108,24 @@ export default {
     }
 
     ^[0]--small & {
-      width 16px
-      height 16px
+      width 10px
+      height 10px
     }
 
     ^[0]--active & {
       background: var(--main);
       border-color var(--main)
-    }
 
-    ^[0]--focused & {
-      box-shadow: 0 0 0 3px var(--dark-o5);
+			.icon svg path {
+				fill var(--dark)
+			}
     }
 
     .icon {
-      width 100%
-      height 100%
-      margin -1px
+      width 15px
+      height 15px
+			min-width: 5px
+			min-height: 5px
 
       svg path {
         fill var(--white)
@@ -135,13 +135,12 @@ export default {
 
   &__field {
     display flex
-    align-items center
+    align-items flex-start
     justify-content flex-start
-    gap 3px
+    gap 5px
     cursor pointer
-    font-weight 500
-    font-size 0.813rem
-    line-height 18px
+    font-size 0.75rem
+    line-height normal
     transition color var(--transition)
 
     &:hover {
