@@ -43,10 +43,10 @@
     </div>
     <div class="checkout-aside__block">
       <div class="checkout-aside__submit">
-        <button class="btn btn--lg btn--main">
+        <nuxt-link :to="{ name: 'result', query: { success: true } }" class="btn btn--lg btn--main">
           <span>Proceed to checkout</span>
           <IconComponent name="arrow-right-1" />
-        </button>
+        </nuxt-link>
         <span class="checkout-aside__terms">
           By clicking Proceed to Checkout, you agree to our <a href="#">Terms</a> of Service and that you have
           read our Privacy Policy.
