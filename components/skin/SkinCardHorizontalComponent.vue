@@ -1,6 +1,9 @@
 <template>
-  <div class="skin-card-hz">
+  <div class="skin-card-hz" :class="{ 'skin-card-hz--deletable': deletable }">
     <nuxt-link :to="{ name: 'skin' }" class="skin-card-hz__link"></nuxt-link>
+    <button class="skin-card-hz__delete btn btn--sm btn--hollow">
+      <IconComponent name="trash" />
+    </button>
     <ImgComponent :src="data.img" class="skin-card-hz__img" />
     <div class="skin-card-hz__info">
       <span class="skin-card-hz__title">Desert Hydra</span>
@@ -26,6 +29,7 @@ defineProps({
     type: Object,
     default: () => ({}),
   },
+  deletable: Boolean,
 });
 </script>
 
@@ -45,6 +49,11 @@ main_class = ".skin-card-hz"
 	&:hover {
 		background var(--dark-light-2, #1F3B4B);
 
+		{ main_class }__delete {
+			border-color var(--gray-dark-2)
+			color var(--gray-dark-2)
+		}
+
 		{ main_class }__prices {
 			background var(--gray-dark-2)
 		}
@@ -56,6 +65,19 @@ main_class = ".skin-card-hz"
 		right 0
 		top 0
 		bottom 0
+	}
+
+	&__delete.btn {
+		width 30px
+		height 30px
+		flex-shrink 0
+		color var(--gray-dark-2, #516D7D)
+		z-index 1
+
+		&:hover {
+			border-color var(--red)
+			color var(--red)
+		}
 	}
 
 	&__img {

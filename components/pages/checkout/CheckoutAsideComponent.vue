@@ -108,6 +108,7 @@ const agreement = ref(false);
 			width 30px
 			height 30px
 			padding: 5px
+			color var(--white)
 		}
 	}
 
