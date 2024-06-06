@@ -4,14 +4,14 @@
       v-for="(item, i) in list"
       :key="i"
       class="orders-accordion__item"
-      :class="{ 'orders-accordion__item--active': isActive(i, activeItemIndex) }"
+      :class="{ 'orders-accordion__item--active': i === activeItemIndex }"
     >
-      <div @click="setActive(i, accRowBody)" class="orders-accordion__item-header">
+      <div @click="setActive(i)" class="orders-accordion__item-header">
         <span class="orders-accordion__item-title">{{ item.title }}</span>
         <span class="orders-accordion__item-date">{{ item.date }}</span>
         <IconComponent name="arrow-down-1" />
       </div>
-      <div ref="accRowBody" class="orders-accordion__item-body">
+      <div ref="accItemBody" class="orders-accordion__item-body">
         <div class="orders-accordion__item-skins">
           <SkinCardHorizontalComponent v-for="(skin, index) in item.skins" :key="index" :data="skin" />
         </div>
@@ -22,7 +22,6 @@
 
 <script setup>
 import { ref } from "vue";
-import { isActive, setActive } from "~/utils/accordion";
 
 const skins = [
   {
@@ -93,7 +92,35 @@ const list = [
 ];
 
 const activeItemIndex = ref(null);
-const accRowBody = ref(null);
+const accItemBody = ref(null);
+
+function setActive(i) {
+  const el = accItemBody.value[i];
+  const prevEl = accItemBody.value[activeItemIndex.value];
+
+  const toggleStyles = (el, show) => {
+    if (show) {
+      el.style.maxHeight = el.scrollHeight + "px";
+      el.style.opacity = "1";
+    } else {
+      el.style.maxHeight = "0";
+      el.style.opacity = "0";
+    }
+  };
+
+  if (prevEl) {
+    toggleStyles(prevEl, false);
+  }
+
+  if (el) {
+    toggleStyles(el, i !== activeItemIndex.value);
+    if (i === activeItemIndex.value) {
+      activeItemIndex.value = null;
+    } else {
+      activeItemIndex.value = i;
+    }
+  }
+}
 </script>
 
 <style lang="stylus">

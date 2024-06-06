@@ -8,14 +8,14 @@
           v-for="(item, i) in activeTab.list"
           :key="i"
           class="faq-list__item"
-          :class="{ 'faq-list__item--active': isActive(i, activeItemIndex) }"
+          :class="{ 'faq-list__item--active': i === activeItemIndex }"
         >
-          <div @click="setActive(i, accRowBody)" class="faq-list__item-header">
+          <div @click="setActive(i)" class="faq-list__item-header">
             <span class="faq-list__item-title">{{ item.title }}</span>
-            <IconComponent v-if="isActive(i, activeItemIndex)" name="minus" />
+            <IconComponent v-if="i === activeItemIndex" name="minus" />
             <IconComponent v-else name="add" />
           </div>
-          <div ref="accRowBody" class="faq-list__item-body">
+          <div ref="accItemBody" class="faq-list__item-body">
             <div class="faq-list__item-description">{{ item.description }}</div>
           </div>
         </div>
@@ -26,7 +26,6 @@
 
 <script setup>
 import { ref } from "vue";
-import { isActive, setActive } from "~/utils/accordion";
 
 const tabs = [
   {
@@ -95,7 +94,35 @@ const tabs = [
 
 const activeTab = ref(tabs[0]);
 const activeItemIndex = ref(null);
-const accRowBody = ref(null);
+const accItemBody = ref(null);
+
+function setActive(i) {
+  const el = accItemBody.value[i];
+  const prevEl = accItemBody.value[activeItemIndex.value];
+
+  function toggleStyles(el, show) {
+    if (show) {
+      el.style.maxHeight = el.scrollHeight + "px";
+      el.style.opacity = "1";
+    } else {
+      el.style.maxHeight = "0";
+      el.style.opacity = "0";
+    }
+  }
+
+  if (prevEl) {
+    toggleStyles(prevEl, false);
+  }
+
+  if (el) {
+    toggleStyles(el, i !== activeItemIndex.value);
+    if (i === activeItemIndex.value) {
+      activeItemIndex.value = null;
+    } else {
+      activeItemIndex.value = i;
+    }
+  }
+}
 </script>
 
 <style lang="stylus">

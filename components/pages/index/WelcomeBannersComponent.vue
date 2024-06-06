@@ -26,19 +26,23 @@ const sliderOptions = {
 const list = [
   {
     title: "Buy skins",
-    img: "/images/tmp/slider_2.jpg",
+    img: "/images/tmp/slider_1.jpg",
+    img_mobile: "/images/tmp/slider_1_mobile.jpg",
   },
   {
     title: "Buy skins",
-    img: "/images/tmp/slider_2.jpg",
+    img: "/images/tmp/slider_1.jpg",
+    img_mobile: "/images/tmp/slider_1_mobile.jpg",
   },
   {
     title: "Buy skins",
-    img: "/images/tmp/slider_2.jpg",
+    img: "/images/tmp/slider_1.jpg",
+    img_mobile: "/images/tmp/slider_1_mobile.jpg",
   },
   {
     title: "Buy skins",
-    img: "/images/tmp/slider_2.jpg",
+    img: "/images/tmp/slider_1.jpg",
+    img_mobile: "/images/tmp/slider_1_mobile.jpg",
   },
 ];
 </script>
@@ -46,6 +50,9 @@ const list = [
 <style lang="stylus">
 .welcome-banners {
 	&__item {
+		display flex
+		height 100%
+
 		&-img {
 			border-radius: var(--main-radius)
 		}
