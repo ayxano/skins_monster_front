@@ -72,7 +72,7 @@ const list = [
 			position absolute
 			bottom 50px
 			left 7.2%
-			z-index 99
+			z-index 1
 			width auto
 			height 7px
 		}

@@ -1,6 +1,6 @@
 <template>
   <ClientOnly>
-    <div v-click-outside="clickOutside" class="dropdown">
+    <div v-click-outside="hide" class="dropdown">
       <div @click.prevent="toggle" class="dropdown-target">
         <slot />
       </div>
@@ -15,6 +15,9 @@
 </template>
 
 <script setup>
+import { useRoute } from "#app";
+import { watch } from "vue";
+
 const emits = defineEmits(["update:model-value"]);
 const props = defineProps({
   modelValue: Boolean,
@@ -24,6 +27,15 @@ const props = defineProps({
   },
 });
 
+const route = useRoute();
+
+watch(
+  () => route.path && route.name,
+  () => {
+    hide();
+  }
+);
+
 function toggle() {
   if (props.modelValue) {
     emits("update:model-value", false);
@@ -32,7 +44,7 @@ function toggle() {
   }
 }
 
-function clickOutside() {
+function hide() {
   if (props.modelValue) {
     emits("update:model-value", false);
   }
