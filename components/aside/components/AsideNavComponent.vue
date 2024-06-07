@@ -8,9 +8,21 @@
       >
         <IconComponent class="aside-nav__link-icon" :name="link.icon" />
         <span class="aside-nav__link-title">{{ link.title }}</span>
-        <button @click.prevent v-if="link.menu" class="aside-nav__link-menu btn btn--sm btn--dark-light">
-          <IconComponent name="menu-1" class="icon--sm" />
-        </button>
+        <div v-if="link.menu" class="aside-nav__link-menu">
+          <DropdownComponent v-model="menuVisible" position="bottom-right">
+            <template #default>
+              <button
+                :class="{ 'aside-nav__link-menu-btn--close': menuVisible }"
+                class="aside-nav__link-menu-btn btn btn--sm btn--dark-light"
+              >
+                <IconComponent :key="menuVisible" :name="menuVisible ? 'close' : 'menu-1'" class="icon--sm" />
+              </button>
+            </template>
+            <template #content>
+              <AsideCategoriesComponent />
+            </template>
+          </DropdownComponent>
+        </div>
       </nuxt-link>
     </div>
   </nav>
@@ -18,12 +30,14 @@
 
 <script setup>
 import { useRoute } from "#app";
+import { ref } from "vue";
 
 defineProps({
   links: Array,
 });
 
 const currentRoute = useRoute();
+const menuVisible = ref(false);
 
 function isRouteActive(route) {
   if (route.hash) {

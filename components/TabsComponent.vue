@@ -1,9 +1,16 @@
 <template>
-  <div class="tabs" :class="{ 'tabs--small': small, 'tabs--dark': dark }">
+  <div
+    class="tabs"
+    :class="{
+      'tabs--small': small,
+      'tabs--dark': dark,
+      'tabs--same-tabs': sameTabs,
+    }"
+  >
     <button
       v-for="(item, i) in tabs"
       :key="i"
-      @click="$emit('update:model-value', item)"
+      @click.prevent="$emit('update:model-value', item)"
       class="tabs__item btn"
       :class="{ 'tabs__item--active': modelValue && modelValue.id === item.id }"
     >
@@ -20,6 +27,7 @@ defineProps({
   modelValue: Object,
   small: Boolean,
   dark: Boolean,
+  sameTabs: Boolean,
 });
 </script>
 
@@ -67,6 +75,14 @@ main_class = ".tabs"
 					background var(--dark-light)
 					color var(--main)
 				}
+			}
+		}
+	}
+
+	&--same-tabs {
+		{ main_class } {
+			&__item {
+				flex 1
 			}
 		}
 	}

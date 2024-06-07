@@ -36,20 +36,37 @@
       flex-grow 1
     }
 
-    &-menu.btn {
+    &-menu {
       position absolute
       right 0
       top 50%
       transform translate(50%, -50%)
-      width: 30px
-      height: 30px
-      border-radius 50%
+      z-index var(--z-index-dropdown)
 
-      &:hover {
-        border-color var(--main)
+      &-btn {
+        &.btn {
+          width: 30px
+          height: 30px
+          border-radius 50%
 
-        .icon svg path {
-          fill var(--main)
+          .icon {
+            pointer-events none
+          }
+
+          &:hover {
+            border-color var(--main)
+
+            .icon svg path {
+              fill var(--main)
+            }
+          }
+        }
+
+        &--close.btn {
+          .icon {
+            width 10px
+            height 10px
+          }
         }
       }
     }
