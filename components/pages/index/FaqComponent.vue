@@ -35,27 +35,27 @@ const tabs = [
       {
         title: "How to trade skins instantly with Tradeit",
         description:
-          "Select your items: Choose what you want to trade from your inventory.\n" +
-          "Select wanted items from SkinMonster inventory: Pick the items you desire from our wide selection of over 200k skins.\n" +
-          "Receive a trade offer instantly: Confirm the trade, and your items will be on their way.",
+          "1. Select your items: Choose what you want to trade from your inventory.\n" +
+          "2. Select wanted items from SkinMonster inventory: Pick the items you desire from our wide selection of over 200k skins.\n" +
+          "3. Receive a trade offer instantly: Confirm the trade, and your items will be on their way.",
       },
       {
         title: "Begin Your CS2 Trading Journey with SkinMonster",
         description:
-          "Select your items: Choose what you want to trade from your inventory.\n" +
-          "Select wanted items from SkinMonster inventory: Pick the items you desire from our wide selection of over 200k skins.\n",
+          "1. Select your items: Choose what you want to trade from your inventory.\n" +
+          "2. Select wanted items from SkinMonster inventory: Pick the items you desire from our wide selection of over 200k skins.\n",
       },
       {
         title: "Experience the thrill of real-time trading with CS2 Live Trading",
         description:
-          "Select your items: Choose what you want to trade from your inventory.\n" +
-          "Select wanted items from SkinMonster inventory: Pick the items selection of over 200k skins.",
+          "1. Select your items: Choose what you want to trade from your inventory.\n" +
+          "2. Select wanted items from SkinMonster inventory: Pick the items selection of over 200k skins.",
       },
       {
         title: "CS2 Skin Exchange Made Easy",
         description:
-          "Select your items: Choose what you want to trade from your inventory.\n" +
-          "Select wanted items from SkinMonster inventory: Pick the items selection of over 200k skins.",
+          "1. Select your items: Choose what you want to trade from your inventory.\n" +
+          "2. Select wanted items from SkinMonster inventory: Pick the items selection of over 200k skins.",
       },
     ],
   },
@@ -192,6 +192,7 @@ function setActive(i) {
 			&-description {
 				max-width 805px
 				padding: 15px 0
+				white-space pre-wrap
 			}
 		}
 	}

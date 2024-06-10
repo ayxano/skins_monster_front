@@ -35,16 +35,26 @@
         <button @click="addToCart" class="skin-card__action-cart btn">
           <IconComponent name="bag-2" />
         </button>
-        <button class="skin-card__action-more btn">
-          <IconComponent name="dots-menu" />
-        </button>
+        <DropdownComponent v-model:visible="dropdownVisible" position="bottom-right" :target-relative="false">
+          <template #default>
+            <button
+              :class="{ 'skin-card__action-more--active': dropdownVisible }"
+              class="skin-card__action-more btn"
+            >
+              <IconComponent name="dots-menu" />
+            </button>
+          </template>
+          <template #content>
+            <SkinCardDropdownComponent />
+          </template>
+        </DropdownComponent>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useCartStore } from "~/stores/cart";
 import { useFavoritesStore } from "~/stores/favorites";
 
@@ -54,6 +64,7 @@ const props = defineProps({
 
 const cartStore = useCartStore();
 const favoritesStore = useFavoritesStore();
+const dropdownVisible = ref(false);
 
 const inCart = computed(() => {
   return cartStore.cart_items.map((i) => i.id).includes(props.data.id);
@@ -214,7 +225,7 @@ function addToFavorites() {
 	&__actions {
 		display flex
 		gap: 1px
-		z-index 1
+		z-index 2
 
 		.btn {
 			background: var(--dark-light-2, #1F3B4B);
@@ -250,6 +261,13 @@ function addToFavorites() {
 				}
 			}
 		}
+
+		.dropdown-content {
+			left 0
+			right 0
+			bottom 65px
+			top: auto
+		}
 	}
 
 	&__action-cart.btn {
@@ -257,9 +275,21 @@ function addToFavorites() {
 		border-radius: var(--small-radius) 0 0 var(--small-radius)
 	}
 
-	&__action-more.btn {
-		width 50px
-		border-radius: 0 var(--small-radius) var(--small-radius) 0
+	&__action-more {
+		&.btn {
+			width 50px
+			border-radius: 0 var(--small-radius) var(--small-radius) 0
+
+			.icon {
+				transition transform .2s
+			}
+		}
+
+		&--active {
+			.icon {
+				transform rotate(90deg)
+			}
+		}
 	}
 }
 </style>

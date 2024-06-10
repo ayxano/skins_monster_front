@@ -46,7 +46,6 @@
         :max="max"
       />
     </span>
-    <div class="input__"></div>
     <span v-if="subtitle" class="input__subtitle">{{ subtitle }}</span>
     <div v-if="errors && errors.length" class="input__errors">
       <pre v-for="(e, i) in errors" :key="i">{{ e }}</pre>

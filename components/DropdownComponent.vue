@@ -6,7 +6,7 @@
       </div>
       <div
         class="dropdown-content"
-        :class="[`dropdown-content--${position}`, { 'dropdown-content--visible': modelValue }]"
+        :class="[`dropdown-content--${position}`, { 'dropdown-content--visible': visible }]"
       >
         <slot name="content" />
       </div>
@@ -18,12 +18,16 @@
 import { useRoute } from "#app";
 import { watch } from "vue";
 
-const emits = defineEmits(["update:model-value"]);
+const emits = defineEmits(["update:visible"]);
 const props = defineProps({
-  modelValue: Boolean,
+  visible: Boolean,
   position: {
     type: String,
     default: "bottom-left",
+  },
+  targetRelative: {
+    type: Boolean,
+    default: true,
   },
 });
 
@@ -37,32 +41,30 @@ watch(
 );
 
 function toggle() {
-  if (props.modelValue) {
-    emits("update:model-value", false);
-  } else {
-    emits("update:model-value", true);
-  }
+  emits("update:visible", !props.visible);
 }
 
 function hide() {
-  if (props.modelValue) {
-    emits("update:model-value", false);
-  }
+  emits("update:visible", false);
 }
 </script>
 
 <style lang="stylus">
 .dropdown {
-	position relative
 	color var(--body-color)
+	z-index var(--z-index-dropdown)
+
+	&--relative {
+		position relative
+	}
 
 	&-content {
 		position absolute
-		display none
-		border-radius: 5px;
-		border: 1px solid var(--gray-dark-2, #516D7D);
-		background: var(--dark-light-2, #1F3B4B);
-		box-shadow: 0 15px 40px 0 var(--black-o3)
+		opacity 0
+		visibility hidden
+		//transform scale(0.1)
+		transform translateY(10px)
+		transition opacity .2s, transform .2s
 
 		&--bottom-left {
 			top 100%
@@ -75,7 +77,10 @@ function hide() {
 		}
 
 		&--visible {
-			display flex
+			opacity 1
+			visibility visible
+			//transform scale(1)
+			transform translateY(0)
 		}
 	}
 }

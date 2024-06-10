@@ -9,7 +9,7 @@
         <IconComponent class="aside-nav__link-icon" :name="link.icon" />
         <span class="aside-nav__link-title">{{ link.title }}</span>
         <div v-if="link.menu" class="aside-nav__link-menu">
-          <DropdownComponent v-model="menuVisible" position="bottom-right">
+          <DropdownComponent v-model:visible="menuVisible" position="bottom-right">
             <template #default>
               <button
                 :class="{ 'aside-nav__link-menu-btn--close': menuVisible }"

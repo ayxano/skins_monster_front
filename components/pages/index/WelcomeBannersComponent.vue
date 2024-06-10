@@ -26,6 +26,7 @@ const sliderOptions = {
   loop: true,
   pagination: {
     el: ".welcome-banners__bullets",
+    clickable: true,
   },
 };
 
@@ -83,6 +84,10 @@ const list = [
 			border-radius 100px
 			background var(--white)
 			transition var(--transition)
+
+			&:hover {
+				opacity 1
+			}
 
 			&:first-child {
 				margin-left 0

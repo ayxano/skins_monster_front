@@ -111,6 +111,10 @@ const activeGame = ref(games[0]);
 	display flex
 	flex-direction column
 	gap: 5px
+	border-radius: var(--small-radius)
+	border: 1px solid var(--gray-dark-2, #516D7D);
+	background: var(--dark-light-2, #1F3B4B);
+	box-shadow: 0 15px 40px 0 var(--black-o3)
 
 	.tabs {
 		width 100%
