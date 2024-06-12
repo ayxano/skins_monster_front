@@ -4,9 +4,9 @@
       <BreadcrumbsComponent :title="activePage.title" />
       <div class="cabinet-page__content">
         <NuxtPage />
-        <AsideNavComponent :links="pages" />
+        <AsideNavComponent :links="pages" no-menu />
       </div>
-      <SkinsListComponent v-if="activePage.favorites" title="Favorites" :list="list" />
+      <SkinsListComponent v-if="activePage.favorites" title="Favorites" :list="list" row />
       <BottomPageBannerComponent />
     </div>
   </main>
@@ -26,13 +26,13 @@ const pages = [
     favorites: true,
     banner: true,
   },
-  {
-    title: "Settings",
-    icon: "money-send",
-    route: { name: "cabinet-settings" },
-    favorites: false,
-    banner: true,
-  },
+  // {
+  //   title: "Settings",
+  //   icon: "money-send",
+  //   route: { name: "cabinet-settings" },
+  //   favorites: false,
+  //   banner: true,
+  // },
   {
     title: "Orders",
     icon: "receipt-item",
@@ -105,8 +105,13 @@ const list = [
 .cabinet-page {
 	&__content {
 		display grid
-		grid-template-columns 820fr 246fr
+		//grid-template-columns 820fr minmax(220px, 246px)
+		grid-template-columns 820fr minmax(220px, 246fr)
 		grid-gap var(--gap)
+		+below(900px) {
+			display flex
+			flex-direction column-reverse
+		}
 	}
 }
 </style>

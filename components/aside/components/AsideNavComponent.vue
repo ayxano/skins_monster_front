@@ -1,5 +1,5 @@
 <template>
-  <nav class="aside-nav">
+  <nav class="aside-nav" :class="{ 'aside-nav--no-menu': noMenu }">
     <div v-for="(link, i) in links" :key="i" class="aside-nav__item">
       <nuxt-link
         :to="link.route"
@@ -34,6 +34,7 @@ import { ref } from "vue";
 
 defineProps({
   links: Array,
+  noMenu: Boolean,
 });
 
 const currentRoute = useRoute();

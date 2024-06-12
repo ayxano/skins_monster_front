@@ -31,6 +31,9 @@
 	display flex
 	flex-direction column
 	gap: 20px
+	+below(620px) {
+		padding: 20px
+	}
 
 	.btn {
 		align-self flex-start

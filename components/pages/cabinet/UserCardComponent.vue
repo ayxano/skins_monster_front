@@ -3,7 +3,7 @@
     <div class="user-card__top">
       <div class="user-card__actions">
         <button class="btn btn--sm btn--dark-light">Upload cover</button>
-        <button class="btn btn--sm btn--dark-light">Remove</button>
+        <button class="user-card__action--remove btn btn--sm btn--dark-light">Remove</button>
       </div>
     </div>
     <div class="user-card__content">
@@ -14,7 +14,7 @@
       </div>
       <div class="user-card__actions">
         <button class="btn btn--sm btn--main">Choose avatar</button>
-        <button class="btn btn--sm btn--dark-light">Remove</button>
+        <button class="user-card__action--remove btn btn--sm btn--dark-light">Remove</button>
       </div>
     </div>
   </div>
@@ -33,6 +33,9 @@ main_class = ".user-card"
 	background var(--dark-light, #011D2D)
 	display flex
 	flex-direction column
+	+below(620px) {
+
+	}
 
 	&--settings {
 		border-radius var(--main-radius) var(--main-radius) 0 0
@@ -50,6 +53,7 @@ main_class = ".user-card"
 
 	&__top {
 		background url("/images/tmp/user_bg.jpg")
+		background-position center
 		border-radius: var(--main-radius)
 		height 200px
 		padding: 20px
@@ -60,11 +64,19 @@ main_class = ".user-card"
 	&__actions {
 		display none
 		gap: 10px
+		+below(540px) {
+			margin 0 auto
+		}
 
 		.btn {
 			padding: 0 15px
 			height 32px
 		}
+	}
+
+	&__action--remove {
+		//color var(--red)
+		color var(--gray-dark-2)
 	}
 
 	&__content {
@@ -73,6 +85,13 @@ main_class = ".user-card"
 		gap: 20px
 		padding 0 40px 40px
 		margin-top -75px
+		+below(620px) {
+			margin-top 0
+			flex-direction column
+			align-items center
+			text-align center
+			padding: 0 20px 20px
+		}
 	}
 
 	&__avatar {
@@ -81,6 +100,9 @@ main_class = ".user-card"
 		flex-shrink 0
 		border-radius 50%
 		border: 2px solid var(--dark-light-2, #1F3B4B);
+		+below(620px) {
+			margin-top -75px
+		}
 	}
 
 	&__info {

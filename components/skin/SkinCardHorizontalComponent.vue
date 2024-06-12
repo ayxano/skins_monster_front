@@ -1,7 +1,7 @@
 <template>
   <div class="skin-card-hz" :class="{ 'skin-card-hz--deletable': deletable }">
     <nuxt-link :to="{ name: 'skin' }" class="skin-card-hz__link"></nuxt-link>
-    <button class="skin-card-hz__delete btn btn--sm btn--hollow">
+    <button v-if="deletable" class="skin-card-hz__delete btn btn--sm btn--hollow">
       <IconComponent name="trash" />
     </button>
     <ImgComponent :src="data.img" class="skin-card-hz__img" />
@@ -45,6 +45,11 @@ main_class = ".skin-card-hz"
 	background: var(--dark-light, #011D2D);
 	padding: 10px 20px
 	transition var(--transition)
+	+below(540px) {
+		flex-direction column
+		align-items center
+		text-align center
+	}
 
 	&:hover {
 		background var(--dark-light-2, #1F3B4B);
@@ -135,6 +140,10 @@ main_class = ".skin-card-hz"
 		text-align right
 		font-size: 0.875rem
 		transition background-color var(--transition)
+		+below(540px) {
+			flex-direction row
+			gap: 15px
+		}
 	}
 
 	&__price {

@@ -255,7 +255,7 @@ export default {
     padding 0
     width 100%
     font-weight: 500;
-    font-size: 1em;
+    font-size: 1rem;
     line-height: 26px;
 
     a {

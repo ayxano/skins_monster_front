@@ -51,11 +51,26 @@ function paginate(page) {
 	gap: var(--gap)
 	background var(--dark-light, #011D2D)
 	border-radius var(--main-radius)
+	+below(540px) {
+		padding: 20px
+	}
 
 	&__content {
 		display flex
 		flex-direction column
 		gap: 20px
+	}
+
+	.tabs {
+		+below(540px) {
+			flex-direction column
+			height auto
+			align-items stretch
+		}
+
+		&__item {
+			min-width 100px
+		}
 	}
 }
 </style>

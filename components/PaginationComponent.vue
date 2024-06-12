@@ -6,7 +6,7 @@
           <IconComponent name="arrow-left-duo-chevron" />
         </button>
       </li>
-      <li>
+      <li class="pagination-prev">
         <button class="pagination__link" type="button" @click="$emit('change', page - 1)">
           <IconComponent name="arrow-left-chevron" />
         </button>
@@ -22,7 +22,7 @@
         {{ p }}
       </button>
     </li>
-    <li>
+    <li class="pagination-next">
       <button
         v-show="page !== total"
         class="pagination__link"
@@ -97,6 +97,13 @@ export default {
   list-style none
   overflow: hidden;
   gap 5px
+
+	&-prev,
+	&-next {
+		+below(540px) {
+			display none
+		}
+	}
 
   &__link {
     display flex

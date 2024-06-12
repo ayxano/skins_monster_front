@@ -11,7 +11,7 @@
     <button
       v-for="(item, i) in tabs"
       :key="i"
-      @click.prevent="$emit('update:model-value', item)"
+      @click.prevent="clickHandle($event, item)"
       class="tabs__item btn"
       :class="{ 'tabs__item--active': modelValue && modelValue.id === item.id }"
     >
@@ -22,7 +22,7 @@
 </template>
 
 <script setup>
-defineEmits(["update:model-value"]);
+const emits = defineEmits(["update:model-value"]);
 defineProps({
   tabs: Array,
   modelValue: Object,
@@ -30,6 +30,11 @@ defineProps({
   dark: Boolean,
   sameTabs: Boolean,
 });
+
+function clickHandle(e, item) {
+  e.target.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
+  emits("update:model-value", item);
+}
 </script>
 
 <style lang="stylus">
@@ -43,6 +48,7 @@ main_class = ".tabs"
 	gap: 5px
 	padding: 5px
 	align-self flex-start
+	overflow auto hidden
 
 	&--small {
 		height 40px
@@ -71,7 +77,10 @@ main_class = ".tabs"
 
 		{ main_class } {
 			&__item {
-				flex 1
+				&.btn {
+					flex 1
+					padding: 15px
+				}
 
 				&--active.btn {
 					background var(--dark-light)
@@ -99,6 +108,7 @@ main_class = ".tabs"
 			align-items center
 			gap: 10px
 			height 100%
+			flex-shrink 0
 		}
 
 		&:not(&--active):hover {
