@@ -91,7 +91,6 @@ const games = [
       {
         title: "Knife",
       },
-
       {
         title: "Gloves",
       },
@@ -101,6 +100,7 @@ const games = [
     ],
   },
 ];
+
 const activeGame = ref(games[0]);
 </script>
 

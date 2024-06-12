@@ -1,5 +1,6 @@
 <template>
   <div
+    v-if="tabs"
     class="tabs"
     :class="{
       'tabs--small': small,
