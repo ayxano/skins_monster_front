@@ -6,7 +6,7 @@
       class="orders-accordion__item"
       :class="{ 'orders-accordion__item--active': i === activeItemIndex }"
     >
-      <div @click="setActive(i)" class="orders-accordion__item-header">
+      <div @click="setActive($event, i)" class="orders-accordion__item-header">
         <span class="orders-accordion__item-title">{{ item.title }}</span>
         <span class="orders-accordion__item-date">{{ item.date }}</span>
         <IconComponent name="arrow-down-1" />
@@ -22,6 +22,7 @@
 
 <script setup>
 import { ref } from "vue";
+import { elementInViewport } from "~/utils/global";
 
 const skins = [
   {
@@ -94,7 +95,7 @@ const list = [
 const activeItemIndex = ref(null);
 const accItemBody = ref(null);
 
-function setActive(i) {
+function setActive(e, i) {
   const el = accItemBody.value[i];
   const prevEl = accItemBody.value[activeItemIndex.value];
 
@@ -120,6 +121,16 @@ function setActive(i) {
       activeItemIndex.value = i;
     }
   }
+
+  scrollIntoView(e.target);
+}
+
+function scrollIntoView(el) {
+  setTimeout(() => {
+    if (!elementInViewport(el)) {
+      el.scrollIntoView({ behavior: "smooth", block: "center", inline: "center" });
+    }
+  }, 150);
 }
 </script>
 

@@ -33,7 +33,7 @@
           </nuxt-link>
         </template>
       </div>
-      <SkinsListComponent title="Check others" :list="list" />
+      <SkinsListComponent title="Check others" :list="list" row />
       <BottomPageBannerComponent />
     </div>
   </main>

@@ -41,6 +41,9 @@ export default {
 	display: flex
 	gap: 10px 50px
 	flex-wrap: wrap-reverse
+	+below(540px) {
+		flex-direction column-reverse
+	}
 
   &__list {
     display flex
