@@ -7,6 +7,7 @@
       'input--icon-left': iconPosition === 'left',
       'input--icon-right': iconPosition === 'right',
       'input--disabled': disabled,
+      'input--small': small,
     }"
   >
     <span class="input__title" v-if="title">
@@ -91,6 +92,7 @@ export default {
       },
     },
     disabled: Boolean,
+    small: Boolean,
     isPhone: Boolean,
     required: Boolean,
     inputmode: String,
@@ -198,6 +200,16 @@ export default {
       cursor no-drop
     }
   }
+
+	&--small {
+		& ^[0]__container {
+			height 40px
+		}
+
+		& ^[0]__action {
+			width 40px
+		}
+	}
 
   &--icon-left &__action {
     position absolute

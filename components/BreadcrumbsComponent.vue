@@ -1,7 +1,7 @@
 <template>
   <div class="breadcrumbs">
     <h1 class="breadcrumbs__title">
-			<span>{{ title }}</span>
+      <span>{{ title }}</span>
       <span v-if="subtitle" class="breadcrumbs__subtitle">{{ subtitle }}</span>
     </h1>
     <ul class="breadcrumbs__list">
@@ -39,7 +39,8 @@ export default {
   width: 100%
   margin: 0
 	display: flex
-	gap: 50px
+	gap: 10px 50px
+	flex-wrap: wrap-reverse
 
   &__list {
     display flex

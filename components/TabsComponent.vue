@@ -47,6 +47,7 @@ main_class = ".tabs"
 	&--small {
 		height 40px
 		padding: 3px
+		flex-shrink 0
 
 		{ main_class } {
 			&__item.btn {

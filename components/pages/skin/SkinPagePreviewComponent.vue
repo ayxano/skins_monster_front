@@ -22,10 +22,6 @@
         <IconComponent category="default" name="steam" />
         <span>View at Steam</span>
       </button>
-      <button class="skin-page-preview__action btn btn--md btn--dark-light">
-        <IconComponent category="default" name="steam" />
-        <span>Check on Steam market</span>
-      </button>
     </div>
   </div>
 </template>
@@ -55,9 +51,15 @@
 		display flex
 		flex-wrap wrap
 		gap: 20px
+		+below(768px) {
+			gap: 10px
+		}
 	}
 
 	&__action {
+		border: 1px solid var(--dark-light-2, #1F3B4B);
+		background: var(--black-o05)
+
 		.icon {
 			width 20px
 			height 20px

@@ -23,14 +23,14 @@
     <div class="skin-aside__float skin-aside-block">
       <span class="skin-aside-block__title skin-aside__float-title">
         <span>Wear Range</span>
-        <IconComponent name="info-circle" />
+        <!--        <IconComponent name="info-circle" />-->
       </span>
       <SkinFloatComponent />
     </div>
     <div class="skin-aside__details skin-aside-block">
       <div class="skin-aside-block__title skin-aside__details-title">
         <span>Summary</span>
-        <IconComponent name="info-circle" />
+        <!--        <IconComponent name="info-circle" />-->
       </div>
       <ul class="skin-aside__details-list">
         <li v-for="(item, i) in details" :key="i" class="skin-aside__details-item">
@@ -39,7 +39,7 @@
         </li>
       </ul>
     </div>
-    <ShareComponent />
+    <ShareComponent class="skin-aside__share" />
   </div>
 </template>
 
@@ -157,6 +157,7 @@ const details = [
 			&:first-child {
 				flex-grow 1
 				box-shadow 0 10px 20px 0 var(--green-o3)
+				padding: 0 10px
 
 				&:hover {
 					background-color var(--green-o8)
@@ -198,6 +199,12 @@ const details = [
 			span:last-child {
 				text-align right
 			}
+		}
+	}
+
+	&__share {
+		+below(540px) {
+			justify-content flex-end
 		}
 	}
 }

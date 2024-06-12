@@ -6,8 +6,8 @@
         <SkinPagePreviewComponent />
         <SkinPageAsideComponent />
       </div>
-      <SkinsListComponent title="Similar items" :list="similar_skins" />
-      <SkinsListComponent title="Recommended Gloves" :list="similar_skins" />
+      <SkinsListComponent title="Similar items" :list="similar_skins" row />
+      <SkinsListComponent title="Recommended Gloves" :list="similar_skins" row />
       <BottomPageBannerComponent />
     </div>
   </main>
@@ -76,8 +76,11 @@ const similar_skins = [
 .skin-page {
 	&__content {
 		display grid
-		grid-template-columns 6fr 4fr
+		grid-template-columns 6fr minmax(300px, 4fr)
 		grid-gap var(--gap)
+		+below(720px) {
+			grid-template-columns 1fr
+		}
 	}
 }
 </style>

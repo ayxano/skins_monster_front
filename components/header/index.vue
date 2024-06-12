@@ -1,9 +1,15 @@
 <template>
-  <header class="header">
+  <header class="header" :class="{ 'header--without-search': !showSearch }">
     <nuxt-link :to="{ name: 'index' }" class="header-logo">
       <ImgComponent src="/images/logo-small.svg" class="aside__logo-img" :loader="false" />
     </nuxt-link>
-    <InputComponent class="header-search" v-model="search" placeholder="Skins search" icon-position="right">
+    <InputComponent
+      v-if="showSearch"
+      class="header-search"
+      v-model="search"
+      placeholder="Skins search"
+      icon-position="right"
+    >
       <template #icon>
         <IconComponent name="search-normal-1" />
       </template>
@@ -14,9 +20,15 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { useRoute } from "#app";
 
+const route = useRoute();
 const search = ref("");
+
+const showSearch = computed(() => {
+  return !["catalog"].includes(route.name);
+});
 </script>
 
 <style lang="stylus">
@@ -28,6 +40,10 @@ const search = ref("");
 	padding: 40px 0
 	+below(1024px) {
 		padding: 30px 0
+	}
+
+	&--without-search {
+		justify-content flex-end
 	}
 
 	&-logo {
