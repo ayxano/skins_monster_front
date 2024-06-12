@@ -6,8 +6,7 @@
     <AsideNavComponent :links="links" />
     <AsideFavoritesComponent />
     <div class="aside__footer">
-      © 2024. Skin Monster. <br />
-      All Rights Reserved.
+      <CopyrightComponent class="aside__footer-copyright" />
     </div>
   </aside>
 </template>
@@ -55,6 +54,12 @@ const links = [
 	display flex
 	flex-direction column
 	gap: 30px
+	+below(1200px) {
+		padding-right 0
+	}
+	+below(1024px) {
+		display none
+	}
 
 	&__logo {
 		padding: 30px 0
@@ -70,9 +75,13 @@ const links = [
 	}
 
 	&__footer {
-		font-size 0.875rem
 		margin-top auto
 		color var(--gray-dark)
+		padding: 10px 15px
+
+		&-copyright {
+			max-width 170px
+		}
 	}
 }
 </style>

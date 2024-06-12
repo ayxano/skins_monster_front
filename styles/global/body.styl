@@ -111,6 +111,10 @@ h6 {
   font-weight 900
   line-height: normal
   text-transform uppercase
+  +below(540px) {
+    margin-top 20px
+    margin-bottom 20px
+  }
 
   &.no-margin {
     margin 0
@@ -317,6 +321,9 @@ textarea {
     display flex
     flex-direction column
     grid-gap 50px
+    +below(540px) {
+      grid-gap 40px
+    }
   }
 }
 

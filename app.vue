@@ -45,6 +45,9 @@ useHead({
 		grid-template-columns var(--aside-width) 1fr
 		gap: 40px
 		height 100%
+		+below(1024px) {
+			grid-template-columns 1fr
+		}
 	}
 
 	&__content {

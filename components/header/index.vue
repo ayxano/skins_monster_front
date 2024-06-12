@@ -1,11 +1,14 @@
 <template>
   <header class="header">
+    <nuxt-link :to="{ name: 'index' }" class="header-logo">
+      <ImgComponent src="/images/logo-small.svg" class="aside__logo-img" :loader="false" />
+    </nuxt-link>
     <InputComponent class="header-search" v-model="search" placeholder="Skins search" icon-position="right">
       <template #icon>
         <IconComponent name="search-normal-1" />
       </template>
     </InputComponent>
-    <SocialsComponent />
+    <SocialsComponent class="header-socials" />
     <HeaderActionsComponent />
   </header>
 </template>
@@ -23,9 +26,34 @@ const search = ref("");
 	gap: 30px
 	justify-content space-between
 	padding: 40px 0
+	+below(1024px) {
+		padding: 30px 0
+	}
+
+	&-logo {
+		height 50px
+		width auto
+		display flex
+		+above(1025px) {
+			display none
+		}
+	}
 
 	&-search {
 		width 50%
+		+below(1024px) {
+			width	auto
+			flex-grow 1
+		}
+		+below(720px) {
+			display none
+		}
+	}
+
+	&-socials {
+		+below(1100px) {
+			display none
+		}
 	}
 }
 </style>

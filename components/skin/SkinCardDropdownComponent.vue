@@ -12,7 +12,7 @@
 
 <script setup>
 const params = [
-  { title: "Float", value: 0.34054550528526306 },
+  { title: "Float", value: 0.34054558 },
   {
     title: "Exterior",
     value: "Field-Tested",

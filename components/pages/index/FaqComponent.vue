@@ -131,11 +131,32 @@ function setActive(i) {
 	border: 1px solid var(--dark-light-2, #1F3B4B);
 	background: var(--dark-light, #011D2D);
 	padding: 50px
+	+below(540px) {
+		padding: 30px
+	}
 
 	&-content {
 		display flex
 		flex-direction column
 		gap: 30px
+	}
+
+	.tabs {
+		+below(540px) {
+			width 100%
+		}
+		+below(400px) {
+			flex-direction column
+		}
+
+		&__item {
+			+below(540px) {
+				flex 1
+			}
+			+below(400px) {
+				width 100%
+			}
+		}
 	}
 
 	&-list {
@@ -173,6 +194,9 @@ function setActive(i) {
 					padding: 10px
 					width 40px
 					height 40px
+					+below(400px) {
+						display none
+					}
 				}
 			}
 

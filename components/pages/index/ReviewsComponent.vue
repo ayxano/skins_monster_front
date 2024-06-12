@@ -23,10 +23,18 @@ import SliderComponent from "~/components/SliderComponent.vue";
 
 const sliderOptions = {
   slidesPerView: "auto",
-  spaceBetween: 80,
+  spaceBetween: 20,
   centeredSlides: true,
   grabCursor: true,
   slideToClickedSlide: true,
+  breakpoints: {
+    400: {
+      spaceBetween: 40,
+    },
+    786: {
+      spaceBetween: 80,
+    },
+  },
 };
 
 const list = [
@@ -78,6 +86,13 @@ const list = [
 	border-radius: var(--main-radius)
 	border: 1px solid var(--dark-light-2, #1F3B4B);
 	padding: 50px
+	+below(768px) {
+		padding: 30px
+	}
+	+below(540px) {
+		padding: 0
+		border none
+	}
 
 	&-content {
 		display flex
@@ -85,6 +100,10 @@ const list = [
 		align-items center
 		gap: 30px
 		padding: 0 32px
+		+below(540px) {
+			padding: 0
+			margin: 0 calc(var(--sides-padding) * -1)
+		}
 	}
 
 	&-slider {
@@ -135,6 +154,15 @@ const list = [
 		gap 20px
 		text-align center
 		max-width 532px
+		+below(540px) {
+			padding: 0 var(--sides-padding)
+		}
+
+		&__quote {
+			+below(540px) {
+				font-size 0.875rem
+			}
+		}
 
 		&__name {
 			font-size: 0.875rem

@@ -2,7 +2,7 @@
   <main class="page home-page">
     <div class="page__inner">
       <WelcomeBannersComponent />
-      <SkinsListComponent title="Popular" :list="popular_skins" />
+      <SkinsListComponent title="Popular" :list="popular_skins" row />
       <BenefitsComponent />
       <FaqComponent />
       <ReviewsComponent />
@@ -26,7 +26,7 @@ const popular_skins = [
     subtitle: "Inheritance",
     img: "/images/tmp/skin_card_1.png",
     price: "$778",
-    float: 0.34054550528526306,
+    float: 0.34054558,
     exterior: "Field-Tested",
     rarity: "Covert",
     paintIndex: "707",
@@ -37,7 +37,7 @@ const popular_skins = [
     subtitle: "Inheritance",
     img: "/images/tmp/skin_card_2.png",
     price: "$778",
-    float: 0.34054550528526306,
+    float: 0.34054558,
     exterior: "Field-Tested",
     rarity: "Covert",
     paintIndex: "707",
@@ -48,7 +48,7 @@ const popular_skins = [
     subtitle: "Inheritance",
     img: "/images/tmp/skin_card_3.png",
     price: "$880",
-    float: 0.34054550528526306,
+    float: 0.34054558,
     exterior: "Field-Tested",
     rarity: "Covert",
     paintIndex: "707",
@@ -60,7 +60,7 @@ const popular_skins = [
     subtitle: "Inheritance",
     img: "/images/tmp/skin_card_4.png",
     price: "$778",
-    float: 0.34054550528526306,
+    float: 0.34054558,
     exterior: "Field-Tested",
     rarity: "Covert",
     paintIndex: "707",
@@ -71,7 +71,7 @@ const popular_skins = [
     subtitle: "Inheritance",
     img: "/images/tmp/skin_card_5.png",
     price: "$778",
-    float: 0.34054550528526306,
+    float: 0.34054558,
     exterior: "Field-Tested",
     rarity: "Covert",
     paintIndex: "707",
@@ -82,7 +82,7 @@ const popular_skins = [
     subtitle: "Inheritance",
     img: "/images/tmp/skin_card_6.png",
     price: "$880",
-    float: 0.34054550528526306,
+    float: 0.34054558,
     exterior: "Field-Tested",
     rarity: "Covert",
     paintIndex: "707",
@@ -93,7 +93,7 @@ const popular_skins = [
     subtitle: "Inheritance",
     img: "/images/tmp/skin_card_7.png",
     price: "$778",
-    float: 0.34054550528526306,
+    float: 0.34054558,
     exterior: "Field-Tested",
     rarity: "Covert",
     paintIndex: "707",

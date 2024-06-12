@@ -9,6 +9,10 @@
     >
       <a href="#" class="welcome-banners__item hover-image" target="_blank">
         <ImgComponent class="welcome-banners__item-img" :src="item.img" />
+        <ImgComponent
+          class="welcome-banners__item-img welcome-banners__item-img--mobile"
+          :src="item.img_mobile"
+        />
       </a>
     </SliderComponent>
     <div class="welcome-banners__bullets"></div>
@@ -58,13 +62,30 @@ const list = [
 .welcome-banners {
 	position relative
 	--swiper-pagination-bullet-horizontal-gap: 5px
+	+below(480px) {
+		margin: 0 calc(var(--sides-padding) * -1)
+	}
 
 	&__item {
 		display flex
 		height 100%
 
 		&-img {
-			border-radius: var(--main-radius)
+			+above(481px) {
+				border-radius: var(--main-radius)
+			}
+
+			&:not(&--mobile) {
+				+below(480px) {
+					display none
+				}
+			}
+
+			&--mobile {
+				+above(481px) {
+					display none
+				}
+			}
 		}
 	}
 
@@ -76,6 +97,9 @@ const list = [
 			z-index 1
 			width auto
 			height 7px
+			+below(640px) {
+				display none
+			}
 		}
 
 		.swiper-pagination-bullet {

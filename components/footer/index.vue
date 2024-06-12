@@ -41,6 +41,7 @@
           </div>
         </div>
       </div>
+      <CopyrightComponent class="footer-copyright" />
     </div>
   </footer>
 </template>
@@ -108,6 +109,9 @@ const columns = [
 		display grid
 		grid-template-columns 1fr 1fr
 		grid-gap var(--gap)
+		+below(640px) {
+			grid-template-columns 1fr
+		}
   }
 
 	&-left {
@@ -145,20 +149,24 @@ const columns = [
 		}
 	}
 
-	&-right {
-
-	}
-
 	&-columns {
 		display flex
-		justify-content flex-end
 		gap: 40px
+		+above(641px) {
+			justify-content flex-end
+		}
 	}
 
 	&-column {
 		display flex
 		flex-direction column
 		gap: 20px
+
+		&:first-child {
+			+below(540px) {
+				display none
+			}
+		}
 
 		&__title {
 			color var(--gray-dark)
@@ -185,6 +193,13 @@ const columns = [
 					color var(--main)
 				}
 			}
+		}
+	}
+
+	&-copyright {
+		color var(--gray-dark-2)
+		+above(1025px) {
+			display none
 		}
 	}
 }

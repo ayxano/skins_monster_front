@@ -38,6 +38,9 @@ const list = [
 	display grid
 	grid-template-columns repeat(4, 1fr)
 	gap: var(--gap)
+	+below(768px) {
+		grid-template-columns repeat(2, 1fr)
+	}
 
 	&-item {
 		padding: 20px 15px
@@ -51,10 +54,17 @@ const list = [
 			width 60px
 			height 60px
 			color var(--main)
+			+below(540px) {
+				width 40px
+				height 40px
+			}
 		}
 
 		&__title {
 			font-weight: 700;
+			+below(480px) {
+				font-size 0.875rem
+			}
 		}
 
 		&__subtitle {

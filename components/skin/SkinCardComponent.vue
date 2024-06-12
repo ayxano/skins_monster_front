@@ -1,5 +1,5 @@
 <template>
-  <div class="skin-card">
+  <div class="skin-card" :class="{ 'skin-card--in-row': inRow }">
     <nuxt-link :to="{ name: 'skin' }" class="skin-card__link"></nuxt-link>
     <div class="skin-card__header">
       <ImgComponent :src="data.img" class="skin-card__img" :loader="false" />
@@ -60,6 +60,7 @@ import { useFavoritesStore } from "~/stores/favorites";
 
 const props = defineProps({
   data: Object,
+  inRow: Boolean, // карточка находится в линии, не в гриде
 });
 
 const cartStore = useCartStore();
@@ -88,6 +89,7 @@ function addToFavorites() {
 </script>
 
 <style lang="stylus">
+main_class = ".skin-card"
 .skin-card {
 	position relative
 	display flex
@@ -95,13 +97,44 @@ function addToFavorites() {
 	border-radius: var(--main-radius)
 	border: 1px solid var(--dark-light-2, #1F3B4B);
 	background: var(--dark-light, #011D2D);
+	min-width 140px
 	transition var(--transition)
+
+	&--in-row {
+		min-width 197px
+
+		{ main_class }__header {
+			+below(540px) {
+				height 163px
+			}
+		}
+	}
+
+	&:not(&--in-row) {
+		{ main_class }__header {
+			+below(540px) {
+				height 120px
+			}
+		}
+
+		{ main_class }__body {
+			+below(540px) {
+				padding: 10px
+			}
+		}
+
+		{ main_class }__favorite {
+			+below(540px) {
+				top: 5px
+				right 5px
+			}
+		}
+	}
 
 	&:hover {
 		border-color var(--main)
 		background var(--dark-light-2)
 
-		main_class = ".skin-card"
 		{ main_class }__price {
 			background var(--gray-dark-2)
 		}
@@ -267,6 +300,9 @@ function addToFavorites() {
 			right 0
 			bottom 65px
 			top: auto
+			+below(540px) {
+				bottom 55px
+			}
 		}
 	}
 
