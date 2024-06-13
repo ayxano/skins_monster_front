@@ -26,11 +26,12 @@ defineProps({
 
 	&__header {
 		display flex
+		flex-wrap wrap
 		align-items center
-		gap: 10px
+		gap: 5px 10px
 		padding: 10px 50px
 		border-bottom: 1px solid var(--dark-light-2, #1F3B4B);
-		height 75px
+		min-height 75px
 	}
 
 	&__icon {
@@ -54,6 +55,9 @@ defineProps({
 
 	&__body {
 		padding: 40px
+		+below(1300px) {
+			padding: 20px
+		}
 	}
 
 	&__skins {

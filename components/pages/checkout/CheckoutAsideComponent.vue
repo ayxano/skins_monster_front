@@ -13,6 +13,10 @@
       </div>
     </div>
     <div class="checkout-aside__block checkout-aside__block--divider">
+      <div class="checkout-aside__payment">
+        <span class="checkout-aside__payment-title">Payment method</span>
+        <TabsComponent v-model="paymentMethod" :tabs="methods" small same-tabs />
+      </div>
       <div class="checkout-aside__prices">
         <div class="checkout-aside__prices-list">
           <div class="checkout-aside__prices-item">
@@ -48,8 +52,8 @@
           <IconComponent name="arrow-right-1" />
         </nuxt-link>
         <span class="checkout-aside__terms">
-          By clicking Proceed to Checkout, you agree to our <a href="#">Terms</a> of Service and that you have
-          read our Privacy Policy.
+          By clicking Proceed to Checkout, you agree to our <a href="#">Terms of Service</a> and that you have
+          read our <a href="#">Privacy Policy</a>.
         </span>
       </div>
     </div>
@@ -60,18 +64,42 @@
 import { ref } from "vue";
 
 const agreement = ref(false);
+
+const methods = [
+  {
+    id: 1,
+    title: "Debit card",
+    icon: {
+      name: "card-pos",
+      category: "icons",
+    },
+  },
+  {
+    id: 2,
+    title: "Account balance",
+    icon: {
+      name: "empty-wallet",
+      category: "icons",
+    },
+  },
+];
+
+const paymentMethod = ref(methods[0]);
 </script>
 
 <style lang="stylus">
 .checkout-aside {
 	background var(--dark-light)
 	border-radius var(--main-radius)
-	position sticky
-	top: 20px
+	+above(901px) {
+		position sticky
+		top: 20px
+	}
 
 	&__block {
 		display flex
 		flex-direction column
+		gap: 10px
 		padding: 20px 30px;
 
 		&--divider {
@@ -81,9 +109,13 @@ const agreement = ref(false);
 
 	&__header {
 		display flex
+		flex-wrap wrap
 		align-items center
 		justify-content space-between
 		gap: 30px
+		+below(1024px) {
+			gap: 15px
+		}
 	}
 
 	&__title {
@@ -103,12 +135,42 @@ const agreement = ref(false);
 		font-size: 0.875rem
 		font-weight: 400;
 		line-height: 22px;
+		flex-shrink 0
 
 		.icon {
 			width 30px
 			height 30px
 			padding: 5px
 			color var(--white)
+		}
+	}
+
+	&__payment {
+		display flex
+		flex-direction column
+		gap 5px
+
+		&-title {
+			font-size 0.875rem
+			line-height 1
+		}
+
+		.tabs {
+			width 100%
+			height 50px
+
+			&__item.btn {
+				padding: 3px 5px
+
+				.icon {
+					width 25px
+					height 25px
+					+below(400px) {
+						width 20px
+						height 20px
+					}
+				}
+			}
 		}
 	}
 

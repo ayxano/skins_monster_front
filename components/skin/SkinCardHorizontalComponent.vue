@@ -78,6 +78,17 @@ main_class = ".skin-card-hz"
 		flex-shrink 0
 		color var(--gray-dark-2, #516D7D)
 		z-index 1
+		+below(1150px) {
+			position absolute
+			top 0
+			right 0
+			z-index 1
+			background var(--dark-light, #011D2D)
+		}
+		+below(540px) {
+			top: 10px
+			right 10px
+		}
 
 		&:hover {
 			border-color var(--red)
@@ -140,6 +151,7 @@ main_class = ".skin-card-hz"
 		text-align right
 		font-size: 0.875rem
 		transition background-color var(--transition)
+		flex-shrink 0
 		+below(540px) {
 			flex-direction row
 			gap: 15px

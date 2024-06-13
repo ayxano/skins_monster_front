@@ -124,12 +124,16 @@ const checkout = [
 		grid-template-columns 676fr minmax(300px, 390fr)
 		grid-gap var(--gap)
 		align-items flex-start
+		+below(900px) {
+			grid-template-columns 1fr
+		}
 	}
 
 	&__body {
 		display flex
 		flex-direction column
 		gap: 20px
+		width 100%
 	}
 }
 </style>
