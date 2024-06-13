@@ -14,7 +14,7 @@ export function csrf() {
   return query("/csrf-cookie", {}, "/sanctum");
 }
 
-export function query(url, options = {}, prefix = "/api/v1") {
+export function query(url, options = {}, prefix = "/api/v1", json = true) {
   useDefaultStore().loading.push(true);
   let headers = {
     Accept: "application/json",
@@ -24,10 +24,12 @@ export function query(url, options = {}, prefix = "/api/v1") {
   if (csrf) {
     headers["X-XSRF-TOKEN"] = decodeURIComponent(csrf);
   }
-  const qs = queryString.stringify(options);
-  console.log("qs", qs);
+  let qs = queryString.stringify(options);
+  if (qs) {
+    qs = `?${qs}`;
+  }
   return new Promise((res, rej) => {
-    fetch(process.env.HOST_ENDPOINT + prefix + url + `?${qs}`, {
+    fetch(process.env.HOST_ENDPOINT + prefix + url + qs, {
       ...{
         mode: "cors",
         credentials: "include",
@@ -38,11 +40,19 @@ export function query(url, options = {}, prefix = "/api/v1") {
         if (response.status === 204) {
           response.ok ? res(await response) : rej(await response);
         } else {
-          response.ok ? res(await response.json()) : rej(await response);
+          if (response.ok) {
+            if (json) {
+              res(await response.json());
+            } else {
+              res(await response.text());
+            }
+          } else {
+            rej(await response);
+          }
         }
       })
       .catch((err) => {
-        console.error("Error", err);
+        console.error("Request error", err);
       })
       .finally(() => {
         useDefaultStore().loading.pop();
@@ -94,12 +104,24 @@ export function elementInViewport(el) {
 export function convertPrice(price, currCode = "eur") {
   const currencies = useGlobalStore().currencies || [];
   let currency = currencies[0];
-  let convertedPrice = price;
-  if (currencies && currencies.length) {
+  let convertedPrice = parseFloat(price) || 0;
+  if (price && currencies && currencies.length) {
     currency = currencies.find((item) => item.code === currCode);
     if (currency) {
       convertedPrice = price / currency.rate;
     }
   }
   return parseFloat(convertedPrice.toFixed(2));
+}
+
+/**
+ * Переключение возможности сколла страницы
+ * @param bool - true - убрать сколл, false - вернуть
+ */
+export function hideBodyScroll(bool) {
+  if (bool) {
+    document.body.classList.add("no-scroll");
+  } else {
+    document.body.classList.remove("no-scroll");
+  }
 }

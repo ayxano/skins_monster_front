@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" :class="{ 'app--full-page': route.meta.fullPage }">
     <div class="container-padding">
       <div class="app__inner">
         <AsideComponent />
@@ -13,6 +13,7 @@
       </div>
     </div>
   </div>
+  <ModalsComponent />
 </template>
 
 <style lang="stylus">
@@ -27,6 +28,9 @@ import AsideComponent from "~/components/aside/index.vue";
 import { onMounted } from "vue";
 import { csrf, query } from "~/utils/global";
 import { useGlobalStore } from "~/stores/global";
+import ModalsComponent from "~/components/modals/index.vue";
+import { useRoute } from "#app";
+import { useAuthStore } from "~/stores/auth";
 
 useHead({
   title: "Skins Monster - Buy CS2/Dota 2 skins",
@@ -40,15 +44,24 @@ useHead({
   ],
 });
 
+const route = useRoute();
 const globalStore = useGlobalStore();
 
 onMounted(() => {
+  // check if token expire
   csrf();
   getGlobalData();
 });
 
 async function getGlobalData() {
   globalStore.currencies = await query("/currency");
+
+  try {
+    const { data } = await query("/user");
+    useAuthStore().user = data;
+  } catch (e) {
+    console.error(e);
+  }
 }
 </script>
 

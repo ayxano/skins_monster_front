@@ -1,11 +1,11 @@
 <template>
   <div class="aside-favorites">
-    <a href="#" class="aside-favorites__header">
+    <nuxt-link :to="{ name: 'cabinet-favorites' }" class="aside-favorites__header">
       <span class="aside-favorites__header-title">Favorites</span>
       <button class="aside-favorites__header-btn btn btn--sm btn--hollow">
         <IconComponent class="icon--sm" name="arrow-right-3" />
       </button>
-    </a>
+    </nuxt-link>
     <div class="aside-favorites__list">
       <nuxt-link :to="{ name: 'skin' }" v-for="(item, i) in skins" :key="i" class="aside-favorites__item">
         <ImgComponent class="aside-favorites__item-img" :src="item.img" :loader="false" />

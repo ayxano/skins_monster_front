@@ -51,12 +51,6 @@ body {
     scrollbar-width auto
     scrollbar-color var(--dark) var(--dark-light)
   }
-
-  &.no-scroll {
-    +above(1026px) {
-      padding-right var(--scrollbar-width)
-    }
-  }
 }
 
 a {
@@ -283,6 +277,18 @@ textarea {
   min-width 320px
   +below(1024px) {
     padding-bottom var(--navigation-bar-height)
+  }
+}
+
+.app--full-page {
+  .aside,
+  .header,
+  .footer {
+    display none
+  }
+
+  .app__inner {
+    grid-template-columns 1fr
   }
 }
 

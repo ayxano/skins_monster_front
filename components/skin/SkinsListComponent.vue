@@ -62,7 +62,7 @@ main_class = '.skins-list'
 		display grid
 		grid-template-columns repeat(auto-fit, minmax(200px, auto))
 		grid-template-rows 2
-		justify-content start
+		//justify-content start
 		gap: var(--gap)
 		+below(500px) {
 			grid-template-columns repeat(auto-fit, minmax(140px, auto))

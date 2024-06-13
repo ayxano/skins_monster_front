@@ -1,9 +1,17 @@
 <template>
-  <div class="skin-card-dropdown">
+  <div v-if="data" class="skin-card-dropdown">
     <SkinFloatComponent :float="float" />
     <div class="skin-card-dropdown__params">
+      <div v-if="float && float.value" class="skin-card-dropdown__param">
+        <span class="skin-card-dropdown__param-title">Float</span>
+        <span class="skin-card-dropdown__param-value">{{ float.value }}</span>
+      </div>
+      <div v-if="data.extra && data.extra.paintseed" class="skin-card-dropdown__param">
+        <span class="skin-card-dropdown__param-title">Paint seed</span>
+        <span class="skin-card-dropdown__param-value">{{ data.extra.paintseed }}</span>
+      </div>
       <div v-for="(item, i) in tags" :key="i" class="skin-card-dropdown__param">
-        <span class="skin-card-dropdown__param-title">{{ item.category_name }}</span>
+        <span class="skin-card-dropdown__param-title">{{ item.category }}</span>
         <span class="skin-card-dropdown__param-value">{{ item.name }}</span>
       </div>
     </div>
@@ -18,10 +26,13 @@ const props = defineProps({
   float: Object,
 });
 
-const availableTags = ["Tournament", "TournamentTeam", "ProPlayer"];
+const availableTags = ["Tournament", "TournamentTeam", "ProPlayer", "ItemSet", "Weapon", "StickerCapsule"];
 
 const tags = computed(() => {
-  return props.data.tags.filter((item) => !availableTags.includes(item.category));
+  if (props.data && props.data.tags && props.data.tags.length) {
+    return props.data.tags.filter((item) => !availableTags.includes(item.category));
+  }
+  return [];
 });
 </script>
 

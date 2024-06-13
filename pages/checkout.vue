@@ -13,6 +13,11 @@
 </template>
 
 <script setup>
+// eslint-disable-next-line no-undef
+definePageMeta({
+  authRequired: true,
+});
+
 const checkout = [
   {
     title: "Counter-Strike 2",

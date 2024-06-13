@@ -1,6 +1,6 @@
 .default-modal {
   z-index 1
-  background: var(--white);
+  background: var(--dark-light);
   border-radius: var(--main-radius, 10px);
   display flex
   flex-direction column
@@ -31,89 +31,47 @@
   &__title {
     display: flex;
     align-items: center;
-    //margin 0
     margin-right: auto;
-    font-size: 1.875rem
+    font-size: 1.25rem
     font-style: normal;
-    font-weight: 600;
+    font-weight: 700;
     line-height: normal;
+    color: var(--gray-dark);
     +below(480px) {
       font-size 1.25rem
     }
   }
 
-  &__back.btn {
+  &__close {
+    position absolute
+    top 10px
+    right 10px
     width: 40px;
     height: 40px;
-    border-radius 10px
-
-    .icon svg path {
-      fill var(--black)
-    }
-
-    &:hover {
-      background var(--gray-5)
-    }
-  }
-
-  &__close {
-    position: absolute;
-    background var(--text-black)
-    transform: translate(0, -100%);
-    width: 48px;
-    height: 48px;
     padding: 0;
-    opacity: 0.6;
-    border-radius: 50px
-    right: -65px;
-    top: 45px;
+    border-radius: var(--main-radius)
     border: none;
     transition: var(--transition);
     display: inline-flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    +below(1024px) {
-      width 40px
-      height 40px
-      transform translate(0, 0)
-      right 10px
-      top: 10px
-      background var(--white)
-      border 1px solid var(--text-black)
-      z-index 3
-    }
+    background-color var(--dark)
 
     &:hover {
-      background-color  var(--red)
-
-      .icon svg path {
-        fill var(--white)
-      }
+      background-color var(--dark-light-2)
+      color var(--red)
     }
 
     .icon {
-      width 24px
-      height 24px
-      +below(1024px) {
-        width 16px
-        height 16px
-      }
-
-      svg path {
-        fill var(--white)
-        transition var(--transition)
-        +below(1024px) {
-          fill var(--text-black)
-        }
-      }
+      width 16px
+      height 16px
     }
   }
 
   &__body {
     display flex
     flex-direction column
-    align-items flex-start
     justify-content flex-start
     gap: 20px
     width 100%

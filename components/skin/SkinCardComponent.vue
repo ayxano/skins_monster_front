@@ -15,8 +15,8 @@
     </div>
     <div class="skin-card__body">
       <div class="skin-card__info">
-        <span class="skin-card__title" v-if="skinTitle.name">{{ skinTitle.name }}</span>
-        <span class="skin-card__subtitle" v-if="skinTitle.gun">{{ skinTitle.gun }}</span>
+        <span class="skin-card__title" v-if="skinTitle.gun">{{ skinTitle.gun }}</span>
+        <span class="skin-card__subtitle" v-if="skinTitle.name">{{ skinTitle.name }}</span>
         <div v-if="skinFloat" class="skin-card__float">
           <span class="skin-card__float-title">{{ skinFloat.shortName }}</span>
           <template v-if="skinFloat.value">
@@ -25,7 +25,7 @@
           </template>
         </div>
       </div>
-      <span class="skin-card__price">€{{ skinPrice }}</span>
+      <span v-if="skinPrice" class="skin-card__price">€{{ skinPrice }}</span>
       <div
         class="skin-card__actions"
         :class="{
@@ -162,7 +162,7 @@ main_class = ".skin-card"
 	border: 1px solid var(--dark-light-2, #1F3B4B);
 	background: var(--dark-light, #011D2D);
 	min-width 140px
-	max-width 280px
+	max-width 300px
 	transition var(--transition)
 
 	&--in-row {

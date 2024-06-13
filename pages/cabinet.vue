@@ -16,6 +16,11 @@
 import { computed } from "vue";
 import { useRoute } from "#app";
 
+// eslint-disable-next-line no-undef
+definePageMeta({
+  authRequired: true,
+});
+
 const route = useRoute();
 
 const pages = [

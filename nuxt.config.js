@@ -37,7 +37,7 @@ export default defineNuxtConfig({
           rel: "icon",
           type: "image/png",
           sizes: "192x192",
-          href: "/favicons/favicon-android-chrome-192x192.png",
+          href: "/favicons/android-chrome-192x192.png",
         },
         { rel: "manifest", href: "/favicons/site.webmanifest" },
         { rel: "mask-icon", href: "/favicons/safari-pinned-tab.svg", color: "#00141f" },

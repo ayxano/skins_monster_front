@@ -28,14 +28,36 @@ onMounted(get);
 async function get() {
   const { items } = await query("/skins", {
     limit: 8,
-    // page: 1,
-    appid: 730,
+    page: 1,
     // appid: 570,
     // query: "redline",
     // group_by: "hash_name",
   });
   popular_skins.value = items;
-  console.log("items", items);
+
+  const banners = await query("/banners", {
+    page: 1,
+    first: 5,
+  });
+  console.log("banner", banners);
+
+  const advantages = await query("/advantages", {
+    page: 1,
+    first: 4,
+  });
+  console.log("advantages", advantages);
+
+  const faqCategories = await query("/faq/categories", {
+    page: 1,
+    first: 10,
+  });
+  console.log("faqCategories", faqCategories);
+
+  const reviews = await query("/reviews", {
+    page: 1,
+    first: 10,
+  });
+  console.log("reviews", reviews);
 }
 </script>
 
