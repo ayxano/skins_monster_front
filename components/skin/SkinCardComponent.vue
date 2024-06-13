@@ -1,8 +1,8 @@
 <template>
-  <div class="skin-card" :class="{ 'skin-card--in-row': inRow }">
+  <div v-if="data" class="skin-card" :class="{ 'skin-card--in-row': inRow }">
     <nuxt-link :to="{ name: 'skin' }" class="skin-card__link"></nuxt-link>
     <div class="skin-card__header">
-      <ImgComponent :src="data.img" class="skin-card__img" :loader="false" />
+      <ImgComponent :src="skinImg" class="skin-card__img" :loader="false" />
       <div class="skin-card__header-cover">
         <button
           @click="addToFavorites"
@@ -15,15 +15,17 @@
     </div>
     <div class="skin-card__body">
       <div class="skin-card__info">
-        <span class="skin-card__title">{{ data.title }}</span>
-        <span class="skin-card__subtitle">{{ data.subtitle }}</span>
-        <div v-if="data.float" class="skin-card__float">
-          <span class="skin-card__float-title">FT</span>
-          <span class="skin-card__float-dot"></span>
-          <span class="skin-card__float-value">{{ data.float }}</span>
+        <span class="skin-card__title" v-if="skinTitle.name">{{ skinTitle.name }}</span>
+        <span class="skin-card__subtitle" v-if="skinTitle.gun">{{ skinTitle.gun }}</span>
+        <div v-if="skinFloat" class="skin-card__float">
+          <span class="skin-card__float-title">{{ skinFloat.shortName }}</span>
+          <template v-if="skinFloat.value">
+            <span class="skin-card__float-dot"></span>
+            <span class="skin-card__float-value">{{ skinFloat.value }}</span>
+          </template>
         </div>
       </div>
-      <span class="skin-card__price">{{ data.price }}</span>
+      <span class="skin-card__price">€{{ data.price }}</span>
       <div
         class="skin-card__actions"
         :class="{
@@ -45,7 +47,7 @@
             </button>
           </template>
           <template #content>
-            <SkinCardDropdownComponent />
+            <SkinCardDropdownComponent :data="data" :float="skinFloat" />
           </template>
         </DropdownComponent>
       </div>
@@ -57,6 +59,7 @@
 import { computed, ref } from "vue";
 import { useCartStore } from "~/stores/cart";
 import { useFavoritesStore } from "~/stores/favorites";
+import { isCS2 } from "~/utils/global";
 
 const props = defineProps({
   data: Object,
@@ -67,6 +70,29 @@ const cartStore = useCartStore();
 const favoritesStore = useFavoritesStore();
 const dropdownVisible = ref(false);
 
+const exteriors = {
+  "Factory New": {
+    short: "FN",
+    range: "",
+  },
+  "Minimal Wear": {
+    short: "MW",
+    range: "",
+  },
+  "Field-Tested": {
+    short: "FT",
+    range: "",
+  },
+  "Well-Worn": {
+    short: "WW",
+    range: "",
+  },
+  "Battle-Scarred": {
+    short: "BS",
+    range: "",
+  },
+};
+
 const inCart = computed(() => {
   return cartStore.cart_items.map((i) => i.id).includes(props.data.id);
 });
@@ -74,6 +100,40 @@ const inCart = computed(() => {
 const inFavorites = computed(() => {
   return favoritesStore.favorites.map((i) => i.id).includes(props.data.id);
 });
+
+const skinImg = computed(() => {
+  return `https://steamcommunity-a.akamaihd.net/economy/image/${props.data.icon_url}`;
+});
+
+const skinTitle = computed(() => {
+  if (isCS2(props.data)) {
+    let [gun, ...name] = props.data.hash_name.split(" | ");
+    name = name.join(" | ");
+    name = removeExterior(name);
+    return { gun, name };
+  }
+  return { name: props.data.hash_name };
+});
+
+const skinFloat = computed(() => {
+  if (isCS2(props.data)) {
+    const exterior = props.data.tags.find((item) => item.category === "Exterior")?.name;
+    return { value: props.data?.extra?.paintwear, shortName: exterior ? exteriors[exterior].short : "" };
+  }
+  return null;
+});
+
+function removeExterior(text) {
+  let title = text;
+  const list = Object.keys(exteriors);
+
+  list.forEach((item) => {
+    if (text.includes(item)) {
+      title = title.replace(` (${item})`, "");
+    }
+  });
+  return title;
+}
 
 function addToCart() {
   if (!inCart.value) {
@@ -98,6 +158,7 @@ main_class = ".skin-card"
 	border: 1px solid var(--dark-light-2, #1F3B4B);
 	background: var(--dark-light, #011D2D);
 	min-width 140px
+	max-width 280px
 	transition var(--transition)
 
 	&--in-row {
@@ -218,8 +279,9 @@ main_class = ".skin-card"
 	}
 
 	&__title {
-		padding-bottom 2px
+		padding-bottom 5px
 		font-size: 0.875rem
+		line-height normal
 		font-weight: 700;
 	}
 

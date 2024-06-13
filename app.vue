@@ -24,6 +24,8 @@ import { useHead } from "#app";
 import HeaderComponent from "~/components/header/index.vue";
 import FooterComponent from "~/components/footer/index.vue";
 import AsideComponent from "~/components/aside/index.vue";
+import { onMounted } from "vue";
+import { csrf } from "~/utils/global";
 
 useHead({
   title: "Skins Monster - Buy CS2/Dota 2 skins",
@@ -36,6 +38,8 @@ useHead({
     },
   ],
 });
+
+onMounted(csrf);
 </script>
 
 <style lang="stylus">

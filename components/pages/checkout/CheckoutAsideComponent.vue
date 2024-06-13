@@ -112,7 +112,7 @@ const paymentMethod = ref(methods[0]);
 		flex-wrap wrap
 		align-items center
 		justify-content space-between
-		gap: 30px
+		gap: 15px 30px
 		+below(1024px) {
 			gap: 15px
 		}

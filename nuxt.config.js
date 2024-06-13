@@ -13,6 +13,12 @@ export default defineNuxtConfig({
   routeRules: {
     "/cabinet": { redirect: "/cabinet/profile" },
   },
+  runtimeConfig: {
+    public: {
+      host_endpoint: process.env.HOST_ENDPOINT,
+      media_endpoint: process.env.MEDIA_ENDPOINT,
+    },
+  },
   app: {
     head: {
       htmlAttrs: {
@@ -52,6 +58,10 @@ export default defineNuxtConfig({
           use: [rupture()],
         },
       },
+    },
+    define: {
+      "process.env.HOST_ENDPOINT": JSON.stringify(process.env.HOST_ENDPOINT),
+      "process.env.MEDIA_ENDPOINT": JSON.stringify(process.env.MEDIA_ENDPOINT),
     },
   },
 });

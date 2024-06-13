@@ -1,12 +1,12 @@
 <template>
-  <div class="skin-float">
+  <div v-if="float && float.value" class="skin-float">
     <div class="skin-float__line">
       <span class="skin-float__line--fn"></span>
       <span class="skin-float__line--mw"></span>
       <span class="skin-float__line--ft"></span>
       <span class="skin-float__line--ww"></span>
       <span class="skin-float__line--bs"></span>
-      <IconComponent category="default" name="indicator" />
+      <IconComponent :style="{ left: floatOffset }" category="default" name="indicator" />
     </div>
     <div class="skin-float__list">
       <span @mouseenter="activeFloat = item" v-for="(item, i) in floats" :key="i" class="skin-float__item">
@@ -17,7 +17,10 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { computed, ref } from "vue";
+const props = defineProps({
+  float: Object,
+});
 
 const activeFloat = ref({});
 
@@ -28,7 +31,7 @@ const floats = [
   },
   {
     abbreviation: "MW",
-    title: "",
+    title: "Minimal Wear",
   },
   {
     abbreviation: "FT",
@@ -43,6 +46,10 @@ const floats = [
     title: "Battle-Scarred",
   },
 ];
+
+const floatOffset = computed(() => {
+  return props.float.value * 100 + "%";
+});
 </script>
 
 <style lang="stylus">
@@ -91,10 +98,10 @@ const floats = [
 		.icon {
 			position absolute
 			top 0
-			left 33%
-			transform translateY(-100%)
+			left 0
+			transform translateY(-100%) translateX(-5px)
 			color var(--gray-2)
-			width: auto;
+			width: 10px;
 			height: 7px;
 			min-width: 0;
 			min-height: 0;

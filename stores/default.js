@@ -6,6 +6,12 @@ export const useDefaultStore = defineStore({
     HOST_ENDPOINT: process.env.HOST_ENDPOINT,
     MEDIA_ENDPOINT: process.env.MEDIA_ENDPOINT,
     modals: [],
-    types: {},
+    types: {
+      appid: {
+        CS2: 730,
+        DOTA2: 570,
+      },
+    },
+    loading: [],
   }),
 });

@@ -1,31 +1,28 @@
 <template>
   <div class="skin-card-dropdown">
-    <SkinFloatComponent />
+    <SkinFloatComponent :float="float" />
     <div class="skin-card-dropdown__params">
-      <div v-for="(item, i) in params" :key="i" class="skin-card-dropdown__param">
-        <span class="skin-card-dropdown__param-title">{{ item.title }}</span>
-        <span class="skin-card-dropdown__param-value">{{ item.value }}</span>
+      <div v-for="(item, i) in tags" :key="i" class="skin-card-dropdown__param">
+        <span class="skin-card-dropdown__param-title">{{ item.category_name }}</span>
+        <span class="skin-card-dropdown__param-value">{{ item.name }}</span>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
-const params = [
-  { title: "Float", value: 0.34054558 },
-  {
-    title: "Exterior",
-    value: "Field-Tested",
-  },
-  {
-    title: "Rarity",
-    value: "Covert",
-  },
-  {
-    title: "Paint Index",
-    value: "707",
-  },
-];
+import { computed } from "vue";
+
+const props = defineProps({
+  data: Object,
+  float: Object,
+});
+
+const availableTags = ["Tournament", "TournamentTeam", "ProPlayer"];
+
+const tags = computed(() => {
+  return props.data.tags.filter((item) => !availableTags.includes(item.category));
+});
 </script>
 
 <style lang="stylus">

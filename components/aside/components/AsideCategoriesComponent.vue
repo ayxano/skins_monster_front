@@ -3,16 +3,20 @@
     <TabsComponent v-model="activeGame" :tabs="games" small same-tabs />
     <PerfectScrollbar tag="ul" class="aside-categories__list">
       <li v-for="(item, i) in activeGame.categories" :key="i" class="aside-categories__item">
-        <nuxt-link :to="{ name: 'catalog' }" class="aside-categories__item-link">{{ item.title }}</nuxt-link>
+        <nuxt-link :to="{ name: 'catalog' }" class="aside-categories__item-link">{{ item }}</nuxt-link>
       </li>
     </PerfectScrollbar>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { onMounted, ref, computed } from "vue";
+import { useDefaultStore } from "~/stores/default";
+import { query } from "~/utils/global";
 
-const games = [
+const defaultStore = useDefaultStore();
+
+const games = ref([
   {
     id: 1,
     title: "CS2",
@@ -20,32 +24,7 @@ const games = [
       name: "cs2",
       category: "default",
     },
-    categories: [
-      {
-        title: "Gloves",
-      },
-      {
-        title: "Heavy",
-      },
-      {
-        title: "Knife",
-      },
-      {
-        title: "Pistol",
-      },
-      {
-        title: "Rifle",
-      },
-      {
-        title: "SMG",
-      },
-      {
-        title: "Sticker",
-      },
-      {
-        title: "Other",
-      },
-    ],
+    categories: [],
   },
   {
     id: 2,
@@ -54,54 +33,32 @@ const games = [
       name: "dota2",
       category: "default",
     },
-    categories: [
-      {
-        title: "Knife",
-      },
-      {
-        title: "Gloves",
-      },
-      {
-        title: "Rifle",
-      },
-      {
-        title: "Heavy",
-      },
-      {
-        title: "Pistol",
-      },
-      {
-        title: "SMG",
-      },
-      {
-        title: "Sticker",
-      },
-      {
-        title: "Other",
-      },
-      {
-        title: "Rifle",
-      },
-      {
-        title: "Heavy",
-      },
-      {
-        title: "Pistol",
-      },
-      {
-        title: "Knife",
-      },
-      {
-        title: "Gloves",
-      },
-      {
-        title: "Rifle",
-      },
-    ],
+    categories: [],
   },
-];
+]);
 
-const activeGame = ref(games[0]);
+const activeGame = ref(games.value[0]);
+
+onMounted(get);
+
+const appidTypes = computed(() => {
+  return defaultStore.types.appid;
+});
+
+async function get() {
+  const { filters: cs2Filters } = await query("/filters", {
+    appid: appidTypes.value.CS2,
+  });
+  const { filters: dota2Filters } = await query("/filters", {
+    appid: appidTypes.value.DOTA2,
+  });
+  games.value[0].categories = getTypes(cs2Filters);
+  games.value[1].categories = getTypes(dota2Filters);
+}
+
+function getTypes(list) {
+  return list.find((item) => item.name === "type")?.values || [];
+}
 </script>
 
 <style lang="stylus">
