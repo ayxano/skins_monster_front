@@ -1,5 +1,6 @@
 import { useDefaultStore } from "~/stores/default";
 import queryString from "query-string";
+import { useGlobalStore } from "~/stores/global";
 
 export function getCookie(name) {
   let cookie = document.cookie.split(";").find((c) => c.startsWith(name));
@@ -81,4 +82,24 @@ export function elementInViewport(el) {
     top + height <= window.pageYOffset + window.innerHeight &&
     left + width <= window.pageXOffset + window.innerWidth
   );
+}
+
+/**
+ * Конвертация цен в нужную валюту
+ * по умолчанию евро
+ * @param price
+ * @param currCode
+ * @returns {*}
+ */
+export function convertPrice(price, currCode = "eur") {
+  const currencies = useGlobalStore().currencies || [];
+  let currency = currencies[0];
+  let convertedPrice = price;
+  if (currencies && currencies.length) {
+    currency = currencies.find((item) => item.code === currCode);
+    if (currency) {
+      convertedPrice = price / currency.rate;
+    }
+  }
+  return parseFloat(convertedPrice.toFixed(2));
 }

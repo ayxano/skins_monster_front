@@ -25,7 +25,7 @@
           </template>
         </div>
       </div>
-      <span class="skin-card__price">€{{ data.price }}</span>
+      <span class="skin-card__price">€{{ skinPrice }}</span>
       <div
         class="skin-card__actions"
         :class="{
@@ -59,7 +59,7 @@
 import { computed, ref } from "vue";
 import { useCartStore } from "~/stores/cart";
 import { useFavoritesStore } from "~/stores/favorites";
-import { isCS2 } from "~/utils/global";
+import { isCS2, convertPrice } from "~/utils/global";
 
 const props = defineProps({
   data: Object,
@@ -121,6 +121,10 @@ const skinFloat = computed(() => {
     return { value: props.data?.extra?.paintwear, shortName: exterior ? exteriors[exterior].short : "" };
   }
   return null;
+});
+
+const skinPrice = computed(() => {
+  return convertPrice(props.data.price);
 });
 
 function removeExterior(text) {

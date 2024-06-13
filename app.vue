@@ -25,7 +25,8 @@ import HeaderComponent from "~/components/header/index.vue";
 import FooterComponent from "~/components/footer/index.vue";
 import AsideComponent from "~/components/aside/index.vue";
 import { onMounted } from "vue";
-import { csrf } from "~/utils/global";
+import { csrf, query } from "~/utils/global";
+import { useGlobalStore } from "~/stores/global";
 
 useHead({
   title: "Skins Monster - Buy CS2/Dota 2 skins",
@@ -39,7 +40,16 @@ useHead({
   ],
 });
 
-onMounted(csrf);
+const globalStore = useGlobalStore();
+
+onMounted(() => {
+  csrf();
+  getGlobalData();
+});
+
+async function getGlobalData() {
+  globalStore.currencies = await query("/currency");
+}
 </script>
 
 <style lang="stylus">
