@@ -1,6 +1,9 @@
 <template>
   <div v-if="data" class="skin-card-hz" :class="{ 'skin-card-hz--deletable': deletable }">
-    <nuxt-link :to="{ name: 'skin' }" class="skin-card-hz__link"></nuxt-link>
+    <nuxt-link
+      :to="{ name: 'skin', query: { skin_id: data.id, hash_name: data.hash_name, app_id: data.appid } }"
+      class="skin-card-hz__link"
+    ></nuxt-link>
     <button @click.prevent="deleteSkin" v-if="deletable" class="skin-card-hz__delete btn btn--sm btn--hollow">
       <LoadingCircleIndicator v-if="deleteLoading" title="" />
       <IconComponent v-else name="trash" />

@@ -6,7 +6,7 @@
         <NuxtPage />
         <AsideNavComponent :links="pages" no-menu />
       </div>
-      <SkinsListComponent v-if="activePage.favorites" title="Favorites" :list="list" row />
+      <SkinsListComponent v-if="activePage.favorites" title="Favorites" :list="favorites.slice(0, 4)" row />
       <BottomPageBannerComponent />
     </div>
   </main>
@@ -15,6 +15,7 @@
 <script setup>
 import { computed } from "vue";
 import { useRoute } from "#app";
+import { useFavoritesStore } from "~/stores/favorites";
 
 // eslint-disable-next-line no-undef
 definePageMeta({
@@ -22,6 +23,7 @@ definePageMeta({
 });
 
 const route = useRoute();
+const favoritesStore = useFavoritesStore();
 
 const pages = [
   {
@@ -58,52 +60,7 @@ const activePage = computed(() => {
   return pages.find((item) => route.name.includes(item.route.name)) || pages[0];
 });
 
-const list = [
-  {
-    id: 1,
-    title: "AK-47",
-    subtitle: "Inheritance",
-    img: "/images/tmp/skin_card_1.png",
-    price: "$778",
-    float: 0.34054558,
-    exterior: "Field-Tested",
-    rarity: "Covert",
-    paintIndex: "707",
-  },
-  {
-    id: 2,
-    title: "MAC-10 | Heat",
-    subtitle: "Inheritance",
-    img: "/images/tmp/skin_card_2.png",
-    price: "$778",
-    float: 0.34054558,
-    exterior: "Field-Tested",
-    rarity: "Covert",
-    paintIndex: "707",
-  },
-  {
-    id: 3,
-    title: "Blue Steel",
-    subtitle: "Inheritance",
-    img: "/images/tmp/skin_card_3.png",
-    price: "$880",
-    float: 0.34054558,
-    exterior: "Field-Tested",
-    rarity: "Covert",
-    paintIndex: "707",
-  },
-  {
-    id: 4,
-    title: "Chrome Cannon",
-    subtitle: "Inheritance",
-    img: "/images/tmp/skin_card_4.png",
-    price: "$778",
-    float: 0.34054558,
-    exterior: "Field-Tested",
-    rarity: "Covert",
-    paintIndex: "707",
-  },
-];
+const favorites = computed(() => favoritesStore.favorites || []);
 </script>
 
 <style lang="stylus">
