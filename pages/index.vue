@@ -1,11 +1,11 @@
 <template>
   <main class="page home-page">
     <div class="page__inner">
-      <WelcomeBannersComponent />
+      <WelcomeBannersComponent :list="welcome_banners" />
       <SkinsListComponent title="Popular" :list="popular_skins" row />
-      <BenefitsComponent />
-      <FaqComponent />
-      <ReviewsComponent />
+      <BenefitsComponent :list="advantages" />
+      <FaqComponent :list="faqCategories" />
+      <ReviewsComponent :list="reviews" />
       <PaymentsComponent />
       <BottomPageBannerComponent />
     </div>

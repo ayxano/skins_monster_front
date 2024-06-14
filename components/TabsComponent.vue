@@ -11,29 +11,48 @@
     <button
       v-for="(item, i) in tabs"
       :key="i"
-      @click.prevent="clickHandle($event, item)"
+      @click.prevent="clickHandle($event, item, i)"
       class="tabs__item btn"
-      :class="{ 'tabs__item--active': modelValue && modelValue.id === item.id }"
+      :class="{ 'tabs__item--active': isActive(item, i) }"
     >
       <IconComponent v-if="item.icon" :name="item.icon.name" :category="item.icon.category" />
-      <span>{{ item.title }}</span>
+      <span>{{ item[labelField] }}</span>
     </button>
   </div>
 </template>
 
 <script setup>
 const emits = defineEmits(["update:model-value"]);
-defineProps({
+const props = defineProps({
   tabs: Array,
-  modelValue: Object,
+  modelValue: [Object, Number],
   small: Boolean,
   dark: Boolean,
   sameTabs: Boolean,
+  labelField: {
+    type: String,
+    default: "title",
+  },
+  labelBy: {
+    type: String,
+    default: "item",
+  },
 });
 
-function clickHandle(e, item) {
+function clickHandle(e, item, index) {
   e.target.scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
-  emits("update:model-value", item);
+  if (props.labelBy === "index") {
+    emits("update:model-value", index);
+  } else {
+    emits("update:model-value", item);
+  }
+}
+
+function isActive(item, index) {
+  if (props.labelBy === "index") {
+    return props.modelValue === index;
+  }
+  return props.modelValue && props.modelValue.id === item.id;
 }
 </script>
 
@@ -49,6 +68,8 @@ main_class = ".tabs"
 	padding: 5px
 	align-self flex-start
 	overflow auto hidden
+	max-width 100%
+	scrollbar-width none
 
 	&--small {
 		height 40px

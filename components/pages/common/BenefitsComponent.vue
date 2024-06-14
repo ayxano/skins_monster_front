@@ -1,36 +1,40 @@
 <template>
   <div class="benefits">
     <div v-for="(item, i) in list" :key="i" class="benefits-item">
-      <IconComponent class="benefits-item__icon" :name="item.icon" />
+      <ImgComponent :img="item.image" class="benefits-item__icon" />
       <span class="benefits-item__title">{{ item.title }}</span>
-      <span class="benefits-item__subtitle">{{ item.subtitle }}</span>
+      <span class="benefits-item__subtitle">{{ item.description }}</span>
     </div>
   </div>
 </template>
 
 <script setup>
-const list = [
-  {
-    title: "Trade skins",
-    subtitle: "Upgrade your skins to the latest collections easily and safely.",
-    icon: "convert-3d-cube",
-  },
-  {
-    title: "Buy skins",
-    subtitle: "Explore our CS2 marketplace for the best deals.",
-    icon: "money-recive",
-  },
-  {
-    title: "Sell skins",
-    subtitle: "Sell your skins quickly for instant cash or list them for sale.",
-    icon: "money-send",
-  },
-  {
-    title: "Free giveaways",
-    subtitle: "Join us and free giveaways to win exclusive CS2 skins.",
-    icon: "discount-shape",
-  },
-];
+defineProps({
+  list: Array,
+});
+
+// const list = [
+//   {
+//     title: "Trade skins",
+//     subtitle: "Upgrade your skins to the latest collections easily and safely.",
+//     icon: "convert-3d-cube",
+//   },
+//   {
+//     title: "Buy skins",
+//     subtitle: "Explore our CS2 marketplace for the best deals.",
+//     icon: "money-recive",
+//   },
+//   {
+//     title: "Sell skins",
+//     subtitle: "Sell your skins quickly for instant cash or list them for sale.",
+//     icon: "money-send",
+//   },
+//   {
+//     title: "Free giveaways",
+//     subtitle: "Join us and free giveaways to win exclusive CS2 skins.",
+//     icon: "discount-shape",
+//   },
+// ];
 </script>
 
 <style lang="stylus">

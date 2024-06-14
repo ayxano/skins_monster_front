@@ -59,10 +59,10 @@ onMounted(() => {
 
 function getGlobalData() {
   globalStore.getCurrency();
-  basketStore.get();
-  favoritesStore.get();
 
   try {
+    basketStore.get();
+    favoritesStore.get();
     const { data } = query("/user");
     useAuthStore().user = data;
   } catch (e) {

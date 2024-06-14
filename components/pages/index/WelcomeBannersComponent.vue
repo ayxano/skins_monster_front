@@ -8,10 +8,10 @@
       hide-arrows
     >
       <a href="#" class="welcome-banners__item hover-image" target="_blank">
-        <ImgComponent class="welcome-banners__item-img" :src="item.img" />
+        <ImgComponent class="welcome-banners__item-img" :img="item.desktop_image" />
         <ImgComponent
           class="welcome-banners__item-img welcome-banners__item-img--mobile"
-          :src="item.img_mobile"
+          :img="item.mobile_image"
         />
       </a>
     </SliderComponent>
@@ -22,6 +22,10 @@
 <script setup>
 import SliderComponent from "~/components/SliderComponent.vue";
 import { Pagination } from "swiper/modules";
+
+defineProps({
+  list: Array,
+});
 
 const sliderOptions = {
   modules: [Pagination],
@@ -34,28 +38,28 @@ const sliderOptions = {
   },
 };
 
-const list = [
-  {
-    title: "Buy skins",
-    img: "/images/tmp/slider_1.jpg",
-    img_mobile: "/images/tmp/slider_1_mobile.jpg",
-  },
-  {
-    title: "Buy skins",
-    img: "/images/tmp/slider_1.jpg",
-    img_mobile: "/images/tmp/slider_1_mobile.jpg",
-  },
-  {
-    title: "Buy skins",
-    img: "/images/tmp/slider_1.jpg",
-    img_mobile: "/images/tmp/slider_1_mobile.jpg",
-  },
-  {
-    title: "Buy skins",
-    img: "/images/tmp/slider_1.jpg",
-    img_mobile: "/images/tmp/slider_1_mobile.jpg",
-  },
-];
+// const list = [
+//   {
+//     title: "Buy skins",
+//     img: "/images/tmp/slider_1.jpg",
+//     img_mobile: "/images/tmp/slider_1_mobile.jpg",
+//   },
+//   {
+//     title: "Buy skins",
+//     img: "/images/tmp/slider_1.jpg",
+//     img_mobile: "/images/tmp/slider_1_mobile.jpg",
+//   },
+//   {
+//     title: "Buy skins",
+//     img: "/images/tmp/slider_1.jpg",
+//     img_mobile: "/images/tmp/slider_1_mobile.jpg",
+//   },
+//   {
+//     title: "Buy skins",
+//     img: "/images/tmp/slider_1.jpg",
+//     img_mobile: "/images/tmp/slider_1_mobile.jpg",
+//   },
+// ];
 </script>
 
 <style lang="stylus">
