@@ -22,10 +22,8 @@ function checkRoute(user) {
 export default defineNuxtRouteMiddleware(async (to) => {
   if (process.client) {
     let user = useAuthStore().user;
-    console.log("user", user);
 
     if (to.meta?.authRequired) {
-      console.log("auth required");
       if (user) {
         return checkRoute(user);
       } else {

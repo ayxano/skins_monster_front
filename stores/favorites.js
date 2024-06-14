@@ -10,7 +10,6 @@ export const useFavoritesStore = defineStore({
     async get() {
       const { items } = await query("/favorite");
       this.favorites = items;
-      console.log("this.favorites", this.favorites);
     },
     async add(data) {
       let variables = {};

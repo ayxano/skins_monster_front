@@ -39,7 +39,6 @@ async function get() {
     page: 1,
     // group_by: "hash_name",
   }).then(({ items }) => {
-    console.log("popular_skins", items);
     popular_skins.value = items;
   });
 
@@ -47,7 +46,6 @@ async function get() {
     page: 1,
     first: 5,
   }).then(({ data }) => {
-    console.log("banners", data);
     welcome_banners.value = data;
   });
 
@@ -55,7 +53,6 @@ async function get() {
     page: 1,
     first: 4,
   }).then(({ data }) => {
-    console.log("advantages", data);
     advantages.value = data;
   });
 
@@ -63,7 +60,6 @@ async function get() {
     page: 1,
     first: 10,
   }).then(({ data }) => {
-    console.log("categories", data);
     faqCategories.value = data;
   });
 
@@ -71,7 +67,6 @@ async function get() {
     page: 1,
     first: 10,
   }).then(({ data }) => {
-    console.log("reviews", data);
     reviews.value = data;
   });
 }

@@ -129,7 +129,6 @@ async function submit() {
     }
   );
   submitLoading.value = false;
-  console.log("res", res);
 }
 </script>
 

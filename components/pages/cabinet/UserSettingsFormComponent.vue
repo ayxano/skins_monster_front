@@ -60,7 +60,6 @@ async function submit() {
     }
   );
   submitLoading.value = false;
-  console.log("res trade", res);
 }
 </script>
 
