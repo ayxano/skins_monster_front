@@ -21,43 +21,54 @@ useHead({
   titleTemplate: "",
 });
 
+const welcome_banners = ref([]);
 const popular_skins = ref([]);
+const advantages = ref([]);
+const faqCategories = ref([]);
+const reviews = ref([]);
 
 onMounted(get);
 
 async function get() {
-  const { items } = await query("/skins", {
+  query("/skins", {
     limit: 8,
     page: 1,
-    // appid: 570,
-    // query: "redline",
-    // group_by: "hash_name",
+  }).then(({ items }) => {
+    console.log("popular_skins", items);
+    popular_skins.value = items;
   });
-  popular_skins.value = items;
 
-  const banners = await query("/banners", {
+  query("/banners", {
     page: 1,
     first: 5,
+  }).then(({ data }) => {
+    console.log("banners", data);
+    welcome_banners.value = data;
   });
-  console.log("banner", banners);
 
-  const advantages = await query("/advantages", {
+  query("/advantages", {
     page: 1,
     first: 4,
+  }).then(({ data }) => {
+    console.log("advantages", data);
+    advantages.value = data;
   });
-  console.log("advantages", advantages);
 
-  const faqCategories = await query("/faq/categories", {
+  query("/faq/categories", {
     page: 1,
     first: 10,
+  }).then(({ data }) => {
+    console.log("categories", data);
+    faqCategories.value = data;
   });
-  console.log("faqCategories", faqCategories);
 
-  const reviews = await query("/reviews", {
+  query("/reviews", {
     page: 1,
     first: 10,
+  }).then(({ data }) => {
+    console.log("reviews", data);
+    reviews.value = data;
   });
-  console.log("reviews", reviews);
 }
 </script>
 

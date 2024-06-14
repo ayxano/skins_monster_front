@@ -1,16 +1,15 @@
 import { defineStore } from "pinia";
 import { query } from "~/utils/global";
 
-export const useFavoritesStore = defineStore({
-  id: "favorites",
+export const useBasketStore = defineStore({
+  id: "basket",
   state: () => ({
-    favorites: [],
+    basket: [],
   }),
   actions: {
     async get() {
-      const { items } = await query("/favorite");
-      this.favorites = items;
-      console.log("this.favorites", this.favorites);
+      const { items } = await query("/basket");
+      this.basket = items;
     },
     async add(data) {
       let variables = {};
@@ -18,7 +17,7 @@ export const useFavoritesStore = defineStore({
       variables.app_id = data.appid;
       variables.hash_name = data.hash_name;
       await query(
-        "/favorite",
+        "/basket",
         {},
         {
           method: "POST",
@@ -29,7 +28,7 @@ export const useFavoritesStore = defineStore({
     },
     async delete(id) {
       await query(
-        "/favorite/" + id,
+        "/basket/" + id,
         {},
         {
           method: "DELETE",

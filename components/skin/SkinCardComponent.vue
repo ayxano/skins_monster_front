@@ -1,15 +1,16 @@
 <template>
-  <div v-if="data" class="skin-card" :class="{ 'skin-card--in-row': inRow }">
+  <div v-if="data && data.id" class="skin-card" :class="{ 'skin-card--in-row': inRow }">
     <nuxt-link :to="{ name: 'skin' }" class="skin-card__link"></nuxt-link>
     <div class="skin-card__header">
       <ImgComponent :src="skinImg" class="skin-card__img" :loader="false" />
       <div class="skin-card__header-cover">
         <button
-          @click="addToFavorites"
+          @click.prevent="addToFavorites"
           class="skin-card__favorite btn btn--md"
           :class="{ 'skin-card__favorite--active': inFavorites }"
         >
-          <IconComponent name="star" />
+          <LoadingCircleIndicator v-if="favoritesLoading" title="" />
+          <IconComponent v-else name="star" />
         </button>
       </div>
     </div>
@@ -34,8 +35,9 @@
           'skin-card__actions--in-cart': inCart,
         }"
       >
-        <button @click="addToCart" class="skin-card__action-cart btn">
-          <IconComponent name="bag-2" />
+        <button @click="addToBasket" class="skin-card__action-cart btn">
+          <LoadingCircleIndicator v-if="basketLoading" title="" />
+          <IconComponent v-else name="bag-2" />
         </button>
         <DropdownComponent v-model:visible="dropdownVisible" position="bottom-right" :target-relative="false">
           <template #default>
@@ -57,18 +59,22 @@
 
 <script setup>
 import { computed, ref } from "vue";
-import { useCartStore } from "~/stores/cart";
+import { useBasketStore } from "~/stores/basket";
 import { useFavoritesStore } from "~/stores/favorites";
 import { isCS2, convertPrice } from "~/utils/global";
+import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
+import { removeExterior } from "~/utils/skin";
 
 const props = defineProps({
   data: Object,
   inRow: Boolean, // карточка находится в линии, не в гриде
 });
 
-const cartStore = useCartStore();
+const basketStore = useBasketStore();
 const favoritesStore = useFavoritesStore();
 const dropdownVisible = ref(false);
+const basketLoading = ref(false);
+const favoritesLoading = ref(false);
 
 const exteriors = {
   "Factory New": {
@@ -94,7 +100,7 @@ const exteriors = {
 };
 
 const inCart = computed(() => {
-  return cartStore.cart_items.map((i) => i.id).includes(props.data.id);
+  return basketStore.basket.map((i) => i.id).includes(props.data.id);
 });
 
 const inFavorites = computed(() => {
@@ -127,28 +133,24 @@ const skinPrice = computed(() => {
   return convertPrice(props.data.price);
 });
 
-function removeExterior(text) {
-  let title = text;
-  const list = Object.keys(exteriors);
-
-  list.forEach((item) => {
-    if (text.includes(item)) {
-      title = title.replace(` (${item})`, "");
-    }
-  });
-  return title;
-}
-
-function addToCart() {
+async function addToBasket() {
+  basketLoading.value = true;
   if (!inCart.value) {
-    cartStore.cart_items.push(props.data);
+    await basketStore.add(props.data);
+  } else {
+    await basketStore.delete(props.data.id);
   }
+  basketLoading.value = false;
 }
 
-function addToFavorites() {
+async function addToFavorites() {
+  favoritesLoading.value = true;
   if (!inFavorites.value) {
-    favoritesStore.favorites.push(props.data);
+    await favoritesStore.add(props.data);
+  } else {
+    await favoritesStore.delete(props.data.id);
   }
+  favoritesLoading.value = false;
 }
 </script>
 

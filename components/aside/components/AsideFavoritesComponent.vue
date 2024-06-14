@@ -1,5 +1,5 @@
 <template>
-  <div class="aside-favorites">
+  <div v-if="skins && skins.length" class="aside-favorites">
     <nuxt-link :to="{ name: 'cabinet-favorites' }" class="aside-favorites__header">
       <span class="aside-favorites__header-title">Favorites</span>
       <button class="aside-favorites__header-btn btn btn--sm btn--hollow">
@@ -8,8 +8,8 @@
     </nuxt-link>
     <div class="aside-favorites__list">
       <nuxt-link :to="{ name: 'skin' }" v-for="(item, i) in skins" :key="i" class="aside-favorites__item">
-        <ImgComponent class="aside-favorites__item-img" :src="item.img" :loader="false" />
-        <span class="aside-favorites__item-title">{{ item.title }}</span>
+        <ImgComponent class="aside-favorites__item-img" :src="skinImg(item)" :loader="false" />
+        <span class="aside-favorites__item-title">{{ skinTitle(item).name }}</span>
         <IconComponent class="aside-favorites__item-icon" name="arrow-right-1" />
       </nuxt-link>
     </div>
@@ -17,28 +17,30 @@
 </template>
 
 <script setup>
-const skins = [
-  {
-    title: "MAC-10 | Propaganda",
-    img: "/images/tmp/skin_1.png",
-  },
-  {
-    title: "★ Kukri Knife | Case Hardened",
-    img: "/images/tmp/skin_2.png",
-  },
-  {
-    title: "AK-47 | Inheritance",
-    img: "/images/tmp/skin_3.png",
-  },
-  {
-    title: "StatTrak™ MAC-10 | Heat (Factory New)",
-    img: "/images/tmp/skin_4.png",
-  },
-  {
-    title: "★ Bayonet | Doppler",
-    img: "/images/tmp/skin_5.png",
-  },
-];
+import { useFavoritesStore } from "~/stores/favorites";
+import { computed } from "vue";
+import { isCS2 } from "~/utils/global";
+import { removeExterior } from "~/utils/skin";
+
+const favoritesStore = useFavoritesStore();
+
+const skins = computed(() => {
+  return favoritesStore.favorites || [];
+});
+
+function skinImg(data) {
+  return `https://steamcommunity-a.akamaihd.net/economy/image/${data.icon_url}`;
+}
+
+function skinTitle(data) {
+  if (isCS2(data)) {
+    let [gun, ...name] = data.hash_name.split(" | ");
+    name = name.join(" | ");
+    name = removeExterior(name);
+    return { gun, name };
+  }
+  return { name: data.hash_name };
+}
 </script>
 
 <style lang="stylus">

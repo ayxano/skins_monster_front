@@ -1,6 +1,8 @@
 import { useDefaultStore } from "~/stores/default";
 import queryString from "query-string";
 import { useGlobalStore } from "~/stores/global";
+import {shallowRef} from "vue";
+import AuthModal from "~/components/modals/components/AuthModal.vue";
 
 export function getCookie(name) {
   let cookie = document.cookie.split(";").find((c) => c.startsWith(name));
@@ -11,53 +13,65 @@ export function getCookie(name) {
 }
 
 export function csrf() {
-  return query("/csrf-cookie", {}, "/sanctum");
+  return query("/csrf-cookie", {}, {}, "/sanctum");
 }
 
-export function query(url, options = {}, prefix = "/api/v1", json = true) {
-  useDefaultStore().loading.push(true);
-  let headers = {
-    Accept: "application/json",
-    "Content-Type": "application/json;charset=utf-8",
-  };
-  let csrf = getCookie("XSRF-TOKEN");
-  if (csrf) {
-    headers["X-XSRF-TOKEN"] = decodeURIComponent(csrf);
-  }
-  let qs = queryString.stringify(options);
-  if (qs) {
-    qs = `?${qs}`;
-  }
-  return new Promise((res, rej) => {
-    fetch(process.env.HOST_ENDPOINT + prefix + url + qs, {
-      ...{
-        mode: "cors",
-        credentials: "include",
-        headers,
-      },
-    })
-      .then(async (response) => {
-        if (response.status === 204) {
-          response.ok ? res(await response) : rej(await response);
-        } else {
-          if (response.ok) {
-            if (json) {
-              res(await response.json());
-            } else {
-              res(await response.text());
-            }
+/**
+ * Запрос
+ * @param url - путь
+ * @param params - гет параметры
+ * @param options - тело запроса
+ * @param prefix - префикс пути
+ * @param json - данные в виде json или text
+ * @returns {Promise<unknown>}
+ */
+export function query(url, params = {}, options = {}, prefix = "/api/v1", json = true) {
+  try {
+    useDefaultStore().loading.push(true);
+    let headers = {
+      Accept: "application/json",
+      "Content-Type": "application/json;charset=utf-8",
+    };
+    let csrf = getCookie("XSRF-TOKEN");
+    if (csrf) {
+      headers["X-XSRF-TOKEN"] = decodeURIComponent(csrf);
+    }
+    let qs = queryString.stringify(params);
+    if (qs) {
+      qs = `?${qs}`;
+    }
+    return new Promise((res, rej) => {
+      fetch(process.env.HOST_ENDPOINT + prefix + url + qs, {
+        ...options,
+        ...{ mode: "cors", credentials: "include", headers },
+      })
+        .then(async (response) => {
+          if (response.status === 401) {
+            showAuthModal();
+          } else if (response.status === 204) {
+            response.ok ? res(await response) : rej(await response);
           } else {
-            rej(await response);
+            if (response.ok) {
+              if (json) {
+                res(await response.json());
+              } else {
+                res(await response.text());
+              }
+            } else {
+              rej(await response);
+            }
           }
-        }
-      })
-      .catch((err) => {
-        console.error("Request error", err);
-      })
-      .finally(() => {
-        useDefaultStore().loading.pop();
-      });
-  });
+        })
+        .catch((err) => {
+          console.error("Request error", err);
+        })
+        .finally(() => {
+          useDefaultStore().loading.pop();
+        });
+    });
+  } catch (e) {
+    console.error(e);
+  }
 }
 
 /**
@@ -111,6 +125,9 @@ export function convertPrice(price, currCode = "eur") {
       convertedPrice = price / currency.rate;
     }
   }
+  // return new Intl.NumberFormat("ru-RU", {
+  //   maximumFractionDigits: 2,
+  // }).format(convertedPrice);
   return parseFloat(convertedPrice.toFixed(2));
 }
 
@@ -124,4 +141,10 @@ export function hideBodyScroll(bool) {
   } else {
     document.body.classList.remove("no-scroll");
   }
+}
+
+export function showAuthModal() {
+  useDefaultStore().modals.push({
+    component: shallowRef(AuthModal),
+  });
 }

@@ -31,6 +31,8 @@ import { useGlobalStore } from "~/stores/global";
 import ModalsComponent from "~/components/modals/index.vue";
 import { useRoute } from "#app";
 import { useAuthStore } from "~/stores/auth";
+import { useBasketStore } from "~/stores/basket";
+import { useFavoritesStore } from "~/stores/favorites";
 
 useHead({
   title: "Skins Monster - Buy CS2/Dota 2 skins",
@@ -46,6 +48,8 @@ useHead({
 
 const route = useRoute();
 const globalStore = useGlobalStore();
+const basketStore = useBasketStore();
+const favoritesStore = useFavoritesStore();
 
 onMounted(() => {
   // check if token expire
@@ -53,11 +57,13 @@ onMounted(() => {
   getGlobalData();
 });
 
-async function getGlobalData() {
-  globalStore.currencies = await query("/currency");
+function getGlobalData() {
+  globalStore.currencies = query("/currency");
+  basketStore.get();
+  favoritesStore.get();
 
   try {
-    const { data } = await query("/user");
+    const { data } = query("/user");
     useAuthStore().user = data;
   } catch (e) {
     console.error(e);
