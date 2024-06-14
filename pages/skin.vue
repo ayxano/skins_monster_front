@@ -111,7 +111,6 @@ async function addToFavorites() {
 }
 
 onMounted(() => {
-  console.log("route query", routeQuery.value);
   get();
 });
 
