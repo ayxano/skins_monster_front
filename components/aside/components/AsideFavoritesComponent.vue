@@ -9,7 +9,7 @@
     <div class="aside-favorites__list">
       <nuxt-link :to="{ name: 'skin' }" v-for="(item, i) in skins" :key="i" class="aside-favorites__item">
         <ImgComponent class="aside-favorites__item-img" :src="skinImg(item)" :loader="false" />
-        <span class="aside-favorites__item-title">{{ skinTitle(item).name }}</span>
+        <span class="aside-favorites__item-title">{{ skinTitle(item).name || skinTitle(item).gun }}</span>
         <IconComponent class="aside-favorites__item-icon" name="arrow-right-1" />
       </nuxt-link>
     </div>

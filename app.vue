@@ -58,7 +58,7 @@ onMounted(() => {
 });
 
 function getGlobalData() {
-  globalStore.currencies = query("/currency");
+  globalStore.getCurrency();
   basketStore.get();
   favoritesStore.get();
 

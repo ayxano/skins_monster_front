@@ -53,27 +53,27 @@ const columns = [
     links: [
       {
         title: "Catalog",
-        route: { name: "index" },
+        route: { name: "catalog" },
       },
       {
         title: "About",
-        route: { name: "index" },
+        route: { name: "about" },
       },
       {
         title: "Reviews",
-        route: { name: "index" },
+        route: { name: "index", hash: "#reviews" },
       },
       {
         title: "FAQ",
-        route: { name: "index" },
+        route: { name: "index", hash: "#faq" },
       },
       {
         title: "Contacts",
-        route: { name: "index" },
+        route: { name: "contacts" },
       },
       {
         title: "Cancellations & Refunds",
-        route: { name: "index" },
+        route: { name: "dynamic" },
       },
     ],
   },

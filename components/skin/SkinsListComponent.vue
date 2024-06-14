@@ -1,5 +1,5 @@
 <template>
-  <div class="skins-list" :class="{ 'skins-list--row': row }">
+  <div v-if="list && list.length" class="skins-list" :class="{ 'skins-list--row': row }">
     <div v-if="title" class="skins-list__header">
       <h3 class="skins-list__title no-margin">{{ title }}</h3>
       <nuxt-link v-if="route" :to="route" class="skins-list__more">Show more</nuxt-link>
