@@ -1,6 +1,7 @@
 <template>
   <main class="page home-page">
     <div class="page__inner">
+      <!--      <LoadingCircleIndicator v-if="defaultStore.loading.length" />-->
       <WelcomeBannersComponent :list="welcome_banners" />
       <SkinsListComponent title="Popular" :list="popular_skins" row />
       <BenefitsComponent :list="advantages" />
@@ -16,11 +17,14 @@
 import { useHead } from "#app";
 import { onMounted, ref } from "vue";
 import { query } from "~/utils/global";
+// import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
+// import { useDefaultStore } from "~/stores/default";
 
 useHead({
   titleTemplate: "",
 });
 
+// const defaultStore = useDefaultStore();
 const welcome_banners = ref([]);
 const popular_skins = ref([]);
 const advantages = ref([]);

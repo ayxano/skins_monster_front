@@ -1,16 +1,16 @@
 <template>
-  <div class="user-card" :class="{ 'user-card--settings': settings }">
-    <div class="user-card__top">
+  <div class="user-card" :class="{ 'user-card--settings': settings, 'user-card--small': small }">
+    <div v-if="!small" class="user-card__top">
       <div class="user-card__actions">
         <button class="btn btn--sm btn--dark-light">Upload cover</button>
         <button class="user-card__action--remove btn btn--sm btn--dark-light">Remove</button>
       </div>
     </div>
     <div class="user-card__content">
-      <ImgComponent class="user-card__avatar" src="/images/tmp/user.jpg" />
+      <ImgComponent v-if="!small" class="user-card__avatar" src="/images/tmp/user.jpg" />
       <div class="user-card__info">
-        <span class="user-card__name">Eva Jones</span>
-        <span class="user-card__registered">Registered on October 5, 2020, 08:52</span>
+        <span class="user-card__name">{{ user.name }}</span>
+        <span class="user-card__registered">Registered on {{ registered }}</span>
       </div>
       <div class="user-card__actions">
         <button class="btn btn--sm btn--main">Choose avatar</button>
@@ -21,8 +21,23 @@
 </template>
 
 <script setup>
+import { computed } from "vue";
+import { useAuthStore } from "~/stores/auth";
+import dayjs from "dayjs";
+
 defineProps({
   settings: Boolean,
+  small: Boolean,
+});
+
+const authStore = useAuthStore();
+
+const user = computed(() => {
+  return authStore.user || {};
+});
+
+const registered = computed(() => {
+  return dayjs(user.value.created_at).format("MMMM DD, YYYY, HH:mm");
 });
 </script>
 
@@ -34,7 +49,6 @@ main_class = ".user-card"
 	display flex
 	flex-direction column
 	+below(620px) {
-
 	}
 
 	&--settings {
@@ -47,6 +61,15 @@ main_class = ".user-card"
 
 			&__info {
 				display none
+			}
+		}
+	}
+
+	&--small {
+		{ main_class } {
+			&__content {
+				margin: 0
+				padding: 40px
 			}
 		}
 	}

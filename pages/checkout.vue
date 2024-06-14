@@ -3,123 +3,64 @@
     <div class="page__inner">
       <BreadcrumbsComponent title="Checkout" />
       <div class="checkout-page__content">
-        <div class="checkout-page__body">
-          <CheckoutGameComponent v-for="(item, i) in checkout" :key="i" :data="item" />
-        </div>
-        <CheckoutAsideComponent />
+        <LoadingCircleIndicator v-if="pageLoading" />
+        <template v-else>
+          <div class="checkout-page__body">
+            <CheckoutGameComponent v-for="(item, i) in checkout" :key="i" :data="item" />
+          </div>
+          <CheckoutAsideComponent :basket="basket" />
+        </template>
       </div>
     </div>
   </main>
 </template>
 
 <script setup>
+import { useBasketStore } from "~/stores/basket";
+import { computed } from "vue";
+import { useDefaultStore } from "~/stores/default";
+import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
+
 // eslint-disable-next-line no-undef
 definePageMeta({
   authRequired: true,
 });
 
-const checkout = [
-  {
-    title: "Counter-Strike 2",
-    icon: {
-      name: "cs2",
-      category: "default",
+const basketStore = useBasketStore();
+const defaultStore = useDefaultStore();
+
+const appidTypes = computed(() => {
+  return defaultStore.types.appid;
+});
+
+const basket = computed(() => {
+  return basketStore.basket || [];
+});
+
+const pageLoading = computed(() => {
+  return defaultStore.loading.length && !(basket.value && basket.value.length);
+});
+
+const checkout = computed(() => {
+  return [
+    {
+      title: "Counter-Strike 2",
+      icon: {
+        name: "cs2",
+        category: "default",
+      },
+      list: basket.value.filter((i) => i && i.appid === appidTypes.value.CS2),
     },
-    skins: [
-      {
-        id: 1,
-        title: "AK-47",
-        subtitle: "Inheritance",
-        img: "/images/tmp/skin_card_1.png",
-        price: "$778",
-        float: 0.34054558,
-        exterior: "Field-Tested",
-        rarity: "Covert",
-        paintIndex: "707",
+    {
+      title: "DOTA2",
+      icon: {
+        name: "dota2",
+        category: "default",
       },
-      {
-        id: 2,
-        title: "MAC-10 | Heat",
-        subtitle: "Inheritance",
-        img: "/images/tmp/skin_card_2.png",
-        price: "$778",
-        old_price: "$2395.16",
-        float: 0.34054558,
-        exterior: "Field-Tested",
-        rarity: "Covert",
-        paintIndex: "707",
-      },
-      {
-        id: 3,
-        title: "Blue Steel",
-        subtitle: "Inheritance",
-        img: "/images/tmp/skin_card_3.png",
-        price: "$880",
-        old_price: "$2395.16",
-        float: 0.34054558,
-        exterior: "Field-Tested",
-        rarity: "Covert",
-        paintIndex: "707",
-      },
-      {
-        id: 4,
-        title: "Chrome Cannon",
-        subtitle: "Inheritance",
-        img: "/images/tmp/skin_card_4.png",
-        price: "$778",
-        old_price: "$1020.56",
-        float: 0.34054558,
-        exterior: "Field-Tested",
-        rarity: "Covert",
-        paintIndex: "707",
-      },
-    ],
-  },
-  {
-    title: "DOTA2",
-    icon: {
-      name: "dota2",
-      category: "default",
+      list: basket.value.filter((i) => i && i.appid === appidTypes.value.DOTA2),
     },
-    skins: [
-      {
-        id: 1,
-        title: "AK-47",
-        subtitle: "Inheritance",
-        img: "/images/tmp/skin_card_1.png",
-        price: "$778",
-        float: 0.34054558,
-        exterior: "Field-Tested",
-        rarity: "Covert",
-        paintIndex: "707",
-      },
-      {
-        id: 2,
-        title: "MAC-10 | Heat",
-        subtitle: "Inheritance",
-        img: "/images/tmp/skin_card_2.png",
-        price: "$778",
-        old_price: "$2395.16",
-        float: 0.34054558,
-        exterior: "Field-Tested",
-        rarity: "Covert",
-        paintIndex: "707",
-      },
-      {
-        id: 3,
-        title: "Blue Steel",
-        subtitle: "Inheritance",
-        img: "/images/tmp/skin_card_3.png",
-        price: "$880",
-        old_price: "$2395.16",
-        float: 0.34054558,
-        exterior: "Field-Tested",
-        rarity: "Covert",
-        paintIndex: "707",
-      },
-    ],
-  },
-];
+  ];
+});
 </script>
 
 <style lang="stylus">

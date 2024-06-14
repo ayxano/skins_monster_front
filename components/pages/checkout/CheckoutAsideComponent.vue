@@ -1,10 +1,10 @@
 <template>
-  <div class="checkout-aside">
+  <div v-if="basket && basket.length" class="checkout-aside">
     <div class="checkout-aside__block checkout-aside__block--divider">
       <div class="checkout-aside__header">
         <div>
           <h3 class="checkout-aside__title">Confirm order</h3>
-          <span class="checkout-aside__count">2 items in cart</span>
+          <span class="checkout-aside__count">{{ basket.length }} items in cart</span>
         </div>
         <nuxt-link :to="{ name: 'index', hash: '#faq' }" class="checkout-aside__faq btn btn--sm btn--hollow">
           <IconComponent name="messages" />
@@ -21,17 +21,21 @@
         <div class="checkout-aside__prices-list">
           <div class="checkout-aside__prices-item">
             <span class="checkout-aside__prices-item-title"> Suggested price </span>
-            <span class="checkout-aside__prices-item-value"> $4274.69 </span>
+            <span class="checkout-aside__prices-item-value"> ${{ basketPrice }} </span>
           </div>
-          <div class="checkout-aside__prices-item">
-            <span class="checkout-aside__prices-item-title"> You save </span>
-            <span class="checkout-aside__prices-item-value"> -$625.69 </span>
-          </div>
+          <!--          <div class="checkout-aside__prices-item">-->
+          <!--            <span class="checkout-aside__prices-item-title"> You save </span>-->
+          <!--            <span class="checkout-aside__prices-item-value"> -$625.69 </span>-->
+          <!--          </div>-->
           <div class="checkout-aside__prices-item checkout-aside__prices-item--total">
             <span class="checkout-aside__prices-item-title"> Total </span>
-            <span class="checkout-aside__prices-item-value"> €3,649.00 </span>
+            <span class="checkout-aside__prices-item-value"> €{{ basketPrice }} </span>
           </div>
         </div>
+      </div>
+      <div v-if="!trade_link" class="checkout-aside__trade-link">
+        Set your Steam trade link in
+        <nuxt-link :to="{ name: 'cabinet-settings' }">Profile settings</nuxt-link>.
       </div>
     </div>
     <div class="checkout-aside__block">
@@ -47,10 +51,11 @@
     </div>
     <div class="checkout-aside__block">
       <div class="checkout-aside__submit">
-        <nuxt-link :to="{ name: 'result', query: { success: true } }" class="btn btn--lg btn--main">
+        <button @click="submit" class="btn btn--lg btn--main no-hover" :disabled="!agreement || !trade_link">
           <span>Proceed to checkout</span>
-          <IconComponent name="arrow-right-1" />
-        </nuxt-link>
+          <LoadingCircleIndicator v-if="submitLoading" title="" />
+          <IconComponent v-else name="arrow-right-1" />
+        </button>
         <span class="checkout-aside__terms">
           By clicking Proceed to Checkout, you agree to our <a href="#">Terms of Service</a> and that you have
           read our <a href="#">Privacy Policy</a>.
@@ -61,14 +66,29 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { useBasketStore } from "~/stores/basket";
+import { convertPrice, query } from "~/utils/global";
+import { useDefaultStore } from "~/stores/default";
+import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
+import { useAuthStore } from "~/stores/auth";
 
+// const emits = defineEmits(["submit"]);
+defineProps({
+  basket: Array,
+});
+
+const authStore = useAuthStore();
+const defaultStore = useDefaultStore();
+const basketStore = useBasketStore();
 const agreement = ref(false);
+const submitLoading = ref(false);
 
 const methods = [
   {
     id: 1,
     title: "Debit card",
+    type: defaultStore.types.payment_type.GUAVAPAY,
     icon: {
       name: "card-pos",
       category: "icons",
@@ -77,6 +97,7 @@ const methods = [
   {
     id: 2,
     title: "Account balance",
+    type: defaultStore.types.payment_type.BALANCE,
     icon: {
       name: "empty-wallet",
       category: "icons",
@@ -85,6 +106,30 @@ const methods = [
 ];
 
 const paymentMethod = ref(methods[0]);
+
+const basketPrice = computed(() => {
+  return convertPrice(basketStore.price);
+});
+
+const trade_link = computed(() => {
+  return authStore.user?.trade_link;
+});
+
+async function submit() {
+  submitLoading.value = true;
+  let variables = {};
+  variables.payment_type = paymentMethod.value.type;
+  const res = await query(
+    "/orders",
+    {},
+    {
+      method: "POST",
+      body: JSON.stringify(variables),
+    }
+  );
+  submitLoading.value = false;
+  console.log("res", res);
+}
 </script>
 
 <style lang="stylus">
@@ -201,6 +246,15 @@ const paymentMethod = ref(methods[0]);
 			&-value {
 				text-align right
 			}
+		}
+	}
+
+	&__trade-link {
+		color var(--red)
+		font-size 0.875rem
+
+		a {
+			border-bottom 1px solid
 		}
 	}
 

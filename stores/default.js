@@ -11,6 +11,10 @@ export const useDefaultStore = defineStore({
         CS2: 730,
         DOTA2: 570,
       },
+      payment_type: {
+        BALANCE: "balance",
+        GUAVAPAY: "guavapay",
+      },
     },
     loading: [],
   }),

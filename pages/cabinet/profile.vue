@@ -1,6 +1,6 @@
 <template>
   <div class="cabinet-profile">
-    <UserCardComponent />
+    <UserCardComponent small />
   </div>
 </template>
 

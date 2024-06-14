@@ -1,13 +1,13 @@
 <template>
-  <div class="checkout-game">
+  <div v-if="data && data.list && data.list.length" class="checkout-game">
     <div class="checkout-game__header">
       <IconComponent class="checkout-game__icon" :name="data.icon.name" :category="data.icon.category" />
       <span class="checkout-game__title">{{ data.title }}</span>
-      <span class="checkout-game__count">{{ data.skins.length }} items</span>
+      <span class="checkout-game__count">{{ data.list?.length }} items</span>
     </div>
     <div class="checkout-game__body">
       <div class="checkout-game__skins">
-        <SkinCardHorizontalComponent v-for="(item, i) in data.skins" :key="i" :data="item" deletable />
+        <SkinCardHorizontalComponent v-for="(item, i) in data.list" :key="i" :data="item" deletable />
       </div>
     </div>
   </div>

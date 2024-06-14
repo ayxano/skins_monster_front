@@ -102,7 +102,10 @@ const exteriors = {
 };
 
 const inCart = computed(() => {
-  return basketStore.basket.map((i) => i.id).includes(props.data.id);
+  return basketStore.basket
+    .filter((i) => i)
+    .map((i) => i.id)
+    .includes(props.data.id);
 });
 
 const inFavorites = computed(() => {

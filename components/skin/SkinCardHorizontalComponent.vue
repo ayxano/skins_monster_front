@@ -1,36 +1,107 @@
 <template>
-  <div class="skin-card-hz" :class="{ 'skin-card-hz--deletable': deletable }">
+  <div v-if="data" class="skin-card-hz" :class="{ 'skin-card-hz--deletable': deletable }">
     <nuxt-link :to="{ name: 'skin' }" class="skin-card-hz__link"></nuxt-link>
-    <button v-if="deletable" class="skin-card-hz__delete btn btn--sm btn--hollow">
-      <IconComponent name="trash" />
+    <button @click.prevent="deleteSkin" v-if="deletable" class="skin-card-hz__delete btn btn--sm btn--hollow">
+      <LoadingCircleIndicator v-if="deleteLoading" title="" />
+      <IconComponent v-else name="trash" />
     </button>
-    <ImgComponent :src="data.img" class="skin-card-hz__img" />
+    <ImgComponent :src="skinImg" class="skin-card-hz__img" />
     <div class="skin-card-hz__info">
-      <span class="skin-card-hz__title">Desert Hydra</span>
-      <span class="skin-card-hz__params">Field-Tested Covert Sniper Rifle</span>
+      <span class="skin-card-hz__title">{{ skinTitle.name || skinTitle.gun }}</span>
+      <span class="skin-card-hz__params" v-if="skinFloat.exterior">{{ skinFloat.exterior }}</span>
       <span class="skin-card-hz__float">
-        <span>AWP</span>
-        <span class="skin-card-hz__float-dot"></span>
-        <span>{{ data.float }}</span>
-        <span class="skin-card-hz__float-dot"></span>
-        <span>Tradable</span>
+        <span>{{ skinTitle.gun }}</span>
+        <template v-if="skinFloat.value">
+          <span class="skin-card-hz__float-dot"></span>
+          <span>{{ skinFloat.value }}</span>
+        </template>
+        <!--        <span class="skin-card-hz__float-dot"></span>-->
+        <!--        <span>Tradable</span>-->
       </span>
     </div>
     <div class="skin-card-hz__prices">
-      <span class="skin-card-hz__price-old" v-if="data.old_price">{{ data.old_price }}</span>
-      <span class="skin-card-hz__price">{{ data.price }}</span>
+      <!--      <span class="skin-card-hz__price-old" v-if="data.old_price">{{ data.old_price }}</span>-->
+      <span class="skin-card-hz__price">€{{ skinPrice }}</span>
     </div>
   </div>
 </template>
 
 <script setup>
-defineProps({
+import { computed, ref } from "vue";
+import { convertPrice, isCS2 } from "~/utils/global";
+import { removeExterior } from "~/utils/skin";
+import { useBasketStore } from "~/stores/basket";
+import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
+
+const props = defineProps({
   data: {
     type: Object,
     default: () => ({}),
   },
   deletable: Boolean,
 });
+
+const basketStore = useBasketStore();
+let deleteLoading = ref(false);
+
+const exteriors = {
+  "Factory New": {
+    short: "FN",
+    range: "",
+  },
+  "Minimal Wear": {
+    short: "MW",
+    range: "",
+  },
+  "Field-Tested": {
+    short: "FT",
+    range: "",
+  },
+  "Well-Worn": {
+    short: "WW",
+    range: "",
+  },
+  "Battle-Scarred": {
+    short: "BS",
+    range: "",
+  },
+};
+
+const skinImg = computed(() => {
+  return `https://steamcommunity-a.akamaihd.net/economy/image/${props.data.icon_url}`;
+});
+
+const skinTitle = computed(() => {
+  if (isCS2(props.data)) {
+    let [gun, ...name] = props.data.hash_name.split(" | ");
+    name = name.join(" | ");
+    name = removeExterior(name);
+    return { gun, name };
+  }
+  return { name: props.data.hash_name };
+});
+
+const skinFloat = computed(() => {
+  if (isCS2(props.data)) {
+    const exterior = props.data.tags.find((item) => item.category === "Exterior")?.name;
+    return {
+      value: props.data?.extra?.paintwear,
+      shortName: exterior ? exteriors[exterior].short : "",
+      exterior,
+    };
+  }
+  return {};
+});
+
+const skinPrice = computed(() => {
+  return convertPrice(props.data.price);
+});
+
+async function deleteSkin() {
+  deleteLoading.value = true;
+  await basketStore.delete(props.data.id);
+  deleteLoading.value = false;
+}
 </script>
 
 <style lang="stylus">

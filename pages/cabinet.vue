@@ -31,13 +31,13 @@ const pages = [
     favorites: true,
     banner: true,
   },
-  // {
-  //   title: "Settings",
-  //   icon: "money-send",
-  //   route: { name: "cabinet-settings" },
-  //   favorites: false,
-  //   banner: true,
-  // },
+  {
+    title: "Settings",
+    icon: "money-send",
+    route: { name: "cabinet-settings" },
+    favorites: false,
+    banner: true,
+  },
   {
     title: "Orders",
     icon: "receipt-item",

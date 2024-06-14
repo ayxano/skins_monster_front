@@ -64,6 +64,7 @@ function getGlobalData() {
     basketStore.get();
     favoritesStore.get();
     const { data } = query("/user");
+    console.log("user", data);
     useAuthStore().user = data;
   } catch (e) {
     console.error(e);

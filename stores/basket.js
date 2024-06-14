@@ -6,10 +6,18 @@ export const useBasketStore = defineStore({
   state: () => ({
     basket: [],
   }),
+  getters: {
+    price: (state) =>
+      state.basket
+        .filter((i) => i)
+        .reduce((acc, item) => {
+          return acc + item.price;
+        }, 0),
+  },
   actions: {
     async get() {
       const { items } = await query("/basket");
-      this.basket = items;
+      this.basket = items || [];
     },
     async add(data) {
       let variables = {};

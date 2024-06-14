@@ -1,6 +1,6 @@
 <template>
   <div class="cabinet-settings">
-    <UserCardComponent settings />
+    <!--    <UserCardComponent settings />-->
     <UserSettingsFormComponent />
   </div>
 </template>
