@@ -47,6 +47,7 @@ useHead({
 });
 
 const route = useRoute();
+const authStore = useAuthStore();
 const globalStore = useGlobalStore();
 const basketStore = useBasketStore();
 const favoritesStore = useFavoritesStore();
@@ -59,16 +60,9 @@ onMounted(() => {
 
 function getGlobalData() {
   globalStore.getCurrency();
-
-  try {
-    basketStore.get();
-    favoritesStore.get();
-    const { data } = query("/user");
-    console.log("user", data);
-    useAuthStore().user = data;
-  } catch (e) {
-    console.error(e);
-  }
+  authStore.get();
+  basketStore.get();
+  favoritesStore.get();
 }
 </script>
 

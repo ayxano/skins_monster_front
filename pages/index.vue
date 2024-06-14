@@ -37,6 +37,7 @@ async function get() {
   query("/skins", {
     limit: 8,
     page: 1,
+    // group_by: "hash_name",
   }).then(({ items }) => {
     console.log("popular_skins", items);
     popular_skins.value = items;

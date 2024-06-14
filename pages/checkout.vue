@@ -4,12 +4,13 @@
       <BreadcrumbsComponent title="Checkout" />
       <div class="checkout-page__content">
         <LoadingCircleIndicator v-if="pageLoading" />
-        <template v-else>
+        <template v-else-if="basket && basket.length">
           <div class="checkout-page__body">
             <CheckoutGameComponent v-for="(item, i) in checkout" :key="i" :data="item" />
           </div>
           <CheckoutAsideComponent :basket="basket" />
         </template>
+        <span v-else>Empty</span>
       </div>
     </div>
   </main>

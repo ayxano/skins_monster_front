@@ -1,75 +1,132 @@
 <template>
   <main class="page skin-page">
     <div class="page__inner">
-      <BreadcrumbsComponent title="Doppler Phase 1" :links="breadcrumbs" />
-      <div class="skin-page__content">
-        <SkinPagePreviewComponent />
-        <SkinPageAsideComponent />
+      <BreadcrumbsComponent :title="routeQuery.hash_name" :links="breadcrumbs" />
+      <LoadingCircleIndicator v-if="defaultStore.loading.length" />
+      <div v-else-if="data && data.id" class="skin-page__content">
+        <SkinPagePreviewComponent
+          :data="data"
+          :add-to-favorites="addToFavorites"
+          :in-cart="inCart"
+          :in-favorites="inFavorites"
+          :favorites-loading="favoritesLoading"
+          :float="skinFloat"
+        />
+        <SkinPageAsideComponent
+          :data="data"
+          :add-to-favorites="addToFavorites"
+          :in-cart="inCart"
+          :in-favorites="inFavorites"
+          :favorites-loading="favoritesLoading"
+          :float="skinFloat"
+        />
       </div>
-      <SkinsListComponent title="Similar items" :list="similar_skins" row />
-      <SkinsListComponent title="Recommended Gloves" :list="similar_skins" row />
+      <div v-else class="skin-page__content">Item not found</div>
+      <!--      <SkinsListComponent title="Similar items" :list="similar_skins" row />-->
+      <!--      <SkinsListComponent title="Recommended Gloves" :list="similar_skins" row />-->
       <BottomPageBannerComponent />
     </div>
   </main>
 </template>
 
 <script setup>
+import { computed, onMounted, ref } from "vue";
+import { useRoute } from "#app";
+import { isCS2, query, showAuthModal } from "~/utils/global";
+import { useAuthStore } from "~/stores/auth";
+import { useBasketStore } from "~/stores/basket";
+import { useFavoritesStore } from "~/stores/favorites";
+import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
+import { useDefaultStore } from "~/stores/default";
+
+const route = useRoute();
+let data = ref({});
+const defaultStore = useDefaultStore();
+const authStore = useAuthStore();
+const basketStore = useBasketStore();
+const favoritesStore = useFavoritesStore();
+const favoritesLoading = ref(false);
+
 const breadcrumbs = [
   {
     title: "Catalog",
     route: { name: "catalog" },
   },
-  {
-    title: "Knife",
-  },
 ];
 
-const similar_skins = [
-  {
-    id: 1,
-    title: "AK-47",
-    subtitle: "Inheritance",
-    img: "/images/tmp/skin_card_1.png",
-    price: "$778",
-    float: 0.34054558,
-    exterior: "Field-Tested",
-    rarity: "Covert",
-    paintIndex: "707",
+const exteriors = {
+  "Factory New": {
+    short: "FN",
+    range: "",
   },
-  {
-    id: 2,
-    title: "MAC-10 | Heat",
-    subtitle: "Inheritance",
-    img: "/images/tmp/skin_card_2.png",
-    price: "$778",
-    float: 0.34054558,
-    exterior: "Field-Tested",
-    rarity: "Covert",
-    paintIndex: "707",
+  "Minimal Wear": {
+    short: "MW",
+    range: "",
   },
-  {
-    id: 3,
-    title: "Blue Steel",
-    subtitle: "Inheritance",
-    img: "/images/tmp/skin_card_3.png",
-    price: "$880",
-    float: 0.34054558,
-    exterior: "Field-Tested",
-    rarity: "Covert",
-    paintIndex: "707",
+  "Field-Tested": {
+    short: "FT",
+    range: "",
   },
-  {
-    id: 4,
-    title: "Chrome Cannon",
-    subtitle: "Inheritance",
-    img: "/images/tmp/skin_card_4.png",
-    price: "$778",
-    float: 0.34054558,
-    exterior: "Field-Tested",
-    rarity: "Covert",
-    paintIndex: "707",
+  "Well-Worn": {
+    short: "WW",
+    range: "",
   },
-];
+  "Battle-Scarred": {
+    short: "BS",
+    range: "",
+  },
+};
+
+const inCart = computed(() => {
+  return basketStore.basket
+    .filter((i) => i)
+    .map((i) => i.id)
+    .includes(data.value.id);
+});
+
+const inFavorites = computed(() => {
+  return favoritesStore.favorites.map((i) => i.id).includes(data.value.id);
+});
+
+const skinFloat = computed(() => {
+  if (isCS2(data.value)) {
+    const exterior = data.value.tags.find((item) => item.category === "Exterior")?.name;
+    return { value: data.value?.extra?.paintwear, shortName: exterior ? exteriors[exterior].short : "" };
+  }
+  return {};
+});
+
+async function addToFavorites() {
+  if (authStore.user) {
+    favoritesLoading.value = true;
+    if (!inFavorites.value) {
+      await favoritesStore.add(data.value);
+    } else {
+      await favoritesStore.delete(data.value.id);
+    }
+    favoritesLoading.value = false;
+  } else {
+    showAuthModal();
+  }
+}
+
+onMounted(() => {
+  console.log("route query", routeQuery.value);
+  get();
+});
+
+const routeQuery = computed(() => {
+  return route.query || {};
+});
+
+async function get() {
+  data.value = await query("/skin", {
+    ...routeQuery.value,
+    // skin_id: routeQuery.value.skin_id,
+    // hash_name: decodeURIComponent(routeQuery.value.hash_name),
+    // app_id: routeQuery.value.app_id,
+  });
+}
 </script>
 
 <style lang="stylus">

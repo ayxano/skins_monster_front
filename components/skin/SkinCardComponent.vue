@@ -1,6 +1,9 @@
 <template>
   <div v-if="data && data.id" class="skin-card" :class="{ 'skin-card--in-row': inRow }">
-    <nuxt-link :to="{ name: 'skin' }" class="skin-card__link"></nuxt-link>
+    <nuxt-link
+      :to="{ name: 'skin', query: { skin_id: data.id, hash_name: data.hash_name, app_id: data.appid } }"
+      class="skin-card__link"
+    ></nuxt-link>
     <div class="skin-card__header">
       <ImgComponent :src="skinImg" class="skin-card__img" :loader="false" />
       <div class="skin-card__header-cover">

@@ -37,6 +37,7 @@
         Set your Steam trade link in
         <nuxt-link :to="{ name: 'cabinet-settings' }">Profile settings</nuxt-link>.
       </div>
+      <!--			<button> /skinpay/trade-link refill balance</button>-->
     </div>
     <div class="checkout-aside__block">
       <div class="checkout-aside__agreement">

@@ -2,40 +2,59 @@
   <div class="skin-aside">
     <div class="skin-aside__info skin-aside-block">
       <div class="skin-aside__category">
-        <span>Talon Knife</span>
-        <span>Factory New</span>
+        <span>{{ skinTitle.gun }}</span>
+        <span>{{ float.exterior }}</span>
       </div>
-      <span class="skin-aside-block__title">Doppler Phase 1 </span>
+      <span class="skin-aside-block__title">{{ skinTitle.name }}</span>
       <div class="skin-aside__prices">
-        <span class="skin-aside__price">$979.55</span>
-        <span class="skin-aside__price-steam"> Steam price: <span>$1,178.68</span> </span>
+        <span class="skin-aside__price">€{{ skinPrice }}</span>
+        <!--        <span class="skin-aside__price-steam"> Steam price: <span>$1,178.68</span> </span>-->
       </div>
     </div>
     <div class="skin-aside__actions">
-      <button class="btn btn--lg btn--main">
-        <span>Add to cart</span>
-        <IconComponent name="bag-2" />
+      <button @click="addToBasket" class="btn btn--lg btn--main">
+        <span v-if="inCart">Added to cart</span>
+        <span v-else>Add to cart</span>
+        <LoadingCircleIndicator v-if="basketLoading" title="" />
+        <IconComponent v-else name="bag-2" />
       </button>
-      <button class="btn btn--lg btn--hollow">
-        <IconComponent name="star" />
+      <button
+        @click="addToFavorites"
+        :class="{ 'skin-aside__action--active': inFavorites }"
+        class="btn btn--lg btn--hollow"
+      >
+        <LoadingCircleIndicator v-if="favoritesLoading" title="" />
+        <IconComponent v-else name="star" />
       </button>
     </div>
-    <div class="skin-aside__float skin-aside-block">
+    <div v-if="float && float.value" class="skin-aside__float skin-aside-block">
       <span class="skin-aside-block__title skin-aside__float-title">
         <span>Wear Range</span>
         <!--        <IconComponent name="info-circle" />-->
       </span>
-      <SkinFloatComponent />
+      <SkinFloatComponent :float="float" />
     </div>
-    <div class="skin-aside__details skin-aside-block">
+    <div v-if="tags && tags.length" class="skin-aside__details skin-aside-block">
       <div class="skin-aside-block__title skin-aside__details-title">
         <span>Summary</span>
         <!--        <IconComponent name="info-circle" />-->
       </div>
       <ul class="skin-aside__details-list">
-        <li v-for="(item, i) in details" :key="i" class="skin-aside__details-item">
-          <span>{{ item.title }}</span>
-          <span>{{ item.value }}</span>
+        <li v-if="float && float.value" class="skin-aside__details-item">
+          <span>Float</span>
+          <span>{{ float.value }}</span>
+        </li>
+        <li v-if="data.extra && data.extra.paintseed" class="skin-aside__details-item">
+          <span>Paint seed</span>
+          <span>{{ data.extra.paintseed }}</span>
+        </li>
+        <li v-if="data.extra && data.extra.paintindex" class="skin-aside__details-item">
+          <span>Paint index</span>
+          <span>{{ data.extra.paintindex }}</span>
+        </li>
+        <li v-for="(item, i) in tags" :key="i" class="skin-aside__details-item">
+          <span>{{ item.category }}</span>
+          <span>{{ item.name }}</span>
         </li>
       </ul>
     </div>
@@ -44,36 +63,61 @@
 </template>
 
 <script setup>
-const details = [
-  {
-    title: "Category",
-    value: "Skin",
-  },
-  {
-    title: "Quality",
-    value: "Covert",
-  },
-  {
-    title: "Paint seed",
-    value: "224",
-  },
-  {
-    title: "Float",
-    value: "0.0348266065120697",
-  },
-  {
-    title: "Exterior",
-    value: "Factory New",
-  },
-  {
-    title: "Type",
-    value: "Knife",
-  },
-  {
-    title: "Paint index",
-    value: "852",
-  },
-];
+import { computed, ref } from "vue";
+import { convertPrice, isCS2, showAuthModal } from "~/utils/global";
+import { useAuthStore } from "~/stores/auth";
+import { useBasketStore } from "~/stores/basket";
+import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
+import { removeExterior } from "~/utils/skin";
+
+const props = defineProps({
+  data: Object,
+  addToFavorites: Function,
+  inCart: Boolean,
+  inFavorites: Boolean,
+  favoritesLoading: Boolean,
+  float: Object,
+});
+
+const authStore = useAuthStore();
+const basketStore = useBasketStore();
+const availableTags = ["Tournament", "TournamentTeam", "ProPlayer"];
+let basketLoading = ref(false);
+
+const tags = computed(() => {
+  if (props.data && props.data.tags && props.data.tags.length) {
+    return props.data.tags.filter((item) => !availableTags.includes(item.category));
+  }
+  return [];
+});
+
+const skinPrice = computed(() => {
+  return convertPrice(props.data.price);
+});
+
+const skinTitle = computed(() => {
+  if (isCS2(props.data)) {
+    let [gun, ...name] = props.data.hash_name.split(" | ");
+    name = name.join(" | ");
+    name = removeExterior(name);
+    return { gun, name };
+  }
+  return { name: props.data.hash_name };
+});
+
+async function addToBasket() {
+  if (authStore.user) {
+    basketLoading.value = true;
+    if (!props.inCart) {
+      await basketStore.add(props.data);
+    } else {
+      await basketStore.delete(props.data.id);
+    }
+    basketLoading.value = false;
+  } else {
+    showAuthModal();
+  }
+}
 </script>
 
 <style lang="stylus">
@@ -177,6 +221,13 @@ const details = [
 		}
 	}
 
+	&__action {
+		&--active.btn {
+			color var(--main)
+			border-color var(--main)
+		}
+	}
+
 	&__details {
 		&-list {
 			display flex
@@ -191,6 +242,7 @@ const details = [
 			gap: 15px
 			color: var(--gray-dark, #D4F0FF);
 			font-size: 0.875rem
+			padding: 5px
 
 			span:first-child {
 				flex-grow 1

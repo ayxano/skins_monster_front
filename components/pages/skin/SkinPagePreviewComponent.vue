@@ -2,31 +2,56 @@
   <div class="skin-page-preview">
     <div class="skin-page-preview__img">
       <div class="ratio-container">
-        <ImgComponent src="/images/tmp/skin_page.png" />
+        <ImgComponent :src="skinImg" />
       </div>
     </div>
     <div class="skin-page-preview__actions">
-      <button class="skin-page-preview__action btn btn--md btn--dark-light">
-        <IconComponent name="star" />
+      <button @click="addToFavorites" class="skin-page-preview__action btn btn--md btn--dark-light">
+        <LoadingCircleIndicator v-if="favoritesLoading" title="" />
+        <IconComponent v-else name="star" />
         <span>Add to favorite</span>
       </button>
-      <button class="skin-page-preview__action btn btn--md btn--dark-light">
+      <a :href="skinImg" class="skin-page-preview__action btn btn--md btn--dark-light" target="_blank">
         <IconComponent name="gallery-add" />
         <span>Screenshot</span>
-      </button>
-      <button class="skin-page-preview__action btn btn--md btn--dark-light">
+      </a>
+      <a
+        v-if="data.extra"
+        :href="data.extra.inspect_link"
+        class="skin-page-preview__action btn btn--md btn--dark-light"
+      >
         <IconComponent name="mouse-circle" />
         <span>Inspect in game</span>
-      </button>
-      <button class="skin-page-preview__action btn btn--md btn--dark-light">
+      </a>
+      <a :href="steamLink" class="skin-page-preview__action btn btn--md btn--dark-light" target="_blank">
         <IconComponent category="default" name="steam" />
         <span>View at Steam</span>
-      </button>
+      </a>
     </div>
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+import { computed } from "vue";
+import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
+
+const props = defineProps({
+  data: Object,
+  addToFavorites: Function,
+  inCart: Boolean,
+  inFavorites: Boolean,
+  favoritesLoading: Boolean,
+  float: Object,
+});
+
+const skinImg = computed(() => {
+  return `https://steamcommunity-a.akamaihd.net/economy/image/${props.data.icon_url}`;
+});
+
+const steamLink = computed(() => {
+  return `https://steamcommunity.com/market/listings/730/${props.data.hash_name}`;
+});
+</script>
 
 <style lang="stylus">
 @import "../styles/mixins/ratio.styl"
