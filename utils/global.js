@@ -1,7 +1,7 @@
 import { useDefaultStore } from "~/stores/default";
 import queryString from "query-string";
 import { useGlobalStore } from "~/stores/global";
-import {shallowRef} from "vue";
+import { shallowRef } from "vue";
 import AuthModal from "~/components/modals/components/AuthModal.vue";
 
 export function getCookie(name) {
@@ -46,9 +46,10 @@ export function query(url, params = {}, options = {}, prefix = "/api/v1", json =
         ...{ mode: "cors", credentials: "include", headers },
       })
         .then(async (response) => {
-          if (response.status === 401) {
-            showAuthModal();
-          } else if (response.status === 204) {
+          // if (response.status === 401) {
+          //   showAuthModal();
+          // } else
+          if (response.status === 204) {
             response.ok ? res(await response) : rej(await response);
           } else {
             if (response.ok) {

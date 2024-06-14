@@ -61,15 +61,17 @@
 import { computed, ref } from "vue";
 import { useBasketStore } from "~/stores/basket";
 import { useFavoritesStore } from "~/stores/favorites";
-import { isCS2, convertPrice } from "~/utils/global";
+import { isCS2, convertPrice, showAuthModal } from "~/utils/global";
 import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
 import { removeExterior } from "~/utils/skin";
+import { useAuthStore } from "~/stores/auth";
 
 const props = defineProps({
   data: Object,
   inRow: Boolean, // карточка находится в линии, не в гриде
 });
 
+const authStore = useAuthStore();
 const basketStore = useBasketStore();
 const favoritesStore = useFavoritesStore();
 const dropdownVisible = ref(false);
@@ -134,23 +136,31 @@ const skinPrice = computed(() => {
 });
 
 async function addToBasket() {
-  basketLoading.value = true;
-  if (!inCart.value) {
-    await basketStore.add(props.data);
+  if (authStore.user) {
+    basketLoading.value = true;
+    if (!inCart.value) {
+      await basketStore.add(props.data);
+    } else {
+      await basketStore.delete(props.data.id);
+    }
+    basketLoading.value = false;
   } else {
-    await basketStore.delete(props.data.id);
+    showAuthModal();
   }
-  basketLoading.value = false;
 }
 
 async function addToFavorites() {
-  favoritesLoading.value = true;
-  if (!inFavorites.value) {
-    await favoritesStore.add(props.data);
+  if (authStore.user) {
+    favoritesLoading.value = true;
+    if (!inFavorites.value) {
+      await favoritesStore.add(props.data);
+    } else {
+      await favoritesStore.delete(props.data.id);
+    }
+    favoritesLoading.value = false;
   } else {
-    await favoritesStore.delete(props.data.id);
+    showAuthModal();
   }
-  favoritesLoading.value = false;
 }
 </script>
 
