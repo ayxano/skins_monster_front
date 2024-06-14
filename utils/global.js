@@ -41,7 +41,7 @@ export function query(url, params = {}, options = {}, prefix = "/api/v1", json =
       qs = `?${qs}`;
     }
     return new Promise((res, rej) => {
-      fetch(process.env.HOST_ENDPOINT + prefix + url + qs, {
+      fetch(process.env.HOST_ENDPOINT || "https://skins.comrades.dev" + prefix + url + qs, {
         ...options,
         ...{ mode: "cors", credentials: "include", headers },
       })
