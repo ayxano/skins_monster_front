@@ -3,7 +3,7 @@
     <div class="checkout-game__header">
       <IconComponent class="checkout-game__icon" :name="data.icon.name" :category="data.icon.category" />
       <span class="checkout-game__title">{{ data.title }}</span>
-      <span class="checkout-game__count">{{ data.list?.length }} items</span>
+      <span class="checkout-game__count">{{ data.list?.length }} {{ basketItemsPlural }}</span>
     </div>
     <div class="checkout-game__body">
       <div class="checkout-game__skins">
@@ -14,8 +14,15 @@
 </template>
 
 <script setup>
-defineProps({
+import { computed } from "vue";
+import pluralize from "pluralize";
+
+const props = defineProps({
   data: Object,
+});
+
+const basketItemsPlural = computed(() => {
+  return pluralize("item", props.data?.list?.length || 0);
 });
 </script>
 

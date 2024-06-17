@@ -4,7 +4,7 @@
       <div class="checkout-aside__header">
         <div>
           <h3 class="checkout-aside__title">Confirm order</h3>
-          <span class="checkout-aside__count">{{ basket.length }} items in cart</span>
+          <span class="checkout-aside__count">{{ basket.length }} {{ basketItemsPlural }} in cart</span>
         </div>
         <nuxt-link :to="{ name: 'index', hash: '#faq' }" class="checkout-aside__faq btn btn--sm btn--hollow">
           <IconComponent name="messages" />
@@ -73,9 +73,10 @@ import { convertPrice, query } from "~/utils/global";
 import { useDefaultStore } from "~/stores/default";
 import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
 import { useAuthStore } from "~/stores/auth";
+import pluralize from "pluralize";
 
 // const emits = defineEmits(["submit"]);
-defineProps({
+const props = defineProps({
   basket: Array,
 });
 
@@ -114,6 +115,10 @@ const basketPrice = computed(() => {
 
 const trade_link = computed(() => {
   return authStore.user?.trade_link;
+});
+
+const basketItemsPlural = computed(() => {
+  return pluralize("item", props.basket.length);
 });
 
 async function submit() {
