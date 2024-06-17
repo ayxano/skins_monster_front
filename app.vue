@@ -21,18 +21,17 @@
 </style>
 
 <script setup>
-import { useHead } from "#app";
+import { useHead, useRoute } from "#app";
 import HeaderComponent from "~/components/header/index.vue";
 import FooterComponent from "~/components/footer/index.vue";
 import AsideComponent from "~/components/aside/index.vue";
 import { onMounted } from "vue";
-import { csrf, query } from "~/utils/global";
 import { useGlobalStore } from "~/stores/global";
 import ModalsComponent from "~/components/modals/index.vue";
-import { useRoute } from "#app";
 import { useAuthStore } from "~/stores/auth";
 import { useBasketStore } from "~/stores/basket";
 import { useFavoritesStore } from "~/stores/favorites";
+import { csrf, getCookie } from "~/utils/global";
 
 useHead({
   title: "Skins Monster - Buy CS2/Dota 2 skins",
@@ -53,8 +52,10 @@ const basketStore = useBasketStore();
 const favoritesStore = useFavoritesStore();
 
 onMounted(() => {
-  // check if token expire
-  csrf();
+  let token = getCookie("XSRF-TOKEN");
+  if (!token) {
+    csrf();
+  }
   getGlobalData();
 });
 

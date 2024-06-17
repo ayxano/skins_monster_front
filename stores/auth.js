@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import {query} from "~/utils/global";
+import { query } from "~/utils/global";
 
 export const useAuthStore = defineStore({
   id: "auth",
@@ -10,6 +10,7 @@ export const useAuthStore = defineStore({
     async get() {
       const { data } = await query("/user");
       this.user = data;
+      return data;
     },
-  }
+  },
 });
