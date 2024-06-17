@@ -18,11 +18,11 @@ const tabs = [
   },
   {
     id: 2,
-    title: "Paid",
+    title: "Open",
   },
   {
     id: 3,
-    title: "Open",
+    title: "Paid",
   },
   {
     id: 4,

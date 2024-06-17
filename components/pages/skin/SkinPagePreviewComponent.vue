@@ -11,7 +11,7 @@
         <IconComponent v-else name="star" />
         <span>Add to favorite</span>
       </button>
-      <a :href="skinImg" class="skin-page-preview__action btn btn--md btn--dark-light" target="_blank">
+      <a :href="screenshotImg" class="skin-page-preview__action btn btn--md btn--dark-light" target="_blank">
         <IconComponent name="gallery-add" />
         <span>Screenshot</span>
       </a>
@@ -46,6 +46,13 @@ const props = defineProps({
 
 const skinImg = computed(() => {
   return `https://steamcommunity-a.akamaihd.net/economy/image/${props.data.icon_url}`;
+});
+
+const screenshotImg = computed(() => {
+  if (props.data.icon_url_large) {
+    return `https://steamcommunity-a.akamaihd.net/economy/image/${props.data.icon_url_large}`;
+  }
+  return skinImg.value;
 });
 
 const steamLink = computed(() => {

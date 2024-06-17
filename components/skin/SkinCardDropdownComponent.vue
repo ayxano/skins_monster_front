@@ -56,11 +56,15 @@ const tags = computed(() => {
 
 	&__param {
 		display flex
+		flex-wrap wrap
 		align-items center
 		gap: 20px
 		justify-content space-between
 		font-size 0.75rem
 		line-height normal
+		+below(480px) {
+			gap: 0 10px
+		}
 
 		&-title {
 			color: var(--gray-dark, #D4F0FF);
@@ -68,6 +72,7 @@ const tags = computed(() => {
 
 		&-value {
 			text-align right
+			margin-left auto
 		}
 	}
 }

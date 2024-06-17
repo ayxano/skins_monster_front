@@ -50,6 +50,7 @@ const showSearch = computed(() => {
 		height 50px
 		width auto
 		display flex
+		margin-right auto
 		+above(1025px) {
 			display none
 		}
