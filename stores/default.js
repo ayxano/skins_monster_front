@@ -17,5 +17,7 @@ export const useDefaultStore = defineStore({
       },
     },
     loading: [],
+    // список ключей, по которым определяется загружаемые данные
+    keys: ["advantages", "filters", "basket", "user", "favorites"],
   }),
 });

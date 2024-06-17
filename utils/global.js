@@ -26,53 +26,49 @@ export function csrf() {
  * @returns {Promise<unknown>}
  */
 export function query(url, params = {}, options = {}, prefix = "/api/v1", json = true) {
-  try {
-    useDefaultStore().loading.push(true);
-    let headers = {
-      Accept: "application/json",
-      "Content-Type": "application/json;charset=utf-8",
-    };
-    let csrf = getCookie("XSRF-TOKEN");
-    if (csrf) {
-      headers["X-XSRF-TOKEN"] = decodeURIComponent(csrf);
-    }
-    let qs = queryString.stringify(params);
-    if (qs) {
-      qs = `?${qs}`;
-    }
-    return new Promise((res, rej) => {
-      fetch(process.env.HOST_ENDPOINT + prefix + url + qs, {
-        ...options,
-        ...{ mode: "cors", credentials: "include", headers },
-      })
-        .then(async (response) => {
-          // if (response.status === 401) {
-          //   showAuthModal();
-          // } else
-          if (response.status === 204) {
-            response.ok ? res(await response) : rej(await response);
-          } else {
-            if (response.ok) {
-              if (json) {
-                res(await response.json());
-              } else {
-                res(await response.text());
-              }
-            } else {
-              rej(await response);
-            }
-          }
-        })
-        .catch((err) => {
-          console.error("Request error", err);
-        })
-        .finally(() => {
-          useDefaultStore().loading.pop();
-        });
-    });
-  } catch (e) {
-    console.error(e);
+  useDefaultStore().loading.push(true);
+  let headers = {
+    Accept: "application/json",
+    "Content-Type": "application/json;charset=utf-8",
+  };
+  let csrf = getCookie("XSRF-TOKEN");
+  if (csrf) {
+    headers["X-XSRF-TOKEN"] = decodeURIComponent(csrf);
   }
+  let qs = queryString.stringify(params);
+  if (qs) {
+    qs = `?${qs}`;
+  }
+  return new Promise((res, rej) => {
+    fetch(process.env.HOST_ENDPOINT + prefix + url + qs, {
+      ...options,
+      ...{ mode: "cors", credentials: "include", headers },
+    })
+      .then(async (response) => {
+        // if (response.status === 401) {
+        //   showAuthModal();
+        // } else
+        if (response.status === 204) {
+          response.ok ? res(response) : rej(response);
+        } else {
+          if (response.ok) {
+            if (json) {
+              res(await response.json());
+            } else {
+              res(await response.text());
+            }
+          } else {
+            rej(response);
+          }
+        }
+      })
+      .catch((err) => {
+        console.error("Request error", err);
+      })
+      .finally(() => {
+        useDefaultStore().loading.pop();
+      });
+  });
 }
 
 /**

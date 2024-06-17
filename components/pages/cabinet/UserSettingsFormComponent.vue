@@ -51,7 +51,7 @@ async function submit() {
   let variables = {};
   variables.link = form.value.trade_link.value;
   variables.trade_link = form.value.trade_link.value;
-  const res = await query(
+  await query(
     "/user/trade",
     {},
     {
@@ -59,6 +59,7 @@ async function submit() {
       body: JSON.stringify(variables),
     }
   );
+  await authStore.get();
   submitLoading.value = false;
 }
 </script>

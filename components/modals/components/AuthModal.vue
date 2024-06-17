@@ -34,7 +34,6 @@ async function login() {
     link.href = url;
     link.click();
   }
-  loading.value = false;
 }
 </script>
 

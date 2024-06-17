@@ -7,27 +7,35 @@
 <script setup>
 import { onMounted } from "vue";
 import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
-import { query } from "~/utils/global";
-import { useAuthStore } from "~/stores/auth";
+import { csrf, query } from "~/utils/global";
 import { useRouter } from "#app";
+import { useAuthStore } from "~/stores/auth";
 
 // eslint-disable-next-line no-undef
 definePageMeta({
   fullPage: true,
 });
 
-onMounted(async () => {
+const router = useRouter();
+const authStore = useAuthStore();
+
+onMounted(() => {
+  confirm();
+});
+
+async function confirm() {
   if (location.search) {
     try {
-      const { data } = await query(`/user/auth/callback${location.search}`);
-      useAuthStore().user = data;
-      await useRouter().push({ name: "index" });
+      await csrf();
+      await query(`/user/auth/callback${location.search}`);
+      await authStore.get();
+      await router.push({ name: "index" });
     } catch (e) {
       console.error(e);
-      useRouter.push({ name: "index" });
+      await router.push({ name: "index" });
     }
   }
-});
+}
 </script>
 
 <style lang="stylus">
