@@ -56,7 +56,7 @@ const showSearch = computed(() => {
 		}
 	}
 
-	&-search {
+	&-search.input {
 		width 50%
 		+below(1024px) {
 			width	auto
@@ -67,7 +67,7 @@ const showSearch = computed(() => {
 		}
 	}
 
-	&-socials {
+	&-socials.socials {
 		+below(1100px) {
 			display none
 		}

@@ -39,7 +39,6 @@ onMounted(() => {
 watch(
   () => route.query,
   () => {
-    console.log("watch query changed", route.query);
     // parseParams();
     get();
   }
@@ -96,7 +95,6 @@ function setParams() {
     page: meta.value.page,
   };
   router.push({ name: "catalog", query: params });
-  console.log("setParams", params);
 }
 </script>
 

@@ -51,7 +51,10 @@
             <span class="footer-column__title">Terms</span>
             <ul class="footer-column__links">
               <li v-for="(link, i) in pages" :key="i">
-                <nuxt-link class="footer-column__links-link" :to="{ name: 'dynamic' }">
+                <nuxt-link
+                  class="footer-column__links-link"
+                  :to="{ name: 'dynamic-id', params: { id: link.id } }"
+                >
                   <IconComponent name="arrow-right-3" />
                   <span>{{ link.name }}</span>
                 </nuxt-link>
@@ -94,7 +97,7 @@ const links = [
   },
   {
     title: "Cancellations & Refunds",
-    route: { name: "dynamic" },
+    route: { name: "dynamic-id", query: { "positions[]": ["cancellations_refunds"] } },
   },
 ];
 

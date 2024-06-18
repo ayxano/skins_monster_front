@@ -112,12 +112,11 @@ export function elementInViewport(el) {
 export function convertPrice(price, currCode = "eur") {
   const currencies = useGlobalStore().currencies || [];
   let currency = currencies[0];
-  let parsedPrice,
-    convertedPrice = parseFloat(price) || 0;
-  if (parsedPrice && currencies && currencies.length) {
+  let convertedPrice = parseFloat(price) || 0;
+  if (price && currencies && currencies.length) {
     currency = currencies.find((item) => item.code === currCode);
     if (currency) {
-      convertedPrice = parsedPrice / currency.rate;
+      convertedPrice = parseFloat(price) / currency.rate;
     }
   }
   // return new Intl.NumberFormat("ru-RU", {

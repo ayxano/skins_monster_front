@@ -37,7 +37,7 @@
             </button>
             <span class="contacts-page__feedback-terms">
               By use form, you agree to the
-              <nuxt-link :to="{ name: 'dynamic' }">User Agreement and Privacy Policy</nuxt-link>.
+              <nuxt-link :to="{ name: 'dynamic-id', query: { 'positions[]': 'privacy_policy' } }">User Agreement and Privacy Policy</nuxt-link>.
             </span>
           </form>
         </div>
