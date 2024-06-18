@@ -39,6 +39,7 @@ async function get() {
     ...routeQuery.value,
     limit: meta.value.perPage,
     page: meta.value.page,
+    appid: 730,
   });
   data.value = items;
 }

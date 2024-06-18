@@ -15,7 +15,8 @@ export const useBasketStore = defineStore({
         .filter((i) => i)
         .reduce((acc, item) => {
           return acc + item.price;
-        }, 0),
+        }, 0)
+        .toFixed(2),
   },
   actions: {
     async get() {

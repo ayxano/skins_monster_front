@@ -12,5 +12,8 @@ export const useAuthStore = defineStore({
       this.user = data;
       return data;
     },
+    async refill() {
+      return await query("/skinpay/trade-link");
+    },
   },
 });

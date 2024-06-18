@@ -52,14 +52,10 @@ export function query(url, params = {}, options = {}, prefix = "/api/v1", json =
         if (response.status === 204) {
           response.ok ? res(response) : rej(response);
         } else {
-          if (response.ok) {
-            if (json) {
-              res(await response.json());
-            } else {
-              res(await response.text());
-            }
+          if (json) {
+            response.ok ? res(await response.json()) : rej(await response.json());
           } else {
-            rej(response);
+            response.ok ? res(await response.text()) : rej(response);
           }
         }
       })

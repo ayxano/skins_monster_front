@@ -21,23 +21,44 @@
         <div class="checkout-aside__prices-list">
           <div class="checkout-aside__prices-item">
             <span class="checkout-aside__prices-item-title"> Suggested price </span>
-            <span class="checkout-aside__prices-item-value"> ${{ basketPrice }} </span>
+            <span class="checkout-aside__prices-item-value"> €{{ basketPrice }} </span>
           </div>
           <!--          <div class="checkout-aside__prices-item">-->
           <!--            <span class="checkout-aside__prices-item-title"> You save </span>-->
-          <!--            <span class="checkout-aside__prices-item-value"> -$625.69 </span>-->
+          <!--            <span class="checkout-aside__prices-item-value"> -€0.00 </span>-->
           <!--          </div>-->
           <div class="checkout-aside__prices-item checkout-aside__prices-item--total">
             <span class="checkout-aside__prices-item-title"> Total </span>
             <span class="checkout-aside__prices-item-value"> €{{ basketPrice }} </span>
           </div>
+          <template v-if="paymentMethod.type === 'balance'">
+            <div class="checkout-aside__prices-item">
+              <span class="checkout-aside__prices-item-title"> Balance </span>
+              <span class="checkout-aside__prices-item-value"> €{{ balance }} </span>
+            </div>
+            <div
+              v-if="balanceDeficit > 0"
+              class="checkout-aside__prices-item checkout-aside__prices-item--error"
+            >
+              <span class="checkout-aside__prices-item-title"> Low balance, You need </span>
+              <span class="checkout-aside__prices-item-value"> €{{ balanceDeficit }} </span>
+            </div>
+          </template>
         </div>
       </div>
+      <button
+        @click.prevent="refill"
+        v-if="balanceDeficit > 0 && paymentMethod.type === 'balance'"
+        class="btn btn--lg btn--main"
+      >
+        <span>Refill the balance</span>
+        <LoadingCircleIndicator v-if="refillLoading" title="" />
+        <IconComponent v-else name="arrow-right-1" />
+      </button>
       <div v-if="!trade_link" class="checkout-aside__trade-link">
         Set your Steam trade link in
         <nuxt-link :to="{ name: 'cabinet-settings' }">Profile settings</nuxt-link>.
       </div>
-      <!--			<button> /skinpay/trade-link refill balance</button>-->
     </div>
     <div class="checkout-aside__block">
       <div class="checkout-aside__agreement">
@@ -52,7 +73,7 @@
     </div>
     <div class="checkout-aside__block">
       <div class="checkout-aside__submit">
-        <button @click="submit" class="btn btn--lg btn--main no-hover" :disabled="!agreement || !trade_link">
+        <button @click="submit" class="btn btn--lg btn--main no-hover" :disabled="submitDisabled">
           <span>Proceed to checkout</span>
           <LoadingCircleIndicator v-if="submitLoading" title="" />
           <IconComponent v-else name="arrow-right-1" />
@@ -67,24 +88,30 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, shallowRef } from "vue";
 import { useBasketStore } from "~/stores/basket";
-import { convertPrice, query } from "~/utils/global";
+import { convertPrice } from "~/utils/global";
 import { useDefaultStore } from "~/stores/default";
 import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
 import { useAuthStore } from "~/stores/auth";
 import pluralize from "pluralize";
+import { useOrdersStore } from "~/stores/orders";
+import AlertModal from "~/components/modals/components/AlertModal.vue";
+import { useRouter } from "#app";
 
 // const emits = defineEmits(["submit"]);
 const props = defineProps({
   basket: Array,
 });
 
+const router = useRouter();
+const ordersStore = useOrdersStore();
 const authStore = useAuthStore();
 const defaultStore = useDefaultStore();
 const basketStore = useBasketStore();
 const agreement = ref(false);
 const submitLoading = ref(false);
+const refillLoading = ref(false);
 
 const methods = [
   {
@@ -121,19 +148,78 @@ const basketItemsPlural = computed(() => {
   return pluralize("item", props.basket.length);
 });
 
+const balance = computed(() => {
+  return authStore.user?.balance || 0;
+});
+
+const balanceDeficit = computed(() => {
+  return basketPrice.value - balance.value;
+});
+
+const submitDisabled = computed(() => {
+  if (paymentMethod.value.type === "balance") {
+    return !agreement.value || !trade_link.value || balanceDeficit.value > 0;
+  }
+  return !agreement.value || !trade_link.value;
+});
+
 async function submit() {
   submitLoading.value = true;
   let variables = {};
   variables.payment_type = paymentMethod.value.type;
-  const res = await query(
-    "/orders",
-    {},
-    {
-      method: "POST",
-      body: JSON.stringify(variables),
+  try {
+    const { data } = await ordersStore.add(variables);
+    if (data && data.guavapay_payment_url) {
+      let link = document.createElement("a");
+      link.href = data.guavapay_payment_url;
+      link.click();
+    } else {
+      showAlertModal({
+        title: "SUCCESS",
+        text: "Your order has been successfully created.",
+        confirmBtnTitle: "Orders",
+        callback: () => {
+          router.push({ name: "cabinet-orders" });
+        },
+      });
     }
-  );
-  submitLoading.value = false;
+
+    await basketStore.get();
+  } catch (e) {
+    if (e.message) {
+      showAlertModal({
+        title: "ERROR",
+        text: e.message,
+        confirmBtnTitle: "Orders",
+        callback: () => {
+          router.push({ name: "cabinet-orders" });
+        },
+      });
+    }
+  } finally {
+    submitLoading.value = false;
+  }
+}
+
+async function refill() {
+  refillLoading.value = true;
+  try {
+    const { link } = await authStore.refill();
+    let el = document.createElement("a");
+    el.href = link;
+    el.click();
+  } catch (e) {
+    console.log("Refill error", e);
+  } finally {
+    refillLoading.value = false;
+  }
+}
+
+function showAlertModal(options) {
+  defaultStore.modals.push({
+    component: shallowRef(AlertModal),
+    options,
+  });
 }
 </script>
 
@@ -241,6 +327,14 @@ async function submit() {
 			&--total {
 				font-size: 1.375rem
 				font-weight 700
+			}
+
+			&--error {
+				color var(--red)
+			}
+
+			&--error &-title {
+				color var(--red)
 			}
 
 			&-title {
