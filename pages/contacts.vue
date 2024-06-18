@@ -108,7 +108,7 @@ const form = ref({
   },
   content: {
     value: null,
-    errors: ["asldkfj"],
+    errors: [],
   },
 });
 
