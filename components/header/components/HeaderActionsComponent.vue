@@ -16,8 +16,10 @@
     <nuxt-link
       to="/cabinet/profile"
       class="header-actions__item header-actions__item--profile btn btn--lg btn--dark-light"
+      :class="{ 'header-actions__item--authorized': authorized }"
     >
-      <IconComponent class="icon--lg" name="frame-1" />
+      <IconComponent v-if="authorized" class="icon--lg" name="profile-tick" />
+      <IconComponent v-else class="icon--lg" name="frame-1" />
     </nuxt-link>
     <button class="header-actions__item header-actions__item--menu btn">
       <IconComponent class="icon--lg" name="menu-burger" />
@@ -28,15 +30,21 @@
 <script setup>
 import { useBasketStore } from "~/stores/basket";
 import { computed } from "vue";
+import { useAuthStore } from "~/stores/auth";
 
 defineProps({
   showSearch: Boolean,
 });
 
 const basketStore = useBasketStore();
+const authStore = useAuthStore();
 
 const basketLength = computed(() => {
   return basketStore.basket?.length || 0;
+});
+
+const authorized = computed(() => {
+  return authStore.user && authStore.user.id;
 });
 </script>
 
@@ -92,6 +100,12 @@ const basketLength = computed(() => {
 				.icon {
 					color var(--main)
 				}
+			}
+		}
+
+		&--authorized {
+			.icon svg path {
+				fill var(--main)
 			}
 		}
 
