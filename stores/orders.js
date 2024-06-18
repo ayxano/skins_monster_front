@@ -7,8 +7,8 @@ export const useOrdersStore = defineStore({
     orders: [],
   }),
   actions: {
-    async get() {
-      const { data } = await query("/orders");
+    async get(params = {}) {
+      const { data } = await query("/orders", params);
       this.orders = data || [];
     },
     async add(variables) {

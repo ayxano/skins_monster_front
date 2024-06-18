@@ -7,93 +7,46 @@
       :class="{ 'orders-accordion__item--active': i === activeItemIndex }"
     >
       <div @click="setActive($event, i)" class="orders-accordion__item-header">
-        <span class="orders-accordion__item-title">{{ item.title }}</span>
-        <span class="orders-accordion__item-date">{{ item.date }}</span>
+        <span class="orders-accordion__item-title">Order #{{ item.id }}</span>
+        <span class="orders-accordion__item-date">{{ createdDate(item) }}</span>
         <IconComponent name="arrow-down-1" />
       </div>
       <div ref="accItemBody" class="orders-accordion__item-body">
         <div class="orders-accordion__item-skins">
-          <SkinCardHorizontalComponent v-for="(skin, index) in item.skins" :key="index" :data="skin" />
+          <SkinCardHorizontalComponent
+            v-for="(skin, index) in item.items"
+            :key="index"
+            :data="getSkin(skin)"
+          />
         </div>
       </div>
     </div>
+    <span v-if="!(list && list.length)">No orders</span>
   </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
 import { elementInViewport } from "~/utils/global";
+import dayjs from "dayjs";
 
-const skins = [
-  {
-    id: 1,
-    title: "AK-47",
-    subtitle: "Inheritance",
-    img: "/images/tmp/skin_card_1.png",
-    price: "$778",
-    float: 0.34054558,
-    exterior: "Field-Tested",
-    rarity: "Covert",
-    paintIndex: "707",
-  },
-  {
-    id: 2,
-    title: "MAC-10 | Heat",
-    subtitle: "Inheritance",
-    img: "/images/tmp/skin_card_2.png",
-    price: "$778",
-    old_price: "$2395.16",
-    float: 0.34054558,
-    exterior: "Field-Tested",
-    rarity: "Covert",
-    paintIndex: "707",
-  },
-  {
-    id: 3,
-    title: "Blue Steel",
-    subtitle: "Inheritance",
-    img: "/images/tmp/skin_card_3.png",
-    price: "$880",
-    old_price: "$2395.16",
-    float: 0.34054558,
-    exterior: "Field-Tested",
-    rarity: "Covert",
-    paintIndex: "707",
-  },
-  {
-    id: 4,
-    title: "Chrome Cannon",
-    subtitle: "Inheritance",
-    img: "/images/tmp/skin_card_4.png",
-    price: "$778",
-    old_price: "$1020.56",
-    float: 0.34054558,
-    exterior: "Field-Tested",
-    rarity: "Covert",
-    paintIndex: "707",
-  },
-];
-
-const list = [
-  {
-    title: "Order #123",
-    date: "17.02.2024",
-    skins: skins,
-  },
-  {
-    title: "Order #325",
-    date: "13.02.2024",
-    skins: skins,
-  },
-  {
-    title: "Order #325",
-    date: "13.01.2024",
-    skins: skins,
-  },
-];
+defineProps({
+  list: Array,
+});
 
 const activeItemIndex = ref(null);
 const accItemBody = ref(null);
+
+function createdDate(item) {
+  return dayjs(item.created_at).format("DD.MM.YYYY");
+}
+
+function getSkin(data) {
+  return {
+    ...data.item,
+    ...data,
+  };
+}
 
 function setActive(e, i) {
   const el = accItemBody.value[i];
