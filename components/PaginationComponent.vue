@@ -1,5 +1,5 @@
 <template>
-  <ul v-show="total && total > 1" class="pagination">
+  <ul v-show="pages && pages > 1" class="pagination">
     <template v-if="page >= maxPages">
       <li>
         <button class="pagination__link" type="button" @click="$emit('change', 1)">
@@ -24,7 +24,7 @@
     </li>
     <li class="pagination-next">
       <button
-        v-show="page !== total"
+        v-show="page !== pages"
         class="pagination__link"
         type="button"
         @click="$emit('change', page + 1)"
@@ -33,7 +33,7 @@
       </button>
     </li>
     <li>
-      <button v-show="page !== total" class="pagination__link" type="button" @click="$emit('change', total)">
+      <button v-show="page !== pages" class="pagination__link" type="button" @click="$emit('change', total)">
         <IconComponent name="arrow-right-duo-chevron" />
       </button>
     </li>
@@ -46,26 +46,27 @@ export default {
   emits: ["change"],
   props: {
     page: Number,
-    meta: Object, // объект с data и paginatorInfo
+    total: Number,
+    meta: Object, // объект с total и first
     maxPages: {
       type: Number,
       default: 4,
     },
   },
   computed: {
-    total() {
+    pages() {
       if (this.meta) {
-        return Math.ceil(this.meta.total / this.meta.perPage);
+        return Math.ceil(this.total / this.meta.first);
       }
       return 0;
     },
     currentPages() {
       let startPage, endPage;
       const maxPages = this.maxPages;
-      if (this.total <= maxPages) {
+      if (this.pages <= maxPages) {
         // total pages less than max so show all pages
         startPage = 1;
-        endPage = this.total;
+        endPage = this.pages;
       } else {
         // total pages more than max so calculate start and end pages
         const maxPagesBeforeCurrentPage = Math.floor(maxPages / 2);
@@ -74,10 +75,10 @@ export default {
           // current page near the start
           startPage = 1;
           endPage = maxPages;
-        } else if (this.page + maxPagesAfterCurrentPage >= this.total) {
+        } else if (this.page + maxPagesAfterCurrentPage >= this.pages) {
           // current page near the end
-          startPage = this.total - maxPages + 1;
-          endPage = this.total;
+          startPage = this.pages - maxPages + 1;
+          endPage = this.pages;
         } else {
           // current page somewhere in the middle
           startPage = this.page - maxPagesBeforeCurrentPage;

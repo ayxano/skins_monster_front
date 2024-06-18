@@ -7,7 +7,12 @@
     </div>
     <div class="checkout-game__body">
       <div class="checkout-game__skins">
-        <SkinCardHorizontalComponent v-for="(item, i) in data.list" :key="i" :data="item" deletable />
+        <SkinCardHorizontalComponent
+          v-for="(item, i) in data.list"
+          :key="`${i}_${item.id}`"
+          :data="item"
+          deletable
+        />
       </div>
     </div>
   </div>

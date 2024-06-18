@@ -3,7 +3,15 @@
     <TabsComponent v-model="activeGame" :tabs="games" small same-tabs />
     <PerfectScrollbar tag="ul" class="aside-categories__list">
       <li v-for="(item, i) in activeGame.categories" :key="i" class="aside-categories__item">
-        <nuxt-link :to="{ name: 'catalog' }" class="aside-categories__item-link">{{ item }}</nuxt-link>
+        <nuxt-link
+          :to="{
+            name: 'catalog',
+            query: { filters: JSON.stringify({ type: [item] }), appid: appidTypes[activeGame.title] },
+          }"
+          class="aside-categories__item-link"
+        >
+          {{ item }}
+        </nuxt-link>
       </li>
     </PerfectScrollbar>
   </div>

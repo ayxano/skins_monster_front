@@ -9,7 +9,7 @@
       <nuxt-link v-if="route" :to="route" class="skins-list__more">Show more</nuxt-link>
     </div>
     <div class="skins-list__content">
-      <SkinCardComponent v-for="(item, i) in list" :key="i" :data="item" :in-row="row" />
+      <SkinCardComponent v-for="item in list" :key="item.id" :data="item" :in-row="row" />
     </div>
   </div>
 </template>

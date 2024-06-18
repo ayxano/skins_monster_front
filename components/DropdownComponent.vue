@@ -34,7 +34,7 @@ const props = defineProps({
 const route = useRoute();
 
 watch(
-  () => route.path && route.name,
+  () => route.fullPath,
   () => {
     hide();
   }

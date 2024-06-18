@@ -19,13 +19,12 @@
     </label>
     <div class="select__input-container">
       <div class="select__field" ref="input">
-        <label class="select__field-label" :for="id" aria-hidden="true"></label>
+        <label class="select__field-label" :for="id" aria-hidden="true"> </label>
         <input
           :id="id"
           type="text"
           class="select__input"
           :value="inputValue"
-          @input="query = $event.target.value"
           @focus="focus"
           :placeholder="placeholder"
         />
@@ -33,14 +32,16 @@
           <label :for="id"></label>
           <button type="button" v-for="(value, i) in modelValue" :key="i" @click="remove(i)">
             <span>{{ getOptionTitle(value) }}</span>
-            <IconComponent name="close-circle" />
+            <IconComponent name="close" />
           </button>
         </div>
         <button class="select__clear" type="button" @click="clear" v-if="canShowClear">
-          <IconComponent name="close-circle" />
+          <IconComponent name="close" />
         </button>
         <label :for="id" class="select__arrow">
-          <IconComponent name="arrow-down" />
+          <slot name="icon">
+            <IconComponent name="arrow-down-1" />
+          </slot>
         </label>
       </div>
       <SelectListComponent :query="query" v-bind="$props" @update:modelValue="listUpdate">
@@ -99,6 +100,10 @@ export default {
     multiple: Boolean,
     clearable: Boolean,
     disabled: Boolean,
+    iconRotate: {
+      type: Boolean,
+      default: true,
+    },
   },
   data: () => ({
     query: "",
@@ -194,7 +199,6 @@ export default {
 
 <style lang="stylus">
 .select {
-  width: 100%;
   display inline-grid
   grid-gap 5px
   position relative
@@ -222,9 +226,9 @@ export default {
     }
 
     ^[0]--list-bottom& {
-      bottom 0
-      border-top-right-radius 0
-      border-top-left-radius 0
+      bottom -5px
+      //border-top-right-radius 0
+      //border-top-left-radius 0
       transform translateY(100%)
     }
 
@@ -273,8 +277,9 @@ export default {
     }
 
     .icon svg {
-      width: 16px;
-      height: 16px;
+      width: 14px;
+      height: 14px;
+			color: var(--gray-dark)
     }
   }
 
@@ -284,26 +289,28 @@ export default {
     top 0
     width 100%
     height 100%
-    cursor text
-    border-radius: 6px;
+    cursor pointer
+    border-radius: 5px;
   }
 
   &__field {
     display flex
-    background: var(--white)
-    border-radius 5px
+    border-radius var(--small-radius, 5px)
     height 40px
     transition background .2s, box-shadow .2s, border-color .2s
-    border: 1px solid var(--text-disabled, #C3C3C3);
-    background: var(--white, #FFF);
+		border: 2px solid var(--dark-light-2, #1F3B4B);
     align-items stretch
     justify-content stretch
-    padding 1px 16px
+    padding 1px 13px
     position relative
     padding-right 1px
     width 100%
     overflow hidden
     z-index: 2;
+
+		&:hover {
+			background var(--dark-light-2)
+		}
 
     ^[0]--small & {
       height 36px
@@ -315,7 +322,6 @@ export default {
     }
 
     ^[0]--values-visible & {
-      background: var(--white);
     }
 
     //^[0]--focused & {
@@ -347,7 +353,6 @@ export default {
     }
 
     ^[0]--error & {
-      background: var(--white);
       border-color var(--red);
     }
   }
@@ -360,9 +365,9 @@ export default {
     font-weight: 500;
     font-size: 0.875rem;
     line-height: 20px;
-    color: var(--dark);
+    color: var(--gray-dark);
     height 100%
-    width 100%
+    width 80px
     opacity 1
     overflow visible
 
@@ -376,7 +381,7 @@ export default {
       font-weight: 400;
       font-size: 0.875rem
       line-height: 16px;
-			color: var(--gray-dark-2, #516D7D);
+			color: var(--gray-dark, #d4f0ff);
     }
 
     ^[0]--values-visible & {
@@ -410,10 +415,11 @@ export default {
       width: 15px;
       height: 15px;
       transition .2s
+			color: var(--gray-dark)
 
-      ^[0]--focused & {
-        transform rotate(180deg)
-      }
+      //^[0]--focused & {
+      //  transform rotate(180deg)
+      //}
     }
   }
 
@@ -465,7 +471,6 @@ export default {
         height 18px
         padding: 3px
         border-radius: 999px;
-        background var(--white)
 
         svg path {
           fill var(--dark)
