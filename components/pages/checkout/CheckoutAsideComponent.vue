@@ -64,9 +64,12 @@
       <div class="checkout-aside__agreement">
         <CheckboxComponent v-model="agreement">
           <span>
-            I have read and understood my <a href="#">right of cancellation</a>. I agree to the beginning of
-            the contract execution before the end of the cancellation period. I am aware that I thereby lose
-            my right of cancellation.
+            I have read and understood my
+            <nuxt-link :to="{ name: 'dynamic-id', query: { 'positions[]': 'privacy_policy' } }">
+              right of cancellation.
+            </nuxt-link>
+            I agree to the beginning of the contract execution before the end of the cancellation period. I am
+            aware that I thereby lose my right of cancellation.
           </span>
         </CheckboxComponent>
       </div>
@@ -149,7 +152,7 @@ const basketItemsPlural = computed(() => {
 });
 
 const balance = computed(() => {
-  return authStore.user?.balance || 0;
+  return parseFloat(authStore.user?.eur_balance) || 0;
 });
 
 const balanceDeficit = computed(() => {
