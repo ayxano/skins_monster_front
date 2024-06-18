@@ -1,6 +1,7 @@
 <template>
   <div class="header-actions">
     <nuxt-link
+      v-if="showSearch"
       :to="{ name: 'catalog' }"
       class="header-actions__item header-actions__item--search btn btn--lg btn--dark-light"
     >
@@ -27,6 +28,10 @@
 <script setup>
 import { useBasketStore } from "~/stores/basket";
 import { computed } from "vue";
+
+defineProps({
+  showSearch: Boolean,
+});
 
 const basketStore = useBasketStore();
 

@@ -29,11 +29,11 @@ function confirm() {
       csrf();
       setTimeout(() => {
         query(`/user/auth/callback${location.search}`);
-      }, 2000);
+      }, 1500);
       setTimeout(() => {
         authStore.get();
         router.push({ name: "index" });
-      }, 4000);
+      }, 5000);
     } catch (e) {
       console.error(e);
       router.push({ name: "index" });

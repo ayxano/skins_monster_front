@@ -15,7 +15,7 @@
       </template>
     </InputComponent>
     <SocialsComponent class="header-socials" />
-    <HeaderActionsComponent />
+    <HeaderActionsComponent :show-search="showSearch" />
   </header>
 </template>
 
