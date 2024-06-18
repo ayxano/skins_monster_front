@@ -1,5 +1,5 @@
 <template>
-  <div class="welcome-banners">
+  <div v-if="list && list.length" class="welcome-banners">
     <SliderComponent
       :items="list"
       :slider-options="sliderOptions"

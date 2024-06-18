@@ -4,12 +4,17 @@ import { query } from "~/utils/global";
 export const useFavoritesStore = defineStore({
   id: "favorites",
   state: () => ({
-    favorites: [],
+    favorites_list: [],
   }),
+  getters: {
+    favorites(state) {
+      return state.favorites_list.filter((i) => i && i.id);
+    },
+  },
   actions: {
     async get() {
       const { items } = await query("/favorite");
-      this.favorites = items;
+      this.favorites_list = items;
     },
     async add(data) {
       let variables = {};

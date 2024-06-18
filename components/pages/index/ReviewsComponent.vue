@@ -1,18 +1,17 @@
 <template>
-  <div id="reviews" class="reviews">
+  <div v-if="list && list.length" id="reviews" class="reviews">
     <h3 class="reviews-title">Reviews</h3>
     <div class="reviews-content">
       <SliderComponent :slider-options="sliderOptions" :items="list" v-slot="{ item }" class="reviews-slider">
         <div class="reviews-slider__item" data-size="100px">
-          <ImgComponent class="reviews-slider__item-img" :src="item.img" />
+          <ImgComponent class="reviews-slider__item-img" :img="item.image" />
         </div>
       </SliderComponent>
-      <div class="reviews-author">
+      <div v-if="active" class="reviews-author">
         <span class="reviews-author__quote">
-          Easy functionality, very fair pricing, but I will say the absolute key is their instance customer
-          service!
+          {{ active.content }}
         </span>
-        <span class="reviews-author__name">Mike, Gamer</span>
+        <span class="reviews-author__name">{{ active.title }}</span>
       </div>
     </div>
   </div>
@@ -20,6 +19,14 @@
 
 <script setup>
 import SliderComponent from "~/components/SliderComponent.vue";
+import { ref, computed } from "vue";
+
+const props = defineProps({
+  list: {
+    type: Array,
+    default: () => [],
+  },
+});
 
 const sliderOptions = {
   slidesPerView: "auto",
@@ -35,50 +42,18 @@ const sliderOptions = {
       spaceBetween: 80,
     },
   },
+  on: {
+    slideChange(swiper) {
+      activeIndex.value = swiper.activeIndex || 0;
+    },
+  },
 };
 
-const list = [
-  {
-    name: "Mike, Gamer",
-    text: "Easy functionality, very fair pricing, but I will say the absolute key is their instance customer service!",
-    img: "/images/tmp/review_author_1.png",
-  },
-  {
-    name: "Deimos, Superman",
-    text: "Easy functionality, very fair pricing, but I will say the absolute key is their instance customer service!Easy functionality, very fair pricing, but I will say the absolute key is their instance customer service!",
-    img: "/images/tmp/review_author_2.png",
-  },
-  {
-    name: "Mike, Gamer",
-    text: "Easy functionality, very fair pricing, the absolute key is their instance customer service!",
-    img: "/images/tmp/review_author_3.png",
-  },
-  {
-    name: "Deimos, Superman",
-    text: "Easy functionality, very fair pricing, but I will say the absolute key is their instance customer service!Easy functionality, very fair pricing, but I will say the absolute key is their instance customer service!",
-    img: "/images/tmp/review_author_4.png",
-  },
-  {
-    name: "Deimos, Superman",
-    text: "Easy functionality, very fair pricing, but I will say the absolute key is their instance customer service!Easy functionality, very fair pricing, but I will say the absolute key is their instance customer service!",
-    img: "/images/tmp/skin_card_1.png",
-  },
-  {
-    name: "Mike, Gamer",
-    text: "Easy functionality, very fair pricing, the absolute key is their instance customer service!",
-    img: "/images/tmp/review_author_3.png",
-  },
-  {
-    name: "Deimos, Superman",
-    text: "Easy functionality, very fair pricing, but I will say the absolute key is their instance customer service!Easy functionality, very fair pricing, but I will say the absolute key is their instance customer service!",
-    img: "/images/tmp/review_author_4.png",
-  },
-  {
-    name: "Deimos, Superman",
-    text: "Easy functionality, very fair pricing, but I will say the absolute key is their instance customer service!Easy functionality, very fair pricing, but I will say the absolute key is their instance customer service!",
-    img: "/images/tmp/skin_card_2.png",
-  },
-];
+const activeIndex = ref(0);
+
+const active = computed(() => {
+  return props.list[activeIndex.value];
+});
 </script>
 
 <style lang="stylus">

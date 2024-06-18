@@ -3,6 +3,7 @@ import queryString from "query-string";
 import { useGlobalStore } from "~/stores/global";
 import { shallowRef } from "vue";
 import AuthModal from "~/components/modals/components/AuthModal.vue";
+import pluralize from "pluralize";
 
 export function getCookie(name) {
   let cookie = document.cookie.split(";").find((c) => c.startsWith(name));
@@ -35,7 +36,7 @@ export function query(url, params = {}, options = {}, prefix = "/api/v1", json =
   if (csrf) {
     headers["X-XSRF-TOKEN"] = decodeURIComponent(csrf);
   }
-  let qs = queryString.stringify(params);
+  let qs = queryString.stringify(params, { arrayFormat: "bracket" });
   if (qs) {
     qs = `?${qs}`;
   }
@@ -144,4 +145,8 @@ export function showAuthModal() {
   useDefaultStore().modals.push({
     component: shallowRef(AuthModal),
   });
+}
+
+export function pluralWord(count, word) {
+  return pluralize(word, count);
 }

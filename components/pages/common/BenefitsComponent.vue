@@ -1,5 +1,5 @@
 <template>
-  <div class="benefits">
+  <div v-if="list && list.length" class="benefits">
     <div v-for="(item, i) in list" :key="i" class="benefits-item">
       <ImgComponent :img="item.image" class="benefits-item__icon" />
       <span class="benefits-item__title">{{ item.title }}</span>

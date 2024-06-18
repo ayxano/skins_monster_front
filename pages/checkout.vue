@@ -21,8 +21,8 @@ import { useBasketStore } from "~/stores/basket";
 import { computed } from "vue";
 import { useDefaultStore } from "~/stores/default";
 import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
+import { definePageMeta } from "#imports";
 
-// eslint-disable-next-line no-undef
 definePageMeta({
   authRequired: true,
 });

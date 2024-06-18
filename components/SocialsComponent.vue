@@ -4,38 +4,25 @@
       class="socials-item btn btn--lg btn--dark-light"
       v-for="(item, i) in socials"
       :key="i"
-      href="#"
+      :href="item.link"
       rel="nofollow"
       :title="item.title"
+      target="_blank"
     >
-      <IconComponent :name="item.icon" category="default" />
+      <ImgComponent :img="item.icon" />
     </a>
   </div>
 </template>
 
 <script setup>
-const socials = [
-  {
-    title: "YouTube",
-    icon: "youtube",
-  },
-  {
-    title: "Facebook",
-    icon: "facebook",
-  },
-  {
-    title: "X",
-    icon: "x",
-  },
-  {
-    title: "Discord",
-    icon: "discord",
-  },
-  {
-    title: "TikTok",
-    icon: "tiktok",
-  },
-];
+import { useGlobalStore } from "~/stores/global";
+import { computed } from "vue";
+
+const globalStore = useGlobalStore();
+
+const socials = computed(() => {
+  return globalStore.company?.socials || [];
+});
 </script>
 
 <style lang="stylus">
@@ -51,7 +38,8 @@ const socials = [
 		flex-shrink 0
 		padding: 10px
 
-		.icon {
+		.icon,
+		.img {
 			width 20px
 			height 20px
 		}

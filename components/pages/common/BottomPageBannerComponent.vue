@@ -1,14 +1,20 @@
 <template>
-  <a href="#" class="bottom-banner hover-image">
-    <ImgComponent class="bottom-banner__img" src="/images/tmp/bottom_banner.jpg" />
-    <ImgComponent
-      class="bottom-banner__img bottom-banner__img--mobile"
-      src="/images/tmp/bottom_banner_mobile.jpg"
-    />
-  </a>
+  <nuxt-link :to="banner.link" v-if="banner" class="bottom-banner hover-image" target="_blank">
+    <ImgComponent class="bottom-banner__img" :img="banner.desktop_image" />
+    <ImgComponent class="bottom-banner__img bottom-banner__img--mobile" :img="banner.mobile_image" />
+  </nuxt-link>
 </template>
 
-<script setup></script>
+<script setup>
+import { useGlobalStore } from "~/stores/global";
+import { computed } from "vue";
+
+const globalStore = useGlobalStore();
+
+const banner = computed(() => {
+  return globalStore.bottomBanner;
+});
+</script>
 
 <style lang="stylus">
 .bottom-banner {

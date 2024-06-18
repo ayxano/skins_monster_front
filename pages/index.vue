@@ -34,20 +34,18 @@ const reviews = ref([]);
 onMounted(get);
 
 async function get() {
-  query("/skins", {
-    limit: 8,
-    page: 1,
-    // group_by: "hash_name",
-  }).then(({ items }) => {
-    popular_skins.value = items;
-  });
-
-  query("/banners", {
+  const { data } = await query("/banners", {
     page: 1,
     first: 5,
-  }).then(({ data }) => {
-    welcome_banners.value = data;
+    positions: ["after_header"],
   });
+  welcome_banners.value = data;
+
+  const { items } = await query("/skins", {
+    limit: 8,
+    page: 1,
+  });
+  popular_skins.value = items;
 
   query("/advantages", {
     page: 1,

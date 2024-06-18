@@ -4,9 +4,12 @@ import { query } from "~/utils/global";
 export const useBasketStore = defineStore({
   id: "basket",
   state: () => ({
-    basket: [],
+    basket_list: [],
   }),
   getters: {
+    basket(state) {
+      return state.basket_list.filter((i) => i && i.id);
+    },
     price: (state) =>
       state.basket
         .filter((i) => i)
@@ -17,7 +20,7 @@ export const useBasketStore = defineStore({
   actions: {
     async get() {
       const { items } = await query("/basket");
-      this.basket = items || [];
+      this.basket_list = items || [];
     },
     async add(data) {
       let variables = {};

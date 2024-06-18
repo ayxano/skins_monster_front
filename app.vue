@@ -64,6 +64,9 @@ function getGlobalData() {
   authStore.get();
   basketStore.get();
   favoritesStore.get();
+  globalStore.getCompany();
+  globalStore.getBanners();
+  globalStore.getPages();
 }
 </script>
 
