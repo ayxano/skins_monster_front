@@ -7,13 +7,13 @@
       class="welcome-banners__slider"
       hide-arrows
     >
-      <a href="#" class="welcome-banners__item hover-image" target="_blank">
+      <nuxt-link :to="item.link" class="welcome-banners__item hover-image">
         <ImgComponent class="welcome-banners__item-img" :img="item.desktop_image" />
         <ImgComponent
           class="welcome-banners__item-img welcome-banners__item-img--mobile"
           :img="item.mobile_image"
         />
-      </a>
+      </nuxt-link>
     </SliderComponent>
     <div class="welcome-banners__bullets"></div>
   </div>

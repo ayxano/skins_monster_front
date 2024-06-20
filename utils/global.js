@@ -142,7 +142,3 @@ export function showAuthModal() {
     component: shallowRef(AuthModal),
   });
 }
-
-export function pluralWord(count, word) {
-  return pluralize(word, count);
-}

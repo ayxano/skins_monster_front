@@ -7,7 +7,7 @@
 <script setup>
 import { onMounted } from "vue";
 import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
-import { csrf, query } from "~/utils/global";
+import { query } from "~/utils/global";
 import { useRouter } from "#app";
 import { useAuthStore } from "~/stores/auth";
 
@@ -23,20 +23,15 @@ onMounted(() => {
   confirm();
 });
 
-function confirm() {
+async function confirm() {
   if (location.search) {
     try {
-      csrf();
-      setTimeout(() => {
-        query(`/user/auth/callback${location.search}`);
-      }, 1500);
-      setTimeout(() => {
-        authStore.get();
-        router.push({ name: "index" });
-      }, 5000);
+      await query(`/user/auth/callback${location.search}`);
+      await authStore.get();
     } catch (e) {
       console.error(e);
-      router.push({ name: "index" });
+    } finally {
+      await router.push({ name: "index" });
     }
   }
 }

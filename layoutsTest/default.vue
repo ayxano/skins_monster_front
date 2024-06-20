@@ -1,14 +1,12 @@
 <template>
-  <div id="app" :class="{ 'app--full-page': fullPage }">
+  <div id="app">
     <div class="container-padding">
       <div class="app__inner">
-        <AsideComponent v-if="!fullPage" />
+        <AsideComponent />
         <div class="app__content">
-          <HeaderComponent v-if="!fullPage" />
-          <NuxtLayout>
-            <NuxtPage />
-          </NuxtLayout>
-          <FooterComponent v-if="!fullPage" />
+          <HeaderComponent />
+          <slot />
+          <FooterComponent />
         </div>
       </div>
     </div>
@@ -16,17 +14,17 @@
   <ModalsComponent />
 </template>
 
-<style lang="stylus">
-@import "/styles/style.styl";
-</style>
-
 <script setup>
 import { useHead, useRoute } from "#app";
 import HeaderComponent from "~/components/header/index.vue";
 import FooterComponent from "~/components/footer/index.vue";
 import AsideComponent from "~/components/aside/index.vue";
-import { onMounted, computed } from "vue";
+import { onMounted, computed, watch } from "vue";
+import { useGlobalStore } from "~/stores/global";
 import ModalsComponent from "~/components/modals/index.vue";
+import { useAuthStore } from "~/stores/auth";
+import { useBasketStore } from "~/stores/basket";
+import { useFavoritesStore } from "~/stores/favorites";
 import { csrf, getCookie } from "~/utils/global";
 
 useHead({
@@ -42,20 +40,44 @@ useHead({
 });
 
 const route = useRoute();
+const authStore = useAuthStore();
+const globalStore = useGlobalStore();
+const basketStore = useBasketStore();
+const favoritesStore = useFavoritesStore();
 
 onMounted(() => {
   let token = getCookie("XSRF-TOKEN");
   if (!token) {
     csrf();
   }
+  getGlobalData();
 });
 
 const fullPage = computed(() => {
   return route.meta.fullPage;
 });
+
+watch(
+  () => fullPage,
+  () => {
+    console.log("fullpage changed");
+  }
+);
+
+function getGlobalData() {
+  globalStore.getCurrency();
+  authStore.get();
+  basketStore.get();
+  favoritesStore.get();
+  globalStore.getCompany();
+  globalStore.getBanners();
+  globalStore.getPages();
+}
 </script>
 
 <style lang="stylus">
+//@import "/styles/style.styl";
+
 .app {
 	&__inner {
 		display grid

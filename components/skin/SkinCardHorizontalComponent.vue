@@ -1,6 +1,7 @@
 <template>
   <div v-if="data" class="skin-card-hz" :class="{ 'skin-card-hz--deletable': deletable }">
     <nuxt-link
+      v-if="!orderItem"
       :to="{ name: 'skin', query: { skin_id: data.id, hash_name: data.hash_name, app_id: data.appid } }"
       class="skin-card-hz__link"
     ></nuxt-link>
@@ -42,6 +43,7 @@ const props = defineProps({
     default: () => ({}),
   },
   deletable: Boolean,
+  orderItem: Boolean,
 });
 
 const basketStore = useBasketStore();
@@ -97,6 +99,9 @@ const skinFloat = computed(() => {
 });
 
 const skinPrice = computed(() => {
+  if (props.orderItem) {
+    return props.data.price;
+  }
   return convertPrice(props.data.price);
 });
 

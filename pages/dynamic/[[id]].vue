@@ -48,12 +48,13 @@ async function get() {
 }
 
 async function getAdvantages() {
-  query("/advantages", {
-    page: 1,
-    first: 4,
-  }).then(({ data }) => {
+  if (!advantages.value?.length) {
+    const { data } = await query("/advantages", {
+      page: 1,
+      first: 4,
+    });
     advantages.value = data;
-  });
+  }
 }
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <nuxt-link :to="banner.link" v-if="banner" class="bottom-banner hover-image" target="_blank">
+  <nuxt-link :to="banner.link" v-if="banner" class="bottom-banner hover-image">
     <ImgComponent class="bottom-banner__img" :img="banner.desktop_image" />
     <ImgComponent class="bottom-banner__img bottom-banner__img--mobile" :img="banner.mobile_image" />
   </nuxt-link>

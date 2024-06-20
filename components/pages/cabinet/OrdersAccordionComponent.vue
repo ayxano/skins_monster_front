@@ -17,6 +17,7 @@
             v-for="(skin, index) in item.items"
             :key="index"
             :data="getSkin(skin)"
+            order-item
           />
         </div>
       </div>
@@ -44,7 +45,7 @@ function createdDate(item) {
 function getSkin(data) {
   return {
     ...data.item,
-    ...data,
+    price: data.price,
   };
 }
 

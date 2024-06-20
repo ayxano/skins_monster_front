@@ -75,11 +75,11 @@ const tabs = [
 
 const sortOptions = [
   {
-    title: "Price asc",
+    title: "Price: Min",
     sort: "price_min",
   },
   {
-    title: "Price desc",
+    title: "Price: Max",
     sort: "price_max",
   },
 ];

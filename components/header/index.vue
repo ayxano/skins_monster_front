@@ -20,15 +20,37 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { useRoute } from "#app";
+import { useAuthStore } from "~/stores/auth";
+import { useGlobalStore } from "~/stores/global";
+import { useBasketStore } from "~/stores/basket";
+import { useFavoritesStore } from "~/stores/favorites";
 
 const route = useRoute();
 const search = ref("");
+const authStore = useAuthStore();
+const globalStore = useGlobalStore();
+const basketStore = useBasketStore();
+const favoritesStore = useFavoritesStore();
 
 const showSearch = computed(() => {
   return !["catalog"].includes(route.name);
 });
+
+onMounted(() => {
+  getGlobalData();
+});
+
+function getGlobalData() {
+  globalStore.getCurrency();
+  authStore.get();
+  basketStore.get();
+  favoritesStore.get();
+  globalStore.getCompany();
+  globalStore.getBanners();
+  globalStore.getPages();
+}
 </script>
 
 <style lang="stylus">

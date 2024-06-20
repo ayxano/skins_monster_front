@@ -2,7 +2,7 @@ import { abortNavigation, defineNuxtRouteMiddleware } from "#app";
 import { useAuthStore } from "~/stores/auth";
 import { useDefaultStore } from "~/stores/default";
 import { shallowRef } from "vue";
-import { getCookie, query } from "~/utils/global";
+import { query } from "~/utils/global";
 import AuthModal from "~/components/modals/components/AuthModal.vue";
 
 function checkRoute(user) {

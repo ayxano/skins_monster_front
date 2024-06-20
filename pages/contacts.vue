@@ -13,15 +13,6 @@
               </span>
             </div>
           </div>
-          <div v-if="company.addresses && company.addresses.length" class="contacts-page__block">
-            <span class="contacts-page__block-title">Legal</span>
-            <span class="contacts-page__block-value">
-              <span v-for="(item, i) in company.addresses" :key="i">
-                <span v-if="item.name">{{ item.name }}:</span>
-                {{ item.address }}
-              </span>
-            </span>
-          </div>
           <div v-if="company.emails && company.emails.length" class="contacts-page__block">
             <span class="contacts-page__block-title">Email</span>
             <span class="contacts-page__block-value">
