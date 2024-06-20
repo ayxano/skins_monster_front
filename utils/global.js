@@ -142,3 +142,34 @@ export function showAuthModal() {
     component: shallowRef(AuthModal),
   });
 }
+
+export function parseError(errors, form) {
+  if (errors) {
+    Object.keys(errors).forEach((key) => {
+      if (form[key] && errors[key]) {
+        form[key].errors = errors[key];
+      }
+    });
+  }
+}
+
+/**
+ * Очищение ошибок формы
+ * @param form
+ */
+export function resetErrors(form) {
+  Object.keys(form).forEach((key) => {
+    form[key].errors = [];
+  });
+}
+
+/**
+ * Очищение значений формы
+ * @param form
+ * @param defaultKey
+ */
+export function resetForm(form, defaultKey = "default") {
+  Object.keys(form).forEach((key) => {
+    form[key].value = form[defaultKey];
+  });
+}

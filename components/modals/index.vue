@@ -65,13 +65,13 @@ export default {
 }
 
 .modal {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width 100%
-    height 100%
-    z-index var(--z-index-modal, 999)
-    overflow-y auto
+	position: fixed;
+	left: 0;
+	top: 0;
+	width 100%
+	height 100%
+	z-index var(--z-index-modal, 999)
+	overflow-y: auto
 
   &__background {
     position: absolute;
@@ -82,7 +82,7 @@ export default {
     width: 100vw
     z-index 0
     cursor pointer
-    background var(--black-o3)
+    background var(--black-o5)
     min-height 100vh
   }
 

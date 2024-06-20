@@ -47,12 +47,17 @@
               <LoadingCircleIndicator v-if="submitLoading" title="" />
               <IconComponent v-else name="arrow-right-1" />
             </button>
-            <span class="contacts-page__feedback-terms">
-              By use form, you agree to the
-              <nuxt-link :to="{ name: 'dynamic-id', query: { 'positions[]': 'privacy_policy' } }"
-                >User Agreement and Privacy Policy</nuxt-link
-              >.
-            </span>
+            <div class="contacts-page__feedback-bottom">
+              <span v-if="!authorized" class="contacts-page__feedback-error">
+                You need to <a @click.prevent="showAuthModal" href="#">Log in</a> to send feedback message
+              </span>
+              <span class="contacts-page__feedback-terms">
+                By use form, you agree to the
+                <nuxt-link :to="{ name: 'dynamic-id', query: { 'positions[]': 'privacy_policy' } }"
+                  >User Agreement and Privacy Policy</nuxt-link
+                >.
+              </span>
+            </div>
           </form>
         </div>
       </div>
@@ -64,16 +69,11 @@
 <script setup>
 import { computed, ref, shallowRef } from "vue";
 import { useGlobalStore } from "~/stores/global";
-import { query } from "~/utils/global";
+import { parseError, query, resetErrors, resetForm, showAuthModal } from "~/utils/global";
 import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
 import AlertModal from "~/components/modals/components/AlertModal.vue";
 import { useDefaultStore } from "~/stores/default";
 import { useAuthStore } from "~/stores/auth";
-
-// eslint-disable-next-line no-undef
-definePageMeta({
-  authRequired: true,
-});
 
 const authStore = useAuthStore();
 const globalStore = useGlobalStore();
@@ -84,22 +84,30 @@ const company = computed(() => {
   return globalStore.company;
 });
 
+const authorized = computed(() => {
+  return authStore.user && authStore.user.id;
+});
+
 const form = ref({
   name: {
     value: null,
     errors: [],
+    default: null,
   },
   email: {
     value: null,
     errors: [],
+    default: null,
   },
   phone: {
     value: null,
     errors: [],
+    default: null,
   },
   content: {
     value: null,
     errors: [],
+    default: null,
   },
 });
 
@@ -108,40 +116,36 @@ const user = computed(() => {
 });
 
 async function submit() {
-  submitLoading.value = true;
-  let variables = {};
-  variables.name = form.value.name.value;
-  variables.email = form.value.email.value;
-  variables.phone = form.value.phone.value;
-  variables.content = form.value.content.value;
-  variables.name = user.value?.name;
-  try {
-    await query(
-      "/feedback",
-      {},
-      {
-        method: "POST",
-        body: JSON.stringify(variables),
-      }
-    );
-    showAlertModal({
-      title: "SUCCESS",
-      text: "Your message successfully sent",
-    });
-  } catch (e) {
-    // if (e.errors) {
-    //   Object.keys(e.errors).forEach((key) => {
-		//
-		// 	});
-    // }
-    showAlertModal({
-      title: "ERROR",
-      text: "Something went wrong...",
-      isConfirm: false,
-      cancelBtnTitle: "Close",
-    });
-  } finally {
-    submitLoading.value = false;
+  if (authorized.value) {
+    submitLoading.value = true;
+    resetErrors(form.value);
+    let variables = {};
+    variables.name = form.value.name.value;
+    variables.email = form.value.email.value;
+    variables.phone = form.value.phone.value;
+    variables.content = form.value.content.value;
+    variables.name = user.value?.name;
+    try {
+      await query(
+        "/feedback",
+        {},
+        {
+          method: "POST",
+          body: JSON.stringify(variables),
+        }
+      );
+      showAlertModal({
+        title: "SUCCESS",
+        text: "Your message successfully sent",
+      });
+      resetForm(form.value);
+    } catch ({ errors }) {
+      parseError(errors, form.value);
+    } finally {
+      submitLoading.value = false;
+    }
+  } else {
+    showAuthModal();
   }
 }
 
@@ -200,8 +204,20 @@ function showAlertModal(options) {
 			align-self flex-start
 		}
 
+		&-bottom {
+			display flex
+			flex-direction column
+			gap: 5px
+		}
+
 		&-terms {
 			color: var(--gray-dark-2, #516D7D);
+			font-size: 0.75rem
+			line-height: normal;
+		}
+
+		&-error {
+			color: var(--red);
 			font-size: 0.75rem
 			line-height: normal;
 		}

@@ -25,7 +25,7 @@ const emits = defineEmits(["close", "closeAll"]);
 const props = defineProps({
   isConfirm: {
     type: Boolean,
-    default: true,
+    default: false,
   },
   center: {
     type: Boolean,
