@@ -2,8 +2,8 @@
   <div class="profile-dropdown">
     <div class="profile-dropdown__header">
       <div class="profile-dropdown__header-info">
-        <span class="profile-dropdown__header-name">Eva Jones</span>
-        <span class="profile-dropdown__header-balance">5000$</span>
+        <span class="profile-dropdown__header-name">{{ user.name }}</span>
+        <span class="profile-dropdown__header-balance">{{ user.eur_balance }}€</span>
       </div>
       <button @click="refill" class="profile-dropdown__header-deposit btn" title="Refill your balance">
         <LoadingCircleIndicator v-if="refillLoading" title="" />
@@ -36,7 +36,7 @@
 
 <script setup>
 import { useAuthStore } from "~/stores/auth";
-import { ref } from "vue";
+import { computed, ref } from "vue";
 import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
 import { useRouter } from "#app";
 
@@ -67,6 +67,10 @@ const router = useRouter();
 const authStore = useAuthStore();
 const refillLoading = ref(false);
 const logoutLoading = ref(false);
+
+const user = computed(() => {
+  return authStore.user || {};
+});
 
 async function refill() {
   refillLoading.value = true;
@@ -119,6 +123,10 @@ async function logout() {
 			flex-direction column
 		}
 
+		&-name {
+			overflow hidden
+		}
+
 		&-balance {
 			color: var(--gray-dark-2, #516D7D);
 			font-size: 0.875rem
@@ -127,6 +135,7 @@ async function logout() {
 		&-deposit.btn {
 			width 40px
 			height 40px
+			flex-shrink 0
 
 			&:hover {
 				background var(--dark-light-2)
