@@ -172,3 +172,14 @@ export function resetForm(form, defaultKey = "default") {
     form[key].value = form[defaultKey];
   });
 }
+
+/**
+ * Скролл к определенному элементу
+ * @param el - нод элемент
+ * @param behavior
+ */
+export function scrollTo(el, behavior) {
+  let headerHeight = 100;
+  let offset = window.pageYOffset + el.getBoundingClientRect().top - headerHeight;
+  window.scrollTo({ top: offset || 0, behavior: behavior || "smooth" });
+}

@@ -2,19 +2,20 @@
   <ClientOnly>
     <div class="filters">
       <div class="filters-row">
-        <InputComponent v-model="form.query" class="filters-search" placeholder="Search skins..." small>
+        <InputComponent
+          @update:model-value="queryUpdate"
+          v-model="form.query"
+          class="filters-search"
+          placeholder="Search skins..."
+          small
+        >
           <template #icon>
             <IconComponent name="search-normal-1" />
           </template>
         </InputComponent>
       </div>
       <div class="filters-row">
-        <TabsComponent
-          v-model="form.appid"
-          :tabs="tabs"
-          @update:model-value="setParams({ filters: null })"
-          small
-        />
+        <TabsComponent v-model="form.appid" :tabs="tabs" @update:model-value="appidUpdate" small />
         <!--        <SelectComponent-->
         <!--          class="filters-item"-->
         <!--          placeholder="Category"-->
@@ -133,6 +134,19 @@ function showFilters() {
     component: shallowRef(FiltersMenu),
     keepAlive: true,
   });
+}
+
+const queryDebounce = ref({});
+
+function queryUpdate() {
+  clearTimeout(queryDebounce.value);
+  queryDebounce.value = setTimeout(() => {
+    setParams({ query: form.value.query || null });
+  }, 500);
+}
+
+function appidUpdate() {
+  setParams({ filters: null, query: null, page: 1 });
 }
 
 function setParams(params = {}) {

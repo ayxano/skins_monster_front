@@ -1,8 +1,8 @@
 <template>
   <main class="page catalog-page">
     <div class="page__inner catalog-page__inner">
-      <BreadcrumbsComponent title="Catalog" subtitle="1,080" />
-      <div class="catalog-page__content">
+      <BreadcrumbsComponent title="Catalog" :subtitle="data.total" />
+      <div ref="pageBody" class="catalog-page__content">
         <CatalogFiltersComponent />
         <LoadingCircleIndicator v-if="pageLoading" />
         <SkinsListComponent :list="data.items" />
@@ -20,6 +20,7 @@ import { useCatalogStore } from "~/stores/catalog";
 import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
 import { useDefaultStore } from "~/stores/default";
 import { useFiltersStore } from "~/stores/filters";
+import { scrollTo } from "~/utils/global";
 
 const meta = ref({
   page: 1,
@@ -32,6 +33,7 @@ const defaultStore = useDefaultStore();
 const route = useRoute();
 const pageLoading = ref(true);
 const filterLoading = ref(false);
+const pageBody = ref(null);
 
 onMounted(() => {
   updateData();
@@ -66,6 +68,9 @@ async function get() {
 function paginate(page) {
   meta.value.page = page;
   setParams();
+  setTimeout(() => {
+    scrollTo(pageBody.value);
+  }, 0);
 }
 
 function updateData() {
