@@ -4,9 +4,17 @@
       <BreadcrumbsComponent title="Catalog" :subtitle="data.total" />
       <div ref="pageBody" class="catalog-page__content">
         <CatalogFiltersComponent />
-        <LoadingCircleIndicator v-if="pageLoading" />
-        <SkinsListComponent :list="data.items" />
-        <PaginationComponent @change="paginate" :page="meta.page" :meta="meta" :total="data.total" />
+        <div
+          class="catalog-page__content-skins"
+          :class="{ 'catalog-page__content-skins--loading': filterLoading }"
+          v-if="data.items && data.items.length"
+        >
+          <SkinsListComponent :list="data.items" />
+          <PaginationComponent @change="paginate" :page="meta.page" :meta="meta" :total="data.total" />
+          <LoadingCircleIndicator class="catalog-page__filter-loading" v-if="filterLoading" title="" />
+        </div>
+        <LoadingCircleIndicator v-else-if="pageLoading || filterLoading" />
+        <span v-else>No skins...</span>
       </div>
       <BottomPageBannerComponent />
     </div>
@@ -43,6 +51,7 @@ onMounted(() => {
 watch(
   () => route.query,
   () => {
+    filterLoading.value = true;
     updateData();
     get();
   }
@@ -53,6 +62,7 @@ const data = computed(() => {
 });
 
 async function get() {
+  filterLoading.value = true;
   try {
     await catalogStore.get({
       page: meta.value.page,
@@ -62,10 +72,12 @@ async function get() {
     });
   } finally {
     pageLoading.value = false;
+    filterLoading.value = false;
   }
 }
 
 function paginate(page) {
+  filterLoading.value = true;
   meta.value.page = page;
   setParams();
   setTimeout(() => {
@@ -87,10 +99,31 @@ function setParams() {
 
 <style lang="stylus">
 .catalog-page {
-	&__content {
+	&__content,
+	&__content-skins {
 		display flex
 		flex-direction column
 		gap: var(--gap)
+		position relative
+		transition opacity var(--transition)
+
+		&--loading {
+			opacity 0.7
+		}
+	}
+
+	&__filter-loading {
+		position absolute
+		top 20px
+		left 0
+		right 0
+		z-index 1
+		justify-content center
+
+		svg {
+			width 60px
+			height 60px
+		}
 	}
 }
 </style>
