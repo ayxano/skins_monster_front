@@ -31,9 +31,7 @@
         <button @click.prevent="showFilters" class="filters-item btn btn--md btn--hollow">
           <span>Filters</span>
           <span v-if="filtersCount" class="filters-item__count">{{ filtersCount }}</span>
-          <span class="filters-item__icon-wrap">
-            <IconComponent name="setting-4" />
-          </span>
+          <IconComponent name="setting-4" />
         </button>
         <SelectComponent
           class="filters-item"
@@ -172,7 +170,18 @@ function updateData() {
 
 	&-row {
 		display flex
+		flex-wrap wrap
 		gap: 20px
+
+		.tabs {
+			+below(440px) {
+				width 100%
+
+				&__item.btn {
+					flex 1
+				}
+			}
+		}
 	}
 
 	&-item {
@@ -180,6 +189,10 @@ function updateData() {
 
 		&.btn {
 			padding: 0 15px
+
+			.icon {
+				margin-left auto
+			}
 		}
 
 		&.select {
@@ -188,15 +201,14 @@ function updateData() {
 
 		&:not(&--clear) {
 			gap: 50px
+			+below(480px) {
+				flex-grow 1
+			}
 		}
 
 		&--clear {
 			margin-left auto
 			align-self flex-end
-		}
-
-		&__icon-wrap {
-			position relative
 		}
 
 		&__count {
@@ -220,6 +232,9 @@ function updateData() {
 	&-search {
 		width 100%
 		max-width 536px
+		+below(860px) {
+			max-width 100%
+		}
 	}
 }
 </style>

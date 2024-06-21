@@ -186,8 +186,8 @@ main_class = ".category-filters"
       display flex
       align-items baseline
       gap: 6px
-      font-size: 0.9375rem
-      font-weight: 500;
+      font-size: 0.875rem
+      font-weight: 700;
       line-height: 19px;
     }
 

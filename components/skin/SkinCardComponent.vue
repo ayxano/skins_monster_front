@@ -327,6 +327,10 @@ main_class = ".skin-card"
 			border-radius 50%
 			background var(--white-o5)
 		}
+
+		&-value {
+			overflow: hidden;
+		}
 	}
 
 	&__price {

@@ -35,14 +35,16 @@
             <IconComponent name="close" />
           </button>
         </div>
-        <button class="select__clear" type="button" @click="clear" v-if="canShowClear">
-          <IconComponent name="close" />
-        </button>
-        <label :for="id" class="select__arrow">
-          <slot name="icon">
-            <IconComponent name="arrow-down-1" />
-          </slot>
-        </label>
+        <div class="select__actions">
+          <button class="select__clear" type="button" @click="clear" v-if="canShowClear">
+            <IconComponent name="close" />
+          </button>
+          <label :for="id" class="select__arrow">
+            <slot name="icon">
+              <IconComponent name="arrow-down-1" />
+            </slot>
+          </label>
+        </div>
       </div>
       <SelectListComponent :query="query" v-bind="$props" @update:modelValue="listUpdate">
         <template v-slot="{ item, i }">
@@ -255,6 +257,11 @@ export default {
     }
   }
 
+	&__actions {
+		display flex
+		margin-left auto
+	}
+
   &__clear {
     height 100%
     background none
@@ -405,7 +412,6 @@ export default {
     justify-content center
     z-index 1
     cursor pointer
-		margin-left: auto
 
     ^[0]--big & {
       align-items flex-start
