@@ -64,7 +64,7 @@
 import { computed, ref } from "vue";
 import { useBasketStore } from "~/stores/basket";
 import { useFavoritesStore } from "~/stores/favorites";
-import { isCS2, convertPrice, showAuthModal } from "~/utils/global";
+import { isCS2, convertPrice, showAuthModal, marginPrice } from "~/utils/global";
 import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
 import { removeExterior } from "~/utils/skin";
 import { useAuthStore } from "~/stores/auth";
@@ -138,7 +138,7 @@ const skinFloat = computed(() => {
 });
 
 const skinPrice = computed(() => {
-  return convertPrice(props.data.price);
+  return marginPrice(convertPrice(props.data.price));
 });
 
 async function addToBasket() {
