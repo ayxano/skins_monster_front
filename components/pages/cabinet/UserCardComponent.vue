@@ -138,6 +138,7 @@ main_class = ".user-card"
 		font-size: 1.375rem
 		font-weight: 700;
 		line-height: normal;
+		word-break break-word
 	}
 
 	&__registered {

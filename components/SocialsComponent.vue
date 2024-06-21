@@ -1,5 +1,5 @@
 <template>
-  <div class="socials">
+  <div class="socials" :class="{ 'socials--small': small }">
     <a
       class="socials-item btn btn--lg btn--dark-light"
       v-for="(item, i) in socials"
@@ -18,6 +18,10 @@
 import { useGlobalStore } from "~/stores/global";
 import { computed } from "vue";
 
+defineProps({
+  small: Boolean,
+});
+
 const globalStore = useGlobalStore();
 
 const socials = computed(() => {
@@ -30,6 +34,19 @@ const socials = computed(() => {
 	display flex
 	align-items center
 	gap: 5px
+
+	&--small {
+		&-item.btn {
+			width 40px
+			height 40px
+
+			.icon,
+			.img {
+				width 16px
+				height 16px
+			}
+		}
+	}
 
 	&-item.btn {
 		width 50px

@@ -33,8 +33,7 @@
         <HeaderProfileDropdownComponent />
       </div>
     </div>
-
-    <button class="header-actions__item header-actions__item--menu btn">
+    <button @click.prevent="showMainMenu" class="header-actions__item header-actions__item--menu btn">
       <IconComponent class="icon--lg" name="menu-burger" />
     </button>
   </div>
@@ -42,9 +41,11 @@
 
 <script setup>
 import { useBasketStore } from "~/stores/basket";
-import { computed, ref, watch } from "vue";
+import { computed, ref, shallowRef, watch } from "vue";
 import { useAuthStore } from "~/stores/auth";
 import { useRoute } from "#app";
+import { useDefaultStore } from "~/stores/default";
+import MainMenu from "~/components/menus/components/MainMenu.vue";
 
 defineProps({
   showSearch: Boolean,
@@ -69,6 +70,12 @@ const basketLength = computed(() => {
 const authorized = computed(() => {
   return authStore.user && authStore.user.id;
 });
+
+function showMainMenu() {
+  useDefaultStore().menus.push({
+    component: shallowRef(MainMenu),
+  });
+}
 </script>
 
 <style lang="stylus">
@@ -79,6 +86,9 @@ const authorized = computed(() => {
 	&__item {
 		&-wrap {
 			position relative
+			+below(580px) {
+				display none
+			}
 		}
 
 		&-inner {

@@ -47,7 +47,7 @@ let interval = ref({});
 
 onMounted(() => {
   get();
-  // interval.value = setInterval(get, 20000);
+  interval.value = setInterval(get, 10000);
 });
 
 onBeforeUnmount(() => {
