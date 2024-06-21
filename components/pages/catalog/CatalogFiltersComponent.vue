@@ -168,6 +168,10 @@ function updateData() {
 			padding: 0 15px
 		}
 
+		&.select {
+			width 160px
+		}
+
 		&:not(&--clear) {
 			gap: 50px
 		}

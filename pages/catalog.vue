@@ -3,7 +3,6 @@
     <div class="page__inner catalog-page__inner">
       <BreadcrumbsComponent title="Catalog" subtitle="1,080" />
       <div class="catalog-page__content">
-        meta{{ meta }}
         <CatalogFiltersComponent />
         <LoadingCircleIndicator v-if="pageLoading" />
         <SkinsListComponent :list="data.items" />

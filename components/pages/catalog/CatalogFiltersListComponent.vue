@@ -1,36 +1,32 @@
 <template>
   <div class="category-filters">
     <div class="category-filters__list">
-      <!--      <div class="category-filters__item">-->
-      <!--        <span class="category-filters__item-title">-->
-      <!--          <span>Цена, ₽</span>-->
-      <!--        </span>-->
-      <!--        <div class="category-filters__item-inputs">-->
-      <!--          <InputComponent-->
-      <!--            :model-value="form.price_min"-->
-      <!--            @update:model-value="priceUpdate($event, 'price_min')"-->
-      <!--            placeholder="От"-->
-      <!--            inputmode="numeric"-->
-      <!--            mask="9 99#"-->
-      <!--            mask-tokens="9:[0-9]:repeated"-->
-      <!--            mask-reversed-->
-      <!--            numbers-only-->
-      <!--          />-->
-      <!--          <InputComponent-->
-      <!--            :model-value="form.price_max"-->
-      <!--            @update:model-value="priceUpdate($event, 'price_max')"-->
-      <!--            placeholder="До"-->
-      <!--            inputmode="numeric"-->
-      <!--            mask="9 99#"-->
-      <!--            mask-tokens="9:[0-9]:repeated"-->
-      <!--            mask-reversed-->
-      <!--            numbers-only-->
-      <!--          />-->
-      <!--        </div>-->
-      <!--      </div>-->
+      <CatalogFiltersItemComponent title="Price" only-inputs expanded>
+        <template #inputs>
+          <InputComponent
+            :model-value="form?.price?.min"
+            @update:model-value="priceUpdate($event, 'min')"
+            placeholder="€ Min"
+            inputmode="numeric"
+            numbers-only
+            class="category-filters__price-input"
+          />
+          <span class="category-filters__price-divider">
+            <IconComponent name="minus" />
+          </span>
+          <InputComponent
+            :model-value="form?.price?.max"
+            @update:model-value="priceUpdate($event, 'max')"
+            placeholder="€ Max"
+            inputmode="numeric"
+            numbers-only
+            class="category-filters__price-input"
+          />
+        </template>
+      </CatalogFiltersItemComponent>
       <CatalogFiltersItemComponent
-        :model-value="form.filters[item.name]"
-        @update:model-value="filtersUpdate($event, item.name)"
+        :model-value="form[item.name]"
+        @update:model-value="filtersUpdate($event, item.name, item.type)"
         v-for="(item, i) in filters"
         :key="`${i}_${item.label}`"
         :title="item.label"
@@ -51,14 +47,8 @@ const filtersStore = useFiltersStore();
 const defaultStore = useDefaultStore();
 const route = useRoute();
 
-const filters = computed(() => {
-  const appid = route.query.appid || defaultStore.types.appid.CS2;
-  return filtersStore.filters ? filtersStore.filters[appid] : [];
-});
-
-const form = ref({
-  filters: {},
-});
+const priceDebounce = ref({});
+const form = ref({});
 
 onMounted(() => {
   updateData();
@@ -71,29 +61,59 @@ watch(
   }
 );
 
-function filtersUpdate(values, name) {
-  if (values && values.length) {
-    form.value.filters[name] = values;
-  } else {
-    delete form.value.filters[name];
+const filters = computed(() => {
+  const appid = route.query.appid || defaultStore.types.appid.CS2;
+  const list = filtersStore.filters ? filtersStore.filters[appid] || [] : [];
+  return list.filter((i) => i.values && i.values.length);
+});
+
+function priceUpdate(val, field) {
+  clearTimeout(priceDebounce.value);
+  priceDebounce.value = setTimeout(() => {
+    if (form.value.price) {
+      form.value.price[field] = val || undefined;
+    } else {
+      form.value = {
+        ...form.value,
+        price: {
+          [field]: val,
+        },
+      };
+    }
+    if (!form.value?.price?.min && !form.value?.price?.max) {
+      delete form.value.price;
+    }
+    setParams();
+  }, 500);
+}
+
+function filtersUpdate(values, name, type) {
+  // без type фильтры с values
+  if (!type) {
+    if (values && values.length) {
+      form.value[name] = values;
+    } else if (name) {
+      delete form.value[name];
+    }
   }
   setParams();
 }
 
 function setParams() {
   filtersStore.setParams({
-    filters: form.value.filters,
+    filters: form.value,
     page: 1,
   });
 }
 
 function updateData() {
   const query = filtersStore.queryParams;
-  form.value.filters = query.filters || {};
+  form.value = query.filters || {};
 }
 </script>
 
 <style lang="stylus">
+main_class = ".category-filters"
 .category-filters {
   display flex
   flex-direction column
@@ -112,6 +132,24 @@ function updateData() {
     flex-direction column
     gap 10px
   }
+
+	&__price-input.input {
+		height 40px
+	}
+
+	&__price-divider {
+		display flex
+		width 20px
+		height 20px
+		flex-shrink 0
+		align-self center
+
+		.icon {
+			width 20px
+			height 20px
+			color var(--dark-light-2)
+		}
+	}
 
   &__item {
     display flex
@@ -180,7 +218,8 @@ function updateData() {
 
     &-inputs {
       display flex
-      gap 7px
+      gap 5px
+			padding: 0 10px
 
       .input {
         width 100%

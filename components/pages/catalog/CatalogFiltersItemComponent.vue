@@ -5,29 +5,33 @@
       <IconComponent name="arrow-down-small" />
     </button>
     <div v-if="expand && showSearch" class="category-filters__item-inputs">
-      <InputComponent
-        class="category-filters__item-search"
-        v-model="searchTitle"
-        @input="showAll = true"
-        icon-position="right"
-        small
+      <slot name="inputs">
+        <InputComponent
+          class="category-filters__item-search"
+          v-model="searchTitle"
+          @input="showAll = true"
+          icon-position="right"
+          small
+        >
+          <template #icon>
+            <IconComponent class="category-filters__item-search-icon" name="search-normal-1" />
+          </template>
+        </InputComponent>
+      </slot>
+    </div>
+    <template v-if="!onlyInputs">
+      <div v-show="expand && filteredList && filteredList.length" class="category-filters__item-checkboxes">
+        <CheckboxComponent v-model="checkedList" v-for="(item, i) in filteredList" :item="item" :key="i">
+          {{ item }}
+        </CheckboxComponent>
+      </div>
+      <span
+        class="category-filters__item-not-found"
+        v-show="searchTitle && !(filteredList && filteredList.length)"
       >
-        <template #icon>
-          <IconComponent class="category-filters__item-search-icon" name="search-normal-1" />
-        </template>
-      </InputComponent>
-    </div>
-    <div v-show="expand && filteredList && filteredList.length" class="category-filters__item-checkboxes">
-      <CheckboxComponent v-model="checkedList" v-for="(item, i) in filteredList" :item="item" :key="i">
-        {{ item }}
-      </CheckboxComponent>
-    </div>
-    <span
-      class="category-filters__item-not-found"
-      v-show="searchTitle && !(filteredList && filteredList.length)"
-    >
-      Nothing found
-    </span>
+        Nothing found
+      </span>
+    </template>
   </div>
 </template>
 
@@ -47,10 +51,15 @@ export default {
       default: () => [],
     },
     search: Boolean,
+    expanded: Boolean,
+    onlyInputs: Boolean,
   },
   mounted() {
     if (this.modelValue && this.modelValue.length) {
       this.checkedList = this.modelValue;
+    }
+    if (this.expanded) {
+      this.expand = this.expanded;
     }
   },
   watch: {
@@ -78,10 +87,10 @@ export default {
       return this.list.slice(0, this.max);
     },
     showFilter() {
-      return this.list && this.list.length;
+      return (this.list && this.list.length) || this.onlyInputs;
     },
     showSearch() {
-      return this.search && this.list && this.list.length > 15;
+      return (this.search && this.list && this.list.length > 15) || this.onlyInputs;
     },
   },
   methods: {

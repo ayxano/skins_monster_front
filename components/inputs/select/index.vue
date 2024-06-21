@@ -277,8 +277,8 @@ export default {
     }
 
     .icon svg {
-      width: 14px;
-      height: 14px;
+      width: 12px;
+      height: 12px;
 			color: var(--gray-dark)
     }
   }
@@ -405,6 +405,7 @@ export default {
     justify-content center
     z-index 1
     cursor pointer
+		margin-left: auto
 
     ^[0]--big & {
       align-items flex-start
