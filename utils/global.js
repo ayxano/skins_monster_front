@@ -125,6 +125,24 @@ export function convertPrice(price, currCode = "eur") {
 }
 
 /**
+ * Цена с наценкой
+ * @param price - цена в евро
+ * @returns {*}
+ */
+export function marginPrice(price) {
+  // const company = useGlobalStore().company || {};
+  const company = { margin_amount: 0.1, margin_percent: 20 };
+  let result = price;
+  if (company.margin_percent) {
+    result = result + (result * parseFloat(company.margin_percent)) / 100;
+  }
+  if (company.margin_amount) {
+    result += parseFloat(company.margin_amount);
+  }
+  return result;
+}
+
+/**
  * Переключение возможности сколла страницы
  * @param hide - true - убрать сколл, false - вернуть
  */

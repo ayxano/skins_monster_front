@@ -23,16 +23,26 @@
         <!--        <span>Tradable</span>-->
       </span>
     </div>
-    <div class="skin-card-hz__prices">
-      <!--      <span class="skin-card-hz__price-old" v-if="data.old_price">{{ data.old_price }}</span>-->
-      <span class="skin-card-hz__price">€{{ skinPrice }}</span>
+    <div class="skin-card-hz__right">
+      <div class="skin-card-hz__prices">
+        <!--      <span class="skin-card-hz__price-old" v-if="data.old_price">{{ data.old_price }}</span>-->
+        <span class="skin-card-hz__price">€{{ skinPrice }}</span>
+      </div>
+      <a
+        v-if="data.trade_offer_id"
+        :href="`https://steamcommunity.com/tradeoffer/${data.trade_offer_id}`"
+        class="skin-card-hz__trade-link no-hover"
+        target="_blank"
+      >
+        Trade
+      </a>
     </div>
   </div>
 </template>
 
 <script setup>
 import { computed, ref } from "vue";
-import { convertPrice, isCS2 } from "~/utils/global";
+import { convertPrice, isCS2, marginPrice } from "~/utils/global";
 import { removeExterior } from "~/utils/skin";
 import { useBasketStore } from "~/stores/basket";
 import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
@@ -102,7 +112,7 @@ const skinPrice = computed(() => {
   if (props.orderItem) {
     return props.data.price;
   }
-  return convertPrice(props.data.price);
+  return marginPrice(convertPrice(props.data.price));
 });
 
 async function deleteSkin() {
@@ -220,6 +230,15 @@ main_class = ".skin-card-hz"
 		}
 	}
 
+	&__right {
+		display flex
+		flex-direction column
+		gap: 4px
+		+below(540px) {
+			flex-direction row
+		}
+	}
+
 	&__prices {
 		border-radius: var(--small-radius)
 		background: var(--dark-light-2, #1F3B4B);
@@ -243,6 +262,18 @@ main_class = ".skin-card-hz"
 		&-old {
 			color var(--white-o5)
 			text-decoration-line: line-through;
+		}
+	}
+
+	&__trade-link {
+		border-radius: var(--small-radius)
+		padding: 3px 7px
+		background-color var(--main)
+		color var(--dark)
+		font-weight 700
+
+		&:hover {
+			text-decoration underline
 		}
 	}
 }

@@ -13,6 +13,26 @@
       </div>
       <div ref="accItemBody" class="orders-accordion__item-body">
         <div class="orders-accordion__item-skins">
+          <div class="orders-accordion__item-info">
+            <div class="orders-accordion__item-info-row">
+              <span>Status: </span>
+              <span
+                class="orders-accordion__item-status"
+                :class="{
+                  'orders-accordion__item-status--created': item.status === 'created',
+                  'orders-accordion__item-status--active': item.status === 'active',
+                  'orders-accordion__item-status--ended': item.status === 'ended',
+                  'orders-accordion__item-status--error': item.status === 'error',
+                }"
+              >
+                {{ item.status }}
+              </span>
+            </div>
+            <div v-if="showPayLink(item)" class="orders-accordion__item-pay orders-accordion__item-info-row">
+              <span>Payment: </span>
+              <a :href="item.guavapay_payment_url"> Pay for the order </a>
+            </div>
+          </div>
           <SkinCardHorizontalComponent
             v-for="(skin, index) in item.items"
             :key="index"
@@ -37,6 +57,10 @@ defineProps({
 
 const activeItemIndex = ref(null);
 const accItemBody = ref(null);
+
+function showPayLink(item) {
+  return ["created"].includes(item.status) && item.guavapay_payment_url;
+}
 
 function createdDate(item) {
   return dayjs(item.created_at).format("DD.MM.YYYY");
@@ -116,6 +140,7 @@ main_class = ".orders-accordion"
 			}
 
 			.icon {
+				margin-left auto
 				width 14px
 				height 14px
 				transition transform var(--transition)
@@ -127,11 +152,63 @@ main_class = ".orders-accordion"
 			line-height: 26px;
 		}
 
+		&-status {
+			font-size 0.875rem
+			padding: 0 10px
+			background-color var(--gray-dark-2)
+			border-radius 5px
+
+			&--active {
+				background-color var(--green-dark)
+			}
+
+			&--ended {
+				background-color var(--green-dark)
+			}
+
+			&--error {
+				background-color var(--red)
+			}
+		}
+
 		&-date {
 			flex-grow 1
 			color: var(--white-o5);
 			font-size: 0.75rem
 			line-height: normal;
+		}
+
+		&-info {
+			display flex
+			align-items center
+			gap: 10px
+			padding-bottom 10px
+
+			&-row {
+				display flex
+				align-items center
+				gap: 10px
+				align-self flex-start
+			}
+		}
+
+		&-pay {
+			display flex
+			align-items center
+			gap: 10px
+			align-self flex-start
+
+			a {
+				font-size 0.875rem
+				display flex
+				background-color var(--gray-dark-2)
+				padding: 0 10px
+				border-radius 5px
+
+				&:hover {
+					text-decoration underline
+				}
+			}
 		}
 
 		&-body {

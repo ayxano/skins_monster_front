@@ -140,7 +140,7 @@ const methods = [
 const paymentMethod = ref(methods[0]);
 
 const basketPrice = computed(() => {
-  return convertPrice(basketStore.price);
+  return basketStore.price;
 });
 
 const trade_link = computed(() => {
