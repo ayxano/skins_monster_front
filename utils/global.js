@@ -3,7 +3,6 @@ import queryString from "query-string";
 import { useGlobalStore } from "~/stores/global";
 import { shallowRef } from "vue";
 import AuthModal from "~/components/modals/components/AuthModal.vue";
-import pluralize from "pluralize";
 
 export function getCookie(name) {
   let cookie = document.cookie.split(";").find((c) => c.startsWith(name));
@@ -127,10 +126,10 @@ export function convertPrice(price, currCode = "eur") {
 
 /**
  * Переключение возможности сколла страницы
- * @param bool - true - убрать сколл, false - вернуть
+ * @param hide - true - убрать сколл, false - вернуть
  */
-export function hideBodyScroll(bool) {
-  if (bool) {
+export function hideBodyScroll(hide) {
+  if (hide) {
     document.body.classList.add("no-scroll");
   } else {
     document.body.classList.remove("no-scroll");

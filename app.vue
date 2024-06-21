@@ -14,6 +14,7 @@
     </div>
   </div>
   <ModalsComponent />
+  <MenuComponent />
 </template>
 
 <style lang="stylus">
@@ -27,6 +28,7 @@ import FooterComponent from "~/components/footer/index.vue";
 import AsideComponent from "~/components/aside/index.vue";
 import { onMounted, computed } from "vue";
 import ModalsComponent from "~/components/modals/index.vue";
+import MenuComponent from "~/components/menus/index.vue";
 import { csrf, getCookie } from "~/utils/global";
 
 useHead({

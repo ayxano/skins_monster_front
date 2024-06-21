@@ -19,7 +19,7 @@ import { useHead, useRoute } from "#app";
 import HeaderComponent from "~/components/header/index.vue";
 import FooterComponent from "~/components/footer/index.vue";
 import AsideComponent from "~/components/aside/index.vue";
-import { onMounted, computed, watch } from "vue";
+import { onMounted, computed } from "vue";
 import { useGlobalStore } from "~/stores/global";
 import ModalsComponent from "~/components/modals/index.vue";
 import { useAuthStore } from "~/stores/auth";
@@ -52,17 +52,6 @@ onMounted(() => {
   }
   getGlobalData();
 });
-
-const fullPage = computed(() => {
-  return route.meta.fullPage;
-});
-
-watch(
-  () => fullPage,
-  () => {
-    console.log("fullpage changed");
-  }
-);
 
 function getGlobalData() {
   globalStore.getCurrency();

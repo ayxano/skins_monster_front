@@ -160,10 +160,11 @@ const balanceDeficit = computed(() => {
 });
 
 const submitDisabled = computed(() => {
+  const disabled = !agreement.value || !trade_link.value;
   if (paymentMethod.value.type === "balance") {
-    return !agreement.value || !trade_link.value || balanceDeficit.value > 0;
+    return disabled || balanceDeficit.value > 0;
   }
-  return !agreement.value || !trade_link.value;
+  return disabled;
 });
 
 async function submit() {
@@ -361,6 +362,9 @@ function showAlertModal(options) {
 	}
 
 	&__agreement {
+		span {
+			font-size 0.75rem
+		}
 		a {
 			border-bottom 1px solid
 			transition none

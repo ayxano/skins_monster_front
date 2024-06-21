@@ -21,6 +21,7 @@
 import { onMounted, ref, computed } from "vue";
 import { useDefaultStore } from "~/stores/default";
 import { query } from "~/utils/global";
+import { useFiltersStore } from "~/stores/filters";
 
 const defaultStore = useDefaultStore();
 
@@ -45,6 +46,7 @@ const games = ref([
   },
 ]);
 
+const filtersStore = useFiltersStore();
 const activeGame = ref(games.value[0]);
 
 onMounted(get);
@@ -62,6 +64,10 @@ async function get() {
   });
   games.value[0].categories = getTypes(cs2Filters);
   games.value[1].categories = getTypes(dota2Filters);
+  filtersStore.filters = {
+    [appidTypes.value.CS2]: cs2Filters,
+    [appidTypes.value.DOTA2]: dota2Filters,
+  };
 }
 
 function getTypes(list) {

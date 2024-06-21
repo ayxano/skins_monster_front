@@ -9,7 +9,12 @@
         </InputComponent>
       </div>
       <div class="filters-row">
-        <TabsComponent v-model="form.appid" :tabs="tabs" small />
+        <TabsComponent
+          v-model="form.appid"
+          :tabs="tabs"
+          @update:model-value="setParams({ filters: null })"
+          small
+        />
         <!--        <SelectComponent-->
         <!--          class="filters-item"-->
         <!--          placeholder="Category"-->
@@ -22,9 +27,12 @@
         <!--            <IconComponent name="category-2" />-->
         <!--          </template>-->
         <!--        </SelectComponent>-->
-        <button class="filters-item btn btn--md btn--hollow">
+        <button @click.prevent="showFilters" class="filters-item btn btn--md btn--hollow">
           <span>Filters</span>
-          <IconComponent name="setting-4" />
+          <span v-if="filtersCount" class="filters-item__count">{{ filtersCount }}</span>
+          <span class="filters-item__icon-wrap">
+            <IconComponent name="setting-4" />
+          </span>
         </button>
         <SelectComponent
           class="filters-item"
@@ -33,6 +41,7 @@
           :options="sortOptions"
           :icon-rotate="false"
           clearable
+          @update:model-value="setParams({})"
         >
           <template #icon>
             <IconComponent name="sort" />
@@ -51,13 +60,22 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, shallowRef, onMounted, watch, computed } from "vue";
 import SelectComponent from "~/components/inputs/select/index.vue";
+import { useDefaultStore } from "~/stores/default";
+import FiltersMenu from "~/components/menus/components/FiltersMenu.vue";
+import { useFiltersStore } from "~/stores/filters";
+import { useRoute } from "#app";
+
+const filtersStore = useFiltersStore();
+const defaultStore = useDefaultStore();
+const route = useRoute();
 
 const tabs = [
   {
     id: 1,
     title: "CS2",
+    code: defaultStore.types.appid.CS2,
     icon: {
       name: "cs2",
       category: "default",
@@ -66,6 +84,7 @@ const tabs = [
   {
     id: 2,
     title: "DOTA 2",
+    code: defaultStore.types.appid.DOTA2,
     icon: {
       name: "dota2",
       category: "default",
@@ -76,11 +95,11 @@ const tabs = [
 const sortOptions = [
   {
     title: "Price: Min",
-    sort: "price_min",
+    by: "price_min",
   },
   {
     title: "Price: Max",
-    sort: "price_max",
+    by: "price_max",
   },
 ];
 
@@ -90,9 +109,45 @@ let form = ref({
   query: null,
 });
 
-const categories = computed(() => {
-  return [];
+onMounted(() => {
+  updateData();
 });
+
+watch(
+  () => route.query,
+  () => {
+    updateData();
+  }
+);
+
+const filtersCount = computed(() => {
+  const filters = filtersStore.queryParams.filters;
+  if (filters) {
+    return Object.keys(filters).length;
+  }
+  return 0;
+});
+
+function showFilters() {
+  useDefaultStore().menus.push({
+    component: shallowRef(FiltersMenu),
+    keepAlive: true,
+  });
+}
+
+function setParams(params = {}) {
+  filtersStore.setParams({
+    appid: form.value.appid ? form.value.appid.code : defaultStore.types.appid.CS2,
+    sort: form.value.sort ? form.value.sort.by : null,
+    ...params,
+  });
+}
+
+function updateData() {
+  const query = filtersStore.queryParams;
+  form.value.appid = tabs.find((i) => i.code === query.appid) || tabs[0];
+  form.value.sort = sortOptions.find((i) => i.by === query.sort) || null;
+}
 </script>
 
 <style lang="stylus">
@@ -107,6 +162,8 @@ const categories = computed(() => {
 	}
 
 	&-item {
+		position relative
+
 		&.btn {
 			padding: 0 15px
 		}
@@ -118,6 +175,27 @@ const categories = computed(() => {
 		&--clear {
 			margin-left auto
 			align-self flex-end
+		}
+
+		&__icon-wrap {
+			position relative
+		}
+
+		&__count {
+			position absolute
+			top 2px
+			right 2px
+			display: flex;
+			width: 16px;
+			height: 16px;
+			flex-direction: column;
+			justify-content: center;
+			align-items: center;
+			font-size: 0.625rem
+			line-height: normal;
+			border-radius: 100px;
+			//background: var(--gray-dark-3);
+			background: var(--green-dark);
 		}
 	}
 

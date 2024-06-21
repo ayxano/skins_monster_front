@@ -3,6 +3,7 @@
     <div class="page__inner catalog-page__inner">
       <BreadcrumbsComponent title="Catalog" subtitle="1,080" />
       <div class="catalog-page__content">
+        meta{{ meta }}
         <CatalogFiltersComponent />
         <LoadingCircleIndicator v-if="pageLoading" />
         <SkinsListComponent :list="data.items" />
@@ -15,63 +16,48 @@
 
 <script setup>
 import { computed, ref, onMounted, watch } from "vue";
-import { useRoute, useRouter } from "#app";
+import { useRoute } from "#app";
 import { useCatalogStore } from "~/stores/catalog";
 import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
-// import queryString from "query-string";
+import { useDefaultStore } from "~/stores/default";
+import { useFiltersStore } from "~/stores/filters";
 
 const meta = ref({
   page: 1,
   first: 16,
 });
 
+const filtersStore = useFiltersStore();
 const catalogStore = useCatalogStore();
+const defaultStore = useDefaultStore();
 const route = useRoute();
-const router = useRouter();
 const pageLoading = ref(true);
 const filterLoading = ref(false);
 
 onMounted(() => {
-  parseParams();
+  updateData();
   get();
 });
 
 watch(
   () => route.query,
   () => {
-    // parseParams();
+    updateData();
     get();
   }
 );
-
-const routeQuery = computed(() => {
-  if (process.client) {
-    // console.log("routeQuery", queryString.parse(location.search));
-    // return queryString.parse(location.search);
-    return route.query;
-  }
-  return {};
-});
 
 const data = computed(() => {
   return catalogStore.skins || {};
 });
 
 async function get() {
-  // const qs = queryString.stringify({
-  //   page: meta.value.page,
-  //   limit: meta.value.first,
-  //   filters: { type: ["Agent"] },
-  // });
-  //
-  // console.log("qs", qs);
-  // console.log("routeQuery.value", routeQuery.value);
-
   try {
     await catalogStore.get({
-      ...routeQuery.value,
       page: meta.value.page,
       limit: meta.value.first,
+      appid: defaultStore.types.appid.CS2,
+      ...route.query,
     });
   } finally {
     pageLoading.value = false;
@@ -83,18 +69,15 @@ function paginate(page) {
   setParams();
 }
 
-function parseParams() {
-  meta.value.page = routeQuery.value.page || 1;
+function updateData() {
+  const query = filtersStore.queryParams;
+  meta.value.page = query.page || 1;
 }
 
 function setParams() {
-  const params = {
-    // appid: 730,
-    // query: "redline",
-    filters: [{ filter: "value" }],
-    page: meta.value.page,
-  };
-  router.push({ name: "catalog", query: params });
+  filtersStore.setParams({
+    page: meta.value.page || 1,
+  });
 }
 </script>
 
