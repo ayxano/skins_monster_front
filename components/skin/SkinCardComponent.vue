@@ -19,8 +19,8 @@
     </div>
     <div class="skin-card__body">
       <div class="skin-card__info">
-        <span class="skin-card__title" v-if="skinTitle.gun">{{ skinTitle.gun }}</span>
-        <span class="skin-card__subtitle" v-if="skinTitle.name">{{ skinTitle.name }}</span>
+        <span class="skin-card__title" v-if="skinTitle.name">{{ skinTitle.name }}</span>
+        <span class="skin-card__subtitle" v-if="skinTitle.gun">{{ skinTitle.gun }}</span>
         <div v-if="skinFloat" class="skin-card__float">
           <span class="skin-card__float-title">{{ skinFloat.shortName }}</span>
           <template v-if="skinFloat.value">

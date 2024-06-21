@@ -13,14 +13,27 @@
         <span v-if="basketLength" class="header-actions__item-count">{{ basketLength }}</span>
       </div>
     </nuxt-link>
-    <nuxt-link
-      to="/cabinet/profile"
-      class="header-actions__item header-actions__item--profile btn btn--lg btn--dark-light"
-      :class="{ 'header-actions__item--authorized': authorized }"
+    <div
+      @mouseenter="dropdownVisible = true"
+      @mouseleave="dropdownVisible = false"
+      class="header-actions__item-wrap"
     >
-      <IconComponent v-if="authorized" class="icon--lg" name="profile-tick" />
-      <IconComponent v-else class="icon--lg" name="frame-1" />
-    </nuxt-link>
+      <nuxt-link
+        to="/cabinet/profile"
+        class="header-actions__item header-actions__item--profile btn btn--lg btn--dark-light no-hover"
+        :class="{ 'header-actions__item--authorized': authorized }"
+      >
+        <IconComponent v-if="authorized" class="icon--lg" name="profile-tick" />
+        <IconComponent v-else class="icon--lg" name="frame-1" />
+      </nuxt-link>
+      <div
+        class="header-actions__item-dropdown"
+        :class="{ 'header-actions__item-dropdown--visible': dropdownVisible && authorized }"
+      >
+        <HeaderProfileDropdownComponent />
+      </div>
+    </div>
+
     <button class="header-actions__item header-actions__item--menu btn">
       <IconComponent class="icon--lg" name="menu-burger" />
     </button>
@@ -29,15 +42,25 @@
 
 <script setup>
 import { useBasketStore } from "~/stores/basket";
-import { computed } from "vue";
+import { computed, ref, watch } from "vue";
 import { useAuthStore } from "~/stores/auth";
+import { useRoute } from "#app";
 
 defineProps({
   showSearch: Boolean,
 });
 
+const route = useRoute();
 const basketStore = useBasketStore();
 const authStore = useAuthStore();
+const dropdownVisible = ref(false);
+
+watch(
+  () => route.fullPath,
+  () => {
+    dropdownVisible.value = false;
+  }
+);
 
 const basketLength = computed(() => {
   return basketStore.basket?.length || 0;
@@ -54,6 +77,10 @@ const authorized = computed(() => {
 	gap: 15px
 
 	&__item {
+		&-wrap {
+			position relative
+		}
+
 		&-inner {
 			display flex
 			align-items center
@@ -75,6 +102,23 @@ const authorized = computed(() => {
 			line-height: normal;
 			border-radius: 100px;
 			background: var(--red, #DC2626);
+		}
+
+		&-dropdown {
+			padding-top 15px
+			margin-top -10px
+			position absolute
+			top: 100%
+			right 0
+			z-index 2
+			opacity 0
+			pointer-events none
+			transition opacity var(--transition)
+
+			&--visible {
+				opacity 1
+				pointer-events auto
+			}
 		}
 	}
 
@@ -104,7 +148,7 @@ const authorized = computed(() => {
 		}
 
 		&--authorized {
-			.icon svg path {
+			> .icon svg path {
 				fill var(--main)
 			}
 		}

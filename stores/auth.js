@@ -15,5 +15,14 @@ export const useAuthStore = defineStore({
     async refill() {
       return await query("/skinpay/trade-link");
     },
+    async logout() {
+      return await query(
+        "/logout",
+        {},
+        {
+          method: "POST",
+        }
+      );
+    },
   },
 });
