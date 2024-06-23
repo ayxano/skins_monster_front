@@ -138,7 +138,7 @@ export function marginPrice(price) {
   if (company.margin_amount) {
     result += parseFloat(company.margin_amount);
   }
-  return result;
+  return result.toFixed(2);
 }
 
 /**
