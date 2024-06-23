@@ -82,6 +82,7 @@ function showMainMenu() {
 .header-actions {
 	display flex
 	gap: 15px
+	flex-shrink: 0
 
 	&__item {
 		&-wrap {

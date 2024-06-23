@@ -10,7 +10,7 @@
           </div>
           <CheckoutAsideComponent :basket="basket" />
         </template>
-        <span v-else>Empty</span>
+        <EmptyComponent v-else text="Empty cart" />
       </div>
     </div>
   </main>

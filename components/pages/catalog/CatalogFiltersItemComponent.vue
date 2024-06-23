@@ -2,7 +2,18 @@
   <div v-if="showFilter" class="category-filters__item" :class="{ 'category-filters__item--expand': expand }">
     <button @click="expand = !expand" class="category-filters__item-header btn">
       <span class="category-filters__item-title"> {{ title }} </span>
-      <IconComponent name="arrow-down-small" />
+      <span v-if="checkedList.length && !onlyInputs" class="category-filters__item-count small-tag">
+        {{ checkedList.length }}
+      </span>
+      <button
+        v-if="checkedList.length && !onlyInputs"
+        class="category-filters__item-clear small-tag"
+        title="Clear"
+        @click.prevent="checkedList = []"
+      >
+        <IconComponent name="close" />
+      </button>
+      <IconComponent class="category-filters__item-down-icon" name="arrow-down-small" />
     </button>
     <div v-if="expand && showSearch" class="category-filters__item-inputs">
       <slot name="inputs">

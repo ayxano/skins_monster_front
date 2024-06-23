@@ -125,6 +125,14 @@ async function getSkins() {
 	&-search__wrap {
 		position relative
 		width 50%
+		display flex
+		+below(1024px) {
+			width	auto
+			flex-grow 1
+		}
+		+below(720px) {
+			display none
+		}
 	}
 
 	&-search.input {
@@ -132,9 +140,6 @@ async function getSkins() {
 		+below(1024px) {
 			width	auto
 			flex-grow 1
-		}
-		+below(720px) {
-			display none
 		}
 	}
 

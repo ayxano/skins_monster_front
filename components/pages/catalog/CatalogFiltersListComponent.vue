@@ -157,10 +157,8 @@ main_class = ".category-filters"
 		gap: 5px
 		padding: 0 5px
 
-		&--expand &-header {
-			.icon {
-				transform rotate(-180deg)
-			}
+		&--expand &-down-icon {
+			transform rotate(-180deg)
 		}
 
 		&-header {
@@ -169,6 +167,7 @@ main_class = ".category-filters"
 			gap 10px
 			justify-content space-between
 			padding: 10px
+			position relative
 
 			&:hover {
 				background var(--dark-light-2)
@@ -190,6 +189,24 @@ main_class = ".category-filters"
       font-weight: 700;
       line-height: 19px;
     }
+
+		&-count {
+			margin-right auto
+		}
+
+		&-clear {
+			margin-left auto
+			color var(--red)
+			font-size: 0.875rem
+			background transparent
+			border none
+			cursor pointer
+
+			.icon {
+				width 10px
+				height 10px
+			}
+		}
 
 		&-search {
 			height 36px
@@ -271,11 +288,6 @@ main_class = ".category-filters"
         width 16px
         height 16px
       }
-    }
-
-    &-clear {
-      color var(--red)
-      font-size: 0.875rem
     }
   }
 
