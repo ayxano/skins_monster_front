@@ -237,6 +237,7 @@ main_class = ".skin-card"
 		right 0
 		top 0
 		bottom 0
+		z-index 1
 	}
 
 	&__header {

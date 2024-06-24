@@ -95,9 +95,9 @@ function setActive(i) {
 	}
 
 	.tabs {
-		+below(540px) {
-			width 100%
-		}
+		//+below(540px) {
+		//	width 100%
+		//}
 		+below(400px) {
 			flex-direction column
 		}
