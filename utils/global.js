@@ -13,7 +13,9 @@ export function getCookie(name) {
 }
 
 export function csrf() {
-  return query("/csrf-cookie", {}, {}, "/sanctum");
+  return fetch(process.env.HOST_ENDPOINT + "/sanctum/csrf-cookie", {
+    credentials: "include",
+  });
 }
 
 /**

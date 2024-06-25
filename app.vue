@@ -29,7 +29,7 @@ import AsideComponent from "~/components/aside/index.vue";
 import { onMounted, computed } from "vue";
 import ModalsComponent from "~/components/modals/index.vue";
 import MenuComponent from "~/components/menus/index.vue";
-import { csrf, getCookie } from "~/utils/global";
+import { csrf } from "~/utils/global";
 
 useHead({
   title: "Skins Monster - Buy CS2/Dota 2 skins",
@@ -46,10 +46,7 @@ useHead({
 const route = useRoute();
 
 onMounted(() => {
-  let token = getCookie("XSRF-TOKEN");
-  if (!token) {
-    csrf();
-  }
+  csrf();
 });
 
 const fullPage = computed(() => {
