@@ -98,7 +98,7 @@ main_class = ".menu"
     height 100%
     width 100%
     z-index 0
-    cursor pointer
+    cursor: pointer
   }
 
   &__body {

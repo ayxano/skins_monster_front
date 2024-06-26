@@ -29,7 +29,6 @@ import AsideComponent from "~/components/aside/index.vue";
 import { onMounted, computed } from "vue";
 import ModalsComponent from "~/components/modals/index.vue";
 import MenuComponent from "~/components/menus/index.vue";
-import { csrf } from "~/utils/global";
 
 useHead({
   title: "Skins Monster - Buy CS2/Dota 2 skins",
@@ -45,12 +44,8 @@ useHead({
 
 const route = useRoute();
 
-onMounted(() => {
-  csrf();
-});
-
 const fullPage = computed(() => {
-  return route.meta.fullPage;
+  return route.meta.fullPage || route.query.fullpage;
 });
 </script>
 

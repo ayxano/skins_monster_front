@@ -11,6 +11,7 @@
           @click.prevent="addToFavorites"
           class="skin-card__favorite btn btn--md"
           :class="{ 'skin-card__favorite--active': inFavorites }"
+          v-if="!fullpage"
         >
           <LoadingCircleIndicator v-if="favoritesLoading" title="" />
           <IconComponent v-else name="star" />
@@ -33,12 +34,15 @@
       <div
         class="skin-card__actions"
         :class="{
-          'skin-card__actions--default': !(data.banned || inCart),
+          'skin-card__actions--default': !(data.banned || inCart || inListIndex !== -1),
           'skin-card__actions--banned': data.banned,
-          'skin-card__actions--in-cart': inCart,
+          'skin-card__actions--in-cart': inCart || inListIndex !== -1,
         }"
       >
-        <button @click="addToBasket" class="skin-card__action-cart btn">
+        <button v-if="fullpage" @click="addToList" class="skin-card__action-cart btn">
+          <IconComponent name="add" />
+        </button>
+        <button v-else @click="addToBasket" class="skin-card__action-cart btn">
           <LoadingCircleIndicator v-if="basketLoading" title="" />
           <IconComponent v-else name="bag-2" />
         </button>
@@ -61,19 +65,23 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, inject } from "vue";
 import { useBasketStore } from "~/stores/basket";
 import { useFavoritesStore } from "~/stores/favorites";
 import { isCS2, convertPrice, showAuthModal, marginPrice } from "~/utils/global";
 import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
 import { removeExterior } from "~/utils/skin";
 import { useAuthStore } from "~/stores/auth";
+import { useCatalogStore } from "~/stores/catalog";
 
 const props = defineProps({
   data: Object,
   inRow: Boolean, // карточка находится в линии, не в гриде
 });
 
+const fullpage = inject("fullpage");
+
+const catalogStore = useCatalogStore();
 const authStore = useAuthStore();
 const basketStore = useBasketStore();
 const favoritesStore = useFavoritesStore();
@@ -109,6 +117,14 @@ const inCart = computed(() => {
     .filter((i) => i)
     .map((i) => i.id)
     .includes(props.data.id);
+});
+
+const inListIndex = computed(() => {
+  return catalogStore.selectedList
+    .filter((i) => i)
+    .findIndex(
+      (i) => i.id === props.data.id && i.hash_name === props.data.hash_name && i.appid === props.data.appid
+    );
 });
 
 const inFavorites = computed(() => {
@@ -152,6 +168,14 @@ async function addToBasket() {
     basketLoading.value = false;
   } else {
     showAuthModal();
+  }
+}
+
+function addToList() {
+  if (inListIndex.value === -1) {
+    catalogStore.selectedList.push(props.data);
+  } else {
+    catalogStore.selectedList.splice(inListIndex.value, 1);
   }
 }
 

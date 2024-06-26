@@ -5,6 +5,7 @@ export const useCatalogStore = defineStore({
   id: "catalog",
   state: () => ({
     skins: {},
+    selectedList: [], // список выбранных скинов, нужен для админки
   }),
   actions: {
     async get(params = {}) {

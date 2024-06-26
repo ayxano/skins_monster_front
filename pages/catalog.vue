@@ -1,7 +1,7 @@
 <template>
-  <main class="page catalog-page">
+  <main class="page catalog-page" :class="{ 'catalog-page--fullpage': fullpage }">
     <div class="page__inner catalog-page__inner">
-      <BreadcrumbsComponent title="Catalog" :subtitle="data.total" />
+      <BreadcrumbsComponent v-if="!fullpage" title="Catalog" :subtitle="data.total" />
       <div ref="pageBody" class="catalog-page__content">
         <CatalogFiltersComponent />
         <div
@@ -16,19 +16,27 @@
         <LoadingCircleIndicator v-else-if="pageLoading || filterLoading" />
         <span v-else>No skins...</span>
       </div>
-      <BottomPageBannerComponent />
+      <BottomPageBannerComponent v-if="!fullpage" />
+      <div v-if="fullpage" class="catalog-page__selected-list" id="selected_list">
+        {{ catalogStore.selectedList }}
+      </div>
+      <button v-if="fullpage" @click="log">log</button>
     </div>
   </main>
 </template>
 
 <script setup>
-import { computed, ref, onMounted, watch } from "vue";
-import { useRoute } from "#app";
+import { computed, ref, onMounted, watch, provide } from "vue";
+import { useRoute, useRouter } from "#app";
 import { useCatalogStore } from "~/stores/catalog";
 import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
 import { useDefaultStore } from "~/stores/default";
 import { useFiltersStore } from "~/stores/filters";
 import { scrollTo } from "~/utils/global";
+
+// страница открыта через админку
+const fullpage = computed(() => !!route.query.fullpage);
+provide("fullpage", fullpage);
 
 const meta = ref({
   page: 1,
@@ -61,6 +69,10 @@ const data = computed(() => {
   return catalogStore.skins || {};
 });
 
+const selectedList = computed(() => {
+  return catalogStore.selectedList || [];
+});
+
 async function get() {
   filterLoading.value = true;
   try {
@@ -69,6 +81,7 @@ async function get() {
       limit: meta.value.first,
       appid: defaultStore.types.appid.CS2,
       ...route.query,
+      fullpage: undefined,
     });
   } finally {
     pageLoading.value = false;
@@ -95,10 +108,31 @@ function setParams() {
     page: meta.value.page || 1,
   });
 }
+
+function log() {
+  window.postMessage(JSON.stringify(selectedList.value));
+  useRouter().push({
+    name: "catalog",
+    query: {
+      ...route.query,
+      list: JSON.stringify(
+        selectedList.value.map((i) => ({
+          id: i.id,
+          hash_name: i.hash_name,
+          appid: i.appid,
+        }))
+      ),
+    },
+  });
+}
 </script>
 
 <style lang="stylus">
 .catalog-page {
+	&--fullpage {
+		padding: 20px 0
+	}
+
 	&__content,
 	&__content-skins {
 		display flex
@@ -125,5 +159,9 @@ function setParams() {
 			height 60px
 		}
 	}
+
+	//&__selected-list {
+	//	display none
+	//}
 }
 </style>
