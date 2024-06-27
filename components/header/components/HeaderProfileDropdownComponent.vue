@@ -39,6 +39,8 @@ import { useAuthStore } from "~/stores/auth";
 import { computed, ref } from "vue";
 import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
 import { useRouter } from "#app";
+import { useBasketStore } from "~/stores/basket";
+import { useFavoritesStore } from "~/stores/favorites";
 
 const links = [
   {
@@ -65,6 +67,8 @@ const links = [
 
 const router = useRouter();
 const authStore = useAuthStore();
+const basketStore = useBasketStore();
+const favoritesStore = useFavoritesStore();
 const refillLoading = ref(false);
 const logoutLoading = ref(false);
 
@@ -91,6 +95,8 @@ async function logout() {
   try {
     await authStore.logout();
     authStore.user = null;
+    basketStore.basket_list = [];
+    favoritesStore.favorites_list = [];
     await router.push({ name: "index" });
   } finally {
     logoutLoading.value = false;

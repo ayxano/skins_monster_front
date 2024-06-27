@@ -79,7 +79,7 @@ const props = defineProps({
   inRow: Boolean, // карточка находится в линии, не в гриде
 });
 
-const fullpage = inject("fullpage");
+const fullpage = inject("fullpage", false);
 
 const catalogStore = useCatalogStore();
 const authStore = useAuthStore();

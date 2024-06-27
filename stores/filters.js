@@ -1,5 +1,7 @@
 import { useRoute, useRouter } from "#app";
 import { defineStore } from "pinia";
+import { query } from "~/utils/global";
+import { useDefaultStore } from "~/stores/default";
 
 export const useFiltersStore = defineStore({
   id: "filters",
@@ -26,6 +28,19 @@ export const useFiltersStore = defineStore({
     },
   },
   actions: {
+    async get() {
+      const appidTypes = useDefaultStore().types.appid;
+      const { filters: cs2Filters } = await query("/filters", {
+        appid: appidTypes.CS2,
+      });
+      const { filters: dota2Filters } = await query("/filters", {
+        appid: appidTypes.DOTA2,
+      });
+      this.filters = {
+        [appidTypes.CS2]: cs2Filters,
+        [appidTypes.DOTA2]: dota2Filters,
+      };
+    },
     setParams(params) {
       let modifiedParams = {};
       Object.keys(params).forEach((key) => {

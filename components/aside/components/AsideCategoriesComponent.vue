@@ -1,6 +1,6 @@
 <template>
   <div class="aside-categories">
-    <TabsComponent v-model="activeGame" :tabs="games" small same-tabs />
+    <TabsComponent v-model="activeIndex" :tabs="games" small same-tabs label-by="index" />
     <PerfectScrollbar tag="ul" class="aside-categories__list">
       <li v-for="(item, i) in activeGame.categories" :key="i" class="aside-categories__item">
         <nuxt-link
@@ -20,12 +20,21 @@
 <script setup>
 import { onMounted, ref, computed } from "vue";
 import { useDefaultStore } from "~/stores/default";
-import { query } from "~/utils/global";
 import { useFiltersStore } from "~/stores/filters";
 
 const defaultStore = useDefaultStore();
+const filtersStore = useFiltersStore();
+const activeIndex = ref(0);
 
-const games = ref([
+onMounted(() => {
+  filtersStore.get();
+});
+
+const appidTypes = computed(() => {
+  return defaultStore.types.appid;
+});
+
+const games = computed(() => [
   {
     id: 1,
     title: "CS2",
@@ -33,7 +42,7 @@ const games = ref([
       name: "cs2",
       category: "default",
     },
-    categories: [],
+    categories: getTypes(filtersStore.filters[appidTypes.value.CS2]),
   },
   {
     id: 2,
@@ -42,36 +51,14 @@ const games = ref([
       name: "dota2",
       category: "default",
     },
-    categories: [],
+    categories: getTypes(filtersStore.filters[appidTypes.value.DOTA2]),
   },
 ]);
 
-const filtersStore = useFiltersStore();
-const activeGame = ref(games.value[0]);
-
-onMounted(get);
-
-const appidTypes = computed(() => {
-  return defaultStore.types.appid;
-});
-
-async function get() {
-  const { filters: cs2Filters } = await query("/filters", {
-    appid: appidTypes.value.CS2,
-  });
-  const { filters: dota2Filters } = await query("/filters", {
-    appid: appidTypes.value.DOTA2,
-  });
-  games.value[0].categories = getTypes(cs2Filters);
-  games.value[1].categories = getTypes(dota2Filters);
-  filtersStore.filters = {
-    [appidTypes.value.CS2]: cs2Filters,
-    [appidTypes.value.DOTA2]: dota2Filters,
-  };
-}
+const activeGame = computed(() => games.value[activeIndex.value]);
 
 function getTypes(list) {
-  return list.find((item) => item.name === "type")?.values || [];
+  return list && list.length ? list.find((item) => item.name === "type")?.values : [];
 }
 </script>
 

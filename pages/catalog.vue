@@ -17,17 +17,13 @@
         <span v-else>No skins...</span>
       </div>
       <BottomPageBannerComponent v-if="!fullpage" />
-      <div v-if="fullpage" class="catalog-page__selected-list" id="selected_list">
-        {{ catalogStore.selectedList }}
-      </div>
-      <button v-if="fullpage" @click="log">log</button>
     </div>
   </main>
 </template>
 
 <script setup>
 import { computed, ref, onMounted, watch, provide } from "vue";
-import { useRoute, useRouter } from "#app";
+import { useRoute } from "#app";
 import { useCatalogStore } from "~/stores/catalog";
 import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
 import { useDefaultStore } from "~/stores/default";
@@ -54,6 +50,9 @@ const pageBody = ref(null);
 onMounted(() => {
   updateData();
   get();
+  window.addEventListener("message", ({ data }) => {
+    catalogStore.selectedList = JSON.parse(data);
+  });
 });
 
 watch(
@@ -65,12 +64,16 @@ watch(
   }
 );
 
+watch(
+  () => catalogStore.selectedList,
+  (val) => {
+    parent.postMessage(JSON.stringify(val));
+  },
+  { deep: true }
+);
+
 const data = computed(() => {
   return catalogStore.skins || {};
-});
-
-const selectedList = computed(() => {
-  return catalogStore.selectedList || [];
 });
 
 async function get() {
@@ -106,23 +109,6 @@ function updateData() {
 function setParams() {
   filtersStore.setParams({
     page: meta.value.page || 1,
-  });
-}
-
-function log() {
-  window.postMessage(JSON.stringify(selectedList.value));
-  useRouter().push({
-    name: "catalog",
-    query: {
-      ...route.query,
-      list: JSON.stringify(
-        selectedList.value.map((i) => ({
-          id: i.id,
-          hash_name: i.hash_name,
-          appid: i.appid,
-        }))
-      ),
-    },
   });
 }
 </script>
