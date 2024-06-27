@@ -53,7 +53,7 @@ const skinImg = computed(() => {
 });
 
 const steamLink = computed(() => {
-  return `https://steamcommunity.com/market/listings/730/${props.data.hash_name}`;
+  return `https://steamcommunity.com/market/listings/${props.data.appid}/${props.data.hash_name}`;
 });
 </script>
 

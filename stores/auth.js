@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
 import { csrf, query } from "~/utils/global";
+import { useBasketStore } from "~/stores/basket";
+import { useFavoritesStore } from "~/stores/favorites";
 
 export const useAuthStore = defineStore({
   id: "auth",
@@ -10,7 +12,15 @@ export const useAuthStore = defineStore({
     async get() {
       await csrf();
       const { data } = await query("/user");
-      this.user = data;
+      if (data.type === "user") {
+        this.user = data;
+      } else {
+        await this.logout();
+        this.user = null;
+        useBasketStore().basket_list = [];
+        useFavoritesStore().favorites_list = [];
+        await csrf();
+      }
       return data;
     },
     async refill() {
