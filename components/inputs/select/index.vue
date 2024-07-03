@@ -18,15 +18,15 @@
       <span v-if="required">*</span>
     </label>
     <div class="select__input-container">
-      <div class="select__field" ref="input">
+      <div @click="focus" class="select__field" ref="input">
         <label class="select__field-label" :for="id" aria-hidden="true"> </label>
         <input
           :id="id"
           type="text"
           class="select__input"
           :value="inputValue"
-          @focus="focus"
           :placeholder="placeholder"
+          :disabled="!searchable"
         />
         <div class="select__values" v-if="multiple">
           <label :for="id"></label>
@@ -101,6 +101,7 @@ export default {
     big: Boolean,
     multiple: Boolean,
     clearable: Boolean,
+    searchable: Boolean,
     disabled: Boolean,
     iconRotate: {
       type: Boolean,
@@ -135,8 +136,13 @@ export default {
   },
   methods: {
     focus() {
-      this.focused = true;
-      this.openDrop();
+      if (this.searchable) {
+        this.focused = true;
+        this.openDrop();
+      } else {
+        this.focused = !this.focused;
+        this.focused ? this.openDrop() : this.close();
+      }
     },
     openDrop() {
       if (this.$refs.input) {
