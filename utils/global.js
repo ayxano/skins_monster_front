@@ -133,14 +133,14 @@ export function convertPrice(price, currCode = "eur") {
  */
 export function marginPrice(price) {
   const company = useGlobalStore().company || {};
-  let result = price;
+  let result = parseFloat(price);
   if (company.margin_percent) {
     result = result + (result * parseFloat(company.margin_percent)) / 100;
   }
   if (company.margin_amount) {
     result += parseFloat(company.margin_amount);
   }
-  return result.toFixed(2);
+  return parseFloat(result.toFixed(2));
 }
 
 /**

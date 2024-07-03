@@ -13,11 +13,11 @@ export const useBasketStore = defineStore({
     price: (state) =>
       parseFloat(
         state.basket
-          .filter((i) => i)
           .reduce((acc, item) => {
             return acc + marginPrice(convertPrice(item.price));
           }, 0)
-      ).toFixed(2),
+          .toFixed(2)
+      ),
   },
   actions: {
     async get() {
