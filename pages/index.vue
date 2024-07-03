@@ -14,59 +14,84 @@
 </template>
 
 <script setup>
-import { useHead } from "#app";
-import { onMounted, ref } from "vue";
+import { useHead, useRoute } from "#app";
+import { onMounted, computed } from "vue";
 import { query } from "~/utils/global";
-// import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
-// import { useDefaultStore } from "~/stores/default";
+import { useHomeStore } from "~/stores/home";
+import { scrollTo } from "~/utils/global";
 
 useHead({
   titleTemplate: "",
 });
 
-// const defaultStore = useDefaultStore();
-const welcome_banners = ref([]);
-const popular_skins = ref([]);
-const advantages = ref([]);
-const faqCategories = ref([]);
-const reviews = ref([]);
+const route = useRoute();
+const homeStore = useHomeStore();
 
 onMounted(get);
 
+const welcome_banners = computed(() => homeStore.welcome_banners);
+const popular_skins = computed(() => homeStore.popular_skins);
+const advantages = computed(() => homeStore.advantages);
+const faqCategories = computed(() => homeStore.faqCategories);
+const reviews = computed(() => homeStore.reviews);
+
+function scrollToHash() {
+  setTimeout(() => {
+    if (route.hash) {
+      const el = document.querySelector(route.hash);
+      if (el) {
+        scrollTo(el);
+      }
+    }
+  }, 0);
+}
+
 async function get() {
-  const { data } = await query("/banners", {
-    page: 1,
-    first: 5,
-    positions: ["after_header"],
-  });
-  welcome_banners.value = data;
+  if (!(homeStore.welcome_banners && homeStore.welcome_banners.length)) {
+    const { data } = await query("/banners", {
+      page: 1,
+      first: 5,
+      positions: ["after_header"],
+    });
+    homeStore.welcome_banners = data || [];
+  }
 
-  const { items } = await query("/skins", {
-    limit: 8,
-    page: 1,
-  });
-  popular_skins.value = items;
+  if (!(homeStore.popular_skins && homeStore.popular_skins.length)) {
+    const { items } = await query("/skins", {
+      limit: 8,
+      page: 1,
+    });
+    homeStore.popular_skins = items || [];
+  }
 
-  query("/advantages", {
-    page: 1,
-    first: 4,
-  }).then(({ data }) => {
-    advantages.value = data;
-  });
+  if (!(homeStore.advantages && homeStore.advantages.length)) {
+    query("/advantages", {
+      page: 1,
+      first: 4,
+    }).then(({ data }) => {
+      homeStore.advantages = data || [];
+    });
+  }
 
-  query("/faq/categories", {
-    page: 1,
-    first: 10,
-  }).then(({ data }) => {
-    faqCategories.value = data;
-  });
+  if (!(homeStore.faqCategories && homeStore.faqCategories.length)) {
+    query("/faq/categories", {
+      page: 1,
+      first: 10,
+    }).then(({ data }) => {
+      homeStore.faqCategories = data || [];
+      scrollToHash();
+    });
+  }
 
-  query("/reviews", {
-    page: 1,
-    first: 10,
-  }).then(({ data }) => {
-    reviews.value = data;
-  });
+  if (!(homeStore.reviews && homeStore.reviews.length)) {
+    query("/reviews", {
+      page: 1,
+      first: 10,
+    }).then(({ data }) => {
+      homeStore.reviews = data || [];
+      scrollToHash();
+    });
+  }
 }
 </script>
 
