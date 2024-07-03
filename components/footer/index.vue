@@ -164,7 +164,7 @@ const pages = computed(() => {
 		display flex
 		gap: 40px
 		+above(641px) {
-			justify-content flex-end
+			justify-content space-between
 		}
 	}
 
