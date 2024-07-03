@@ -137,6 +137,7 @@ async function submit() {
       showAlertModal({
         title: "SUCCESS",
         text: "Your message successfully sent",
+        noBtn: true,
       });
       resetForm(form.value);
     } catch ({ errors }) {
