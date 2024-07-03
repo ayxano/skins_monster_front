@@ -94,6 +94,7 @@ async function getSkins() {
     query: search.value,
   });
   results.value = items || [];
+  searchLoading.value = false;
 }
 </script>
 
@@ -126,7 +127,7 @@ async function getSkins() {
 		position relative
 		width 50%
 		display flex
-		+below(1024px) {
+		+below(1300px) {
 			width	auto
 			flex-grow 1
 		}
@@ -144,7 +145,7 @@ async function getSkins() {
 	}
 
 	&-socials.socials {
-		+below(1100px) {
+		+below(1200px) {
 			display none
 		}
 	}

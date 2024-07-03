@@ -9,6 +9,15 @@
       }"
       class="skin-card-hz__link"
     ></nuxt-link>
+    <button
+      @click.prevent="addToFavorites"
+      v-if="searchItem"
+      class="skin-card-hz__favorite btn btn--sm btn--hollow"
+      :class="{ 'skin-card-hz__favorite--active': inFavorites }"
+    >
+      <LoadingCircleIndicator v-if="favoritesLoading" title="" />
+      <IconComponent v-else name="star" />
+    </button>
     <button @click.prevent="deleteSkin" v-if="deletable" class="skin-card-hz__delete btn btn--sm btn--hollow">
       <LoadingCircleIndicator v-if="deleteLoading" title="" />
       <IconComponent v-else name="trash" />
@@ -21,7 +30,7 @@
         <span>{{ skinTitle.gun }}</span>
         <template v-if="skinFloat.value">
           <span class="skin-card-hz__float-dot"></span>
-          <span>{{ skinFloat.value }}</span>
+          <span>{{ parseFloat(skinFloat.value).toFixed(4) }}</span>
         </template>
         <!--        <span class="skin-card-hz__float-dot"></span>-->
         <!--        <span>Tradable</span>-->
@@ -44,15 +53,27 @@
         Trade
       </a>
     </div>
+    <div v-if="searchItem" class="skin-card-hz__actions">
+      <button
+        @click.prevent="addToBasket"
+        class="skin-card-hz__cart btn btn--sm"
+        :class="{ 'skin-card-hz__cart--active': inCart }"
+      >
+        <LoadingCircleIndicator v-if="basketLoading" title="" />
+        <IconComponent v-else name="bag-2" />
+      </button>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { computed, ref } from "vue";
-import { convertPrice, isCS2, marginPrice } from "~/utils/global";
+import { convertPrice, isCS2, marginPrice, showAuthModal } from "~/utils/global";
 import { removeExterior } from "~/utils/skin";
 import { useBasketStore } from "~/stores/basket";
 import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
+import { useAuthStore } from "~/stores/auth";
+import { useFavoritesStore } from "~/stores/favorites";
 
 const props = defineProps({
   data: {
@@ -61,10 +82,15 @@ const props = defineProps({
   },
   deletable: Boolean,
   orderItem: Boolean,
+  searchItem: Boolean,
 });
 
+const authStore = useAuthStore();
 const basketStore = useBasketStore();
+const favoritesStore = useFavoritesStore();
 let deleteLoading = ref(false);
+let favoritesLoading = ref(false);
+let basketLoading = ref(false);
 
 const items_statuses = {
   created: "Waiting for payment",
@@ -130,10 +156,49 @@ const skinPrice = computed(() => {
   return marginPrice(convertPrice(props.data.price));
 });
 
+const inFavorites = computed(() => {
+  return favoritesStore.favorites.map((i) => i.id).includes(props.data.id);
+});
+
+const inCart = computed(() => {
+  return basketStore.basket
+    .filter((i) => i)
+    .map((i) => i.id)
+    .includes(props.data.id);
+});
+
 async function deleteSkin() {
   deleteLoading.value = true;
   await basketStore.delete(props.data.id);
   deleteLoading.value = false;
+}
+
+async function addToFavorites() {
+  if (authStore.user) {
+    favoritesLoading.value = true;
+    if (!inFavorites.value) {
+      await favoritesStore.add(props.data);
+    } else {
+      await favoritesStore.delete(props.data.id);
+    }
+    favoritesLoading.value = false;
+  } else {
+    showAuthModal();
+  }
+}
+
+async function addToBasket() {
+  if (authStore.user) {
+    basketLoading.value = true;
+    if (!inCart.value) {
+      await basketStore.add(props.data);
+    } else {
+      await basketStore.delete(props.data.id);
+    }
+    basketLoading.value = false;
+  } else {
+    showAuthModal();
+  }
 }
 </script>
 
@@ -166,6 +231,18 @@ main_class = ".skin-card-hz"
 		{ main_class }__prices {
 			background var(--gray-dark-2)
 		}
+
+		{ main_class }__cart {
+			&:not(&:hover):not({ main_class }__cart--active) {
+				background var(--gray-dark-2)
+			}
+		}
+
+		{ main_class }__favorite {
+			&:not(&:hover):not({ main_class }__favorite--active) {
+				border-color var(--gray-dark-2)
+			}
+		}
 	}
 
 	&__link {
@@ -174,6 +251,7 @@ main_class = ".skin-card-hz"
 		right 0
 		top 0
 		bottom 0
+		z-index 1
 	}
 
 	&__delete.btn {
@@ -197,6 +275,34 @@ main_class = ".skin-card-hz"
 		&:hover {
 			border-color var(--red)
 			color var(--red)
+		}
+	}
+
+	&__favorite {
+		z-index 2
+
+		&.btn {
+			width 30px
+			height 30px
+			+below(800px) {
+				display none
+			}
+		}
+
+		&:not(&--active):hover.btn {
+			background var(--gray-dark-2)
+		}
+
+		&--active.btn {
+			border-color var(--main)
+
+			.icon svg path {
+				fill var(--main)
+			}
+		}
+
+		.icon {
+			pointer-events none
 		}
 	}
 
@@ -321,6 +427,32 @@ main_class = ".skin-card-hz"
 
 		&:hover {
 			text-decoration underline
+		}
+	}
+
+	&__actions {
+		display flex
+		position relative
+		z-index 2
+	}
+
+	&__cart {
+		&.btn {
+			width 60px
+			height 30px
+			background: var(--dark-light-2, #1F3B4B);
+		}
+
+		&:not(&--active):hover {
+			background var(--dark-light)
+		}
+
+		&--active.btn {
+			background var(--main)
+		}
+
+		.icon {
+			pointer-events none
 		}
 	}
 }

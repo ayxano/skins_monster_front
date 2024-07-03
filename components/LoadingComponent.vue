@@ -63,6 +63,7 @@ export default {
   align-items center
   position relative
   gap 10px
+	flex-shrink: 0
 
   & svg {
     width 16px
