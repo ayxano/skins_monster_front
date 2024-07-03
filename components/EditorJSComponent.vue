@@ -221,6 +221,7 @@ export default {
       try {
         if (!this.nbspAvailable) {
           text = text.replace(/&nbsp;/g, " ");
+          text = text.replace(/&amp;/g, "&");
         }
         return JSON.parse(text);
       } catch (e) {
@@ -539,6 +540,7 @@ export default {
     width 100%
     margin 0
     padding 0
+		word-break break-word
   }
 
   &__list--unordered {
