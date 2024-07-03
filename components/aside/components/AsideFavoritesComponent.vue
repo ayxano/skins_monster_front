@@ -8,7 +8,11 @@
     </nuxt-link>
     <div class="aside-favorites__list">
       <nuxt-link
-        :to="{ name: 'skin', query: { skin_id: item.id, hash_name: item.hash_name, app_id: item.appid } }"
+        :to="{
+          name: 'skin-id',
+          params: { id: item.id },
+          query: { skin_id: item.id, hash_name: item.hash_name, app_id: item.appid },
+        }"
         v-for="(item, i) in skins.slice(0, 5)"
         :key="i"
         class="aside-favorites__item"

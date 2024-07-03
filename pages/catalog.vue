@@ -51,7 +51,11 @@ onMounted(() => {
   updateData();
   get();
   window.addEventListener("message", ({ data }) => {
-    catalogStore.selectedList = JSON.parse(data);
+    try {
+      catalogStore.selectedList = JSON.parse(data);
+    } catch (e) {
+      catalogStore.selectedList = [];
+    }
   });
 });
 

@@ -2,7 +2,11 @@
   <div v-if="data" class="skin-card-hz" :class="{ 'skin-card-hz--deletable': deletable }">
     <nuxt-link
       v-if="!orderItem"
-      :to="{ name: 'skin', query: { skin_id: data.id, hash_name: data.hash_name, app_id: data.appid } }"
+      :to="{
+        name: 'skin-id',
+        params: { id: data.id },
+        query: { skin_id: data.id, hash_name: data.hash_name, app_id: data.appid },
+      }"
       class="skin-card-hz__link"
     ></nuxt-link>
     <button @click.prevent="deleteSkin" v-if="deletable" class="skin-card-hz__delete btn btn--sm btn--hollow">

@@ -16,7 +16,7 @@
         <span>Screenshot</span>
       </a>
       <a
-        v-if="data.extra"
+        v-if="data.extra && data.extra.inspect_link"
         :href="data.extra.inspect_link"
         class="skin-page-preview__action btn btn--md btn--dark-light"
       >

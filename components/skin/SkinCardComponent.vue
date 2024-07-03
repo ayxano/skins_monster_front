@@ -1,7 +1,11 @@
 <template>
   <div v-if="data && data.id" class="skin-card" :class="{ 'skin-card--in-row': inRow }">
     <nuxt-link
-      :to="{ name: 'skin', query: { skin_id: data.id, hash_name: data.hash_name, app_id: data.appid } }"
+      :to="{
+        name: 'skin-id',
+        params: { id: data.id },
+        query: { skin_id: data.id, hash_name: data.hash_name, app_id: data.appid },
+      }"
       class="skin-card__link"
     ></nuxt-link>
     <div class="skin-card__header">
