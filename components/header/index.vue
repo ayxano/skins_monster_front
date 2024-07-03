@@ -47,7 +47,7 @@ const favoritesStore = useFavoritesStore();
 const search = ref("");
 const results = ref([]);
 const searchDebounce = ref({});
-const searchLoading = ref({});
+const searchLoading = ref(false);
 const dropdownVisible = ref(false);
 
 const showSearch = computed(() => {
