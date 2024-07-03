@@ -60,7 +60,7 @@ const links = [
   },
   {
     title: "Favorites",
-    icon: "messages-3",
+    icon: "star",
     route: { name: "cabinet-favorites" },
   },
 ];
