@@ -26,6 +26,9 @@
         <!--        <span class="skin-card-hz__float-dot"></span>-->
         <!--        <span>Tradable</span>-->
       </span>
+      <span v-if="orderItem" :class="[`skin-card-hz__status--${data.status}`, 'skin-card-hz__status']">
+        Status: <span class="skin-card-hz__status-tag">{{ items_statuses[data.status] }}</span>
+      </span>
     </div>
     <div class="skin-card-hz__right">
       <div class="skin-card-hz__prices">
@@ -62,6 +65,14 @@ const props = defineProps({
 
 const basketStore = useBasketStore();
 let deleteLoading = ref(false);
+
+const items_statuses = {
+  created: "Waiting for payment",
+  trade_creating: "Creating trade",
+  wait_accept: "Waiting for confirmation",
+  success: "Trade accepted",
+  error: "Error",
+};
 
 const exteriors = {
   "Factory New": {
@@ -205,6 +216,9 @@ main_class = ".skin-card-hz"
 		flex-direction column
 		gap: 3px
 		flex-grow 1
+		+below(540px) {
+			align-items center
+		}
 	}
 
 	&__title {
@@ -231,6 +245,35 @@ main_class = ".skin-card-hz"
 			height 2px
 			border-radius 50%
 			background var(--white-o5)
+		}
+	}
+
+	&__status {
+		font-size 0.875rem
+
+		&-tag {
+			padding: 3px 7px
+			border-radius var(--small-radius)
+		}
+
+		&--created,
+		&--trade_creating {
+			span {
+				background var(--gray-dark-2)
+			}
+		}
+
+		&--wait_accept span {
+			background var(--main)
+			color var(--black)
+		}
+
+		&--success span {
+			background var(--gray-dark-3)
+		}
+
+		&--error span {
+			background var(--red)
 		}
 	}
 

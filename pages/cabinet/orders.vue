@@ -21,12 +21,12 @@ const tabs = [
   {
     id: 2,
     title: "Open",
-    statuses: ["created"],
+    statuses: ["created", "active"],
   },
   {
     id: 3,
-    title: "Paid",
-    statuses: ["active", "ended"],
+    title: "Ended",
+    statuses: ["ended"],
   },
   {
     id: 4,

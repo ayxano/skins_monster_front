@@ -334,6 +334,7 @@ main_class = ".skin-card"
 		font-size: 0.875rem
 		line-height normal
 		font-weight: 700;
+		max-width 200px
 	}
 
 	&__subtitle {

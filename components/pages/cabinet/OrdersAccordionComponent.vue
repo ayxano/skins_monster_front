@@ -70,6 +70,7 @@ function getSkin(data) {
   return {
     ...data.item,
     price: data.price,
+    status: data.status,
   };
 }
 
