@@ -42,7 +42,7 @@ const props = defineProps({
   },
   cancelBtnTitle: {
     type: String,
-    default: "Cancel",
+    default: "Close",
   },
   confirmBtnTitle: {
     type: String,
