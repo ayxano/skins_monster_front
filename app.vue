@@ -6,7 +6,7 @@
         <div class="app__content">
           <HeaderComponent v-show="!fullPage" />
           <NuxtLayout>
-            <NuxtPage />
+            <NuxtPage :key="$route.path" />
           </NuxtLayout>
           <FooterComponent v-show="!fullPage" />
         </div>
