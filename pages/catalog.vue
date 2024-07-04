@@ -84,10 +84,10 @@ async function get() {
   filterLoading.value = true;
   try {
     await catalogStore.get({
-      page: meta.value.page,
       limit: meta.value.first,
       appid: defaultStore.types.appid.CS2,
       ...route.query,
+      page: route.query.page ? parseInt(route.query.page) - 1 : 0,
       fullpage: undefined,
     });
   } finally {
