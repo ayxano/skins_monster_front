@@ -145,6 +145,7 @@ function queryUpdate() {
 
 function appidUpdate() {
   setParams({ filters: null, query: null, page: 1 });
+  updateData();
 }
 
 function setParams(params = {}) {
@@ -159,6 +160,7 @@ function updateData() {
   const query = filtersStore.queryParams;
   form.value.appid = tabs.find((i) => i.code === query.appid) || tabs[0];
   form.value.sort = sortOptions.find((i) => i.by === query.sort) || null;
+  form.value.query = query.query || undefined;
 }
 </script>
 
