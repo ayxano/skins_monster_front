@@ -104,25 +104,31 @@ export function elementInViewport(el) {
 }
 
 /**
- * Конвертация цен в нужную валюту
+ * Конвертация цен в нужную валюту из другой
  * по умолчанию евро
  * @param price
- * @param currCode
+ * @param toCurrCode - код валюты, в которую конвертируем
+ * @param fromCurrCode - код валюты, из которой конвертируем
  * @returns {*}
  */
-export function convertPrice(price, currCode = "eur") {
+export function convertPrice(price, toCurrCode = "eur", fromCurrCode = "rub") {
   const currencies = useGlobalStore().currencies || [];
-  let currency = currencies[0];
+  let toCurrency = currencies[0];
+  let fromCurrency = currencies[0];
+  let rate = 1;
   let convertedPrice = parseFloat(price) || 0;
   if (price && currencies && currencies.length) {
-    currency = currencies.find((item) => item.code === currCode);
-    if (currency) {
-      convertedPrice = parseFloat(price) / currency.rate;
+    toCurrency = currencies.find((item) => item.code === toCurrCode);
+    fromCurrency = currencies.find((item) => item.code === fromCurrCode);
+    if (fromCurrCode === "rub") {
+      rate = toCurrency.rate;
+    } else {
+      rate = 1 / fromCurrency.rate;
+    }
+    if (toCurrency) {
+      convertedPrice = parseFloat(price) / rate;
     }
   }
-  // return new Intl.NumberFormat("ru-RU", {
-  //   maximumFractionDigits: 2,
-  // }).format(convertedPrice);
   return parseFloat(convertedPrice.toFixed(2));
 }
 
@@ -139,6 +145,23 @@ export function marginPrice(price) {
   }
   if (company.margin_amount) {
     result += parseFloat(company.margin_amount);
+  }
+  return parseFloat(result.toFixed(2));
+}
+
+/**
+ * Цена без накидки
+ * @param price - цена в евро
+ * @returns {*}
+ */
+export function unmarginPrice(price) {
+  const company = useGlobalStore().company || {};
+  let result = parseFloat(price);
+  if (company.margin_amount) {
+    result -= parseFloat(company.margin_amount);
+  }
+  if (company.margin_percent) {
+    result = (result * 100) / (parseFloat(company.margin_percent) + 100);
   }
   return parseFloat(result.toFixed(2));
 }

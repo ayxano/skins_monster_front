@@ -28,7 +28,8 @@ import { useCatalogStore } from "~/stores/catalog";
 import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
 import { useDefaultStore } from "~/stores/default";
 import { useFiltersStore } from "~/stores/filters";
-import { scrollTo } from "~/utils/global";
+import { convertPrice, unmarginPrice, scrollTo } from "~/utils/global";
+import { useGlobalStore } from "~/stores/global";
 
 // страница открыта через админку
 const fullpage = computed(() => !!route.query.fullpage);
@@ -39,6 +40,7 @@ const meta = ref({
   first: 16,
 });
 
+const globalStore = useGlobalStore();
 const filtersStore = useFiltersStore();
 const catalogStore = useCatalogStore();
 const defaultStore = useDefaultStore();
@@ -47,9 +49,10 @@ const pageLoading = ref(true);
 const filterLoading = ref(false);
 const pageBody = ref(null);
 
-onMounted(() => {
+onMounted(async () => {
   updateData();
-  get();
+  await globalStore.getCurrency();
+  await get();
   window.addEventListener("message", ({ data }) => {
     try {
       catalogStore.selectedList = JSON.parse(data);
@@ -86,7 +89,7 @@ async function get() {
     await catalogStore.get({
       limit: meta.value.first,
       appid: defaultStore.types.appid.CS2,
-      ...route.query,
+      ...getModifiedQuery(),
       page: route.query.page ? parseInt(route.query.page) - 1 : 0,
       fullpage: undefined,
     });
@@ -114,6 +117,22 @@ function setParams() {
   filtersStore.setParams({
     page: meta.value.page || 1,
   });
+}
+
+function getModifiedQuery() {
+  const filters = JSON.parse(JSON.stringify(filtersStore.queryParams?.filters || {}));
+  let price = filters?.price;
+  if (price) {
+    // почему то цену нужно указывать в копейках, даже не в рублях
+    price.min = price.min ? convertPrice(unmarginPrice(price.min), "rub", "eur") * 100 : 0;
+    price.max = price.max ? convertPrice(unmarginPrice(price.max), "rub", "eur") * 100 : 999999999;
+
+    return {
+      ...route.query,
+      filters: JSON.stringify({ ...filters, price }),
+    };
+  }
+  return route.query;
 }
 </script>
 
