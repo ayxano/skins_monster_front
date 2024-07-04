@@ -87,14 +87,12 @@ function priceUpdate(val, field) {
   }, 500);
 }
 
-function filtersUpdate(values, name, type) {
-  // без type фильтры с values
-  if (!type) {
-    if (values && values.length) {
-      form.value[name] = values;
-    } else if (name) {
-      delete form.value[name];
-    }
+function filtersUpdate(values, name) {
+  // без type фильтры с values (кроме phase)
+  if (values && values.length) {
+    form.value[name] = values;
+  } else if (name) {
+    delete form.value[name];
   }
   setParams();
 }
