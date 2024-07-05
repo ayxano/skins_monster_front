@@ -33,7 +33,7 @@
       </button>
     </li>
     <li>
-      <button v-show="page !== pages" class="pagination__link" type="button" @click="$emit('change', total)">
+      <button v-show="page !== pages" class="pagination__link" type="button" @click="$emit('change', pages)">
         <IconComponent name="arrow-right-duo-chevron" />
       </button>
     </li>
