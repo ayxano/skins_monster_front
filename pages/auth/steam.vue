@@ -10,6 +10,8 @@ import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
 import { query } from "~/utils/global";
 import { useRouter } from "#app";
 import { useAuthStore } from "~/stores/auth";
+import { useBasketStore } from "~/stores/basket";
+import { useFavoritesStore } from "~/stores/favorites";
 
 // eslint-disable-next-line no-undef
 definePageMeta({
@@ -18,6 +20,8 @@ definePageMeta({
 
 const router = useRouter();
 const authStore = useAuthStore();
+const basketStore = useBasketStore();
+const favoritesStore = useFavoritesStore();
 
 onMounted(() => {
   confirm();
@@ -28,6 +32,8 @@ async function confirm() {
     try {
       await query(`/user/auth/callback${location.search}`);
       await authStore.get();
+      basketStore.get();
+      favoritesStore.get();
     } catch (e) {
       console.error(e);
     } finally {
