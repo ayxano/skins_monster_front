@@ -83,12 +83,12 @@
         </button>
         <span class="checkout-aside__terms">
           By clicking Proceed to Checkout, you agree to our
-          <nuxt-link :to="{ name: 'dynamic-id', query: { 'positions[]': 'terms_of_service' } }"
-            >Terms of Service</nuxt-link
-          >
+          <nuxt-link :to="{ name: 'dynamic-id', query: { 'positions[]': 'terms_of_service' } }">
+            Terms of Service
+          </nuxt-link>
           and that you have read our
-          <nuxt-link :to="{ name: 'dynamic-id', query: { 'positions[]': 'privacy_policy' } }"
-            >Privacy Policy</nuxt-link
+          <nuxt-link :to="{ name: 'dynamic-id', query: { 'positions[]': 'privacy_policy' } }">
+            Privacy Policy </nuxt-link
           >.
         </span>
       </div>
