@@ -65,7 +65,7 @@
         <CheckboxComponent v-model="agreement">
           <span>
             I have read and understood my
-            <nuxt-link :to="{ name: 'dynamic-id', query: { 'positions[]': 'privacy_policy' } }">
+            <nuxt-link :to="{ name: 'dynamic-id', query: { 'positions[]': 'cancellations_refunds' } }">
               right of cancellation.
             </nuxt-link>
             I agree to the beginning of the contract execution before the end of the cancellation period. I am
@@ -82,8 +82,14 @@
           <IconComponent v-else name="arrow-right-1" />
         </button>
         <span class="checkout-aside__terms">
-          By clicking Proceed to Checkout, you agree to our <a href="#">Terms of Service</a> and that you have
-          read our <a href="#">Privacy Policy</a>.
+          By clicking Proceed to Checkout, you agree to our
+          <nuxt-link :to="{ name: 'dynamic-id', query: { 'positions[]': 'terms_of_service' } }"
+            >Terms of Service</nuxt-link
+          >
+          and that you have read our
+          <nuxt-link :to="{ name: 'dynamic-id', query: { 'positions[]': 'privacy_policy' } }"
+            >Privacy Policy</nuxt-link
+          >.
         </span>
       </div>
     </div>
@@ -93,7 +99,6 @@
 <script setup>
 import { ref, computed, shallowRef } from "vue";
 import { useBasketStore } from "~/stores/basket";
-import { convertPrice } from "~/utils/global";
 import { useDefaultStore } from "~/stores/default";
 import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
 import { useAuthStore } from "~/stores/auth";
@@ -381,6 +386,10 @@ function showAlertModal(options) {
 		color: var(--white-o5)
 		font-size: 0.75rem
 		line-height: normal;
+
+		a {
+			text-decoration underline
+		}
 	}
 }
 </style>

@@ -58,7 +58,7 @@ const tags = computed(() => {
 		display flex
 		flex-wrap wrap
 		align-items center
-		gap: 20px
+		gap: 2px 20px
 		justify-content space-between
 		font-size 0.75rem
 		line-height normal

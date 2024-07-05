@@ -40,9 +40,9 @@ async function get() {
     const { data } = await query("/pages/" + id);
     page.value = data || {};
   } else {
-    const { data } = await query("/pages", route.query);
+    const { data } = await query("/pages", { ...route.query, first: 99 });
     if (data && data.length) {
-      page.value = data[0] || {};
+      page.value = data[data.length - 1] || {};
     }
   }
 }

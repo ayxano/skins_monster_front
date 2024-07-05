@@ -81,7 +81,7 @@ const links = [
   },
   {
     title: "About",
-    route: { name: "about" },
+    route: { name: "dynamic-id", query: { "positions[]": ["about"] } },
   },
   {
     title: "Reviews",
@@ -94,10 +94,6 @@ const links = [
   {
     title: "Contacts",
     route: { name: "contacts" },
-  },
-  {
-    title: "Cancellations & Refunds",
-    route: { name: "dynamic-id", query: { "positions[]": ["cancellations_refunds"] } },
   },
 ];
 
