@@ -2,13 +2,13 @@
   <div id="app" :class="{ 'app--full-page': fullPage }">
     <div class="container-padding">
       <div class="app__inner">
-        <AsideComponent v-show="!fullPage" />
+        <AsideComponent v-if="!fullPage" />
         <div class="app__content">
-          <HeaderComponent v-show="!fullPage" />
+          <HeaderComponent v-if="!fullPage" />
           <NuxtLayout>
             <NuxtPage :key="$route.path" />
           </NuxtLayout>
-          <FooterComponent v-show="!fullPage" />
+          <FooterComponent v-if="!fullPage" />
         </div>
       </div>
     </div>

@@ -7,7 +7,7 @@
 <script setup>
 import { onMounted } from "vue";
 import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
-import { query } from "~/utils/global";
+import { csrf, query } from "~/utils/global";
 import { useRouter } from "#app";
 import { useAuthStore } from "~/stores/auth";
 import { useBasketStore } from "~/stores/basket";
@@ -30,6 +30,7 @@ onMounted(() => {
 async function confirm() {
   if (location.search) {
     try {
+      await csrf();
       await query(`/user/auth/callback${location.search}`);
       await authStore.get();
       basketStore.get();

@@ -51,6 +51,9 @@ const pageBody = ref(null);
 
 onMounted(async () => {
   updateData();
+  if (route.query.fullPage) {
+    getFilters();
+  }
   await globalStore.getCurrency();
   await get();
   window.addEventListener("message", ({ data }) => {
@@ -111,6 +114,10 @@ function paginate(page) {
 function updateData() {
   const query = filtersStore.queryParams;
   meta.value.page = query.page || 1;
+}
+
+function getFilters() {
+  filtersStore.get();
 }
 
 function setParams() {
