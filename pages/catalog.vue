@@ -51,7 +51,7 @@ const pageBody = ref(null);
 
 onMounted(async () => {
   updateData();
-  if (route.query.fullPage) {
+  if (route.query.fullpage) {
     getFilters();
   }
   await globalStore.getCurrency();
