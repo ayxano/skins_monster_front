@@ -10,7 +10,7 @@ export const useAuthStore = defineStore({
   }),
   actions: {
     async get() {
-      await csrf();
+      // await csrf();
       const { data } = await query("/user");
       if (data.type === "user") {
         this.user = data;
