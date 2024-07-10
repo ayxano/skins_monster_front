@@ -18,7 +18,7 @@
       <a
         v-if="data.extra && data.extra.inspect_link"
         :href="data.extra.inspect_link"
-        class="skin-page-preview__action btn btn--md btn--dark-light"
+        class="skin-page-preview__action skin-page-preview__action-inspect btn btn--md btn--dark-light"
       >
         <IconComponent name="mouse-circle" />
         <span>Inspect in game</span>
@@ -88,6 +88,12 @@ const steamLink = computed(() => {
 	&__action {
 		border: 1px solid var(--dark-light-2, #1F3B4B);
 		background: var(--black-o05)
+
+		&-inspect {
+			+below(1024px) {
+				display none
+			}
+		}
 
 		.icon {
 			width 20px
