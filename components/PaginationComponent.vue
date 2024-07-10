@@ -1,11 +1,11 @@
 <template>
   <ul v-show="pages && pages > 1" class="pagination">
     <template v-if="page >= maxPages">
-      <li>
-        <button class="pagination__link" type="button" @click="$emit('change', 1)">
-          <IconComponent name="arrow-left-duo-chevron" />
-        </button>
-      </li>
+      <!--      <li>-->
+      <!--        <button class="pagination__link" type="button" @click="$emit('change', 1)">-->
+      <!--          <IconComponent name="arrow-left-duo-chevron" />-->
+      <!--        </button>-->
+      <!--      </li>-->
       <li class="pagination-prev">
         <button class="pagination__link" type="button" @click="$emit('change', page - 1)">
           <IconComponent name="arrow-left-chevron" />
@@ -32,11 +32,11 @@
         <IconComponent name="arrow-right-chevron" />
       </button>
     </li>
-    <li>
-      <button v-show="page !== pages" class="pagination__link" type="button" @click="$emit('change', pages)">
-        <IconComponent name="arrow-right-duo-chevron" />
-      </button>
-    </li>
+    <!--    <li>-->
+    <!--      <button v-show="page !== pages" class="pagination__link" type="button" @click="$emit('change', pages)">-->
+    <!--        <IconComponent name="arrow-right-duo-chevron" />-->
+    <!--      </button>-->
+    <!--    </li>-->
   </ul>
 </template>
 
