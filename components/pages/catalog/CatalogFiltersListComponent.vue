@@ -58,7 +58,8 @@ watch(
   () => route.query,
   () => {
     updateData();
-  }
+  },
+  { deep: true }
 );
 
 const filters = computed(() => {

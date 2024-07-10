@@ -71,7 +71,8 @@ watch(
     filterLoading.value = true;
     updateData();
     get();
-  }
+  },
+  { deep: true }
 );
 
 watch(

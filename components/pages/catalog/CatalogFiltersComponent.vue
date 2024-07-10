@@ -116,7 +116,8 @@ watch(
   () => route.query,
   () => {
     updateData();
-  }
+  },
+  { deep: true }
 );
 
 const filtersCount = computed(() => {
