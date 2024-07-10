@@ -124,6 +124,7 @@ async function get() {
   try {
     data.value = await query("/skin", {
       ...routeQuery.value,
+      hash_name: decodeURIComponent(routeQuery.value.hash_name),
     });
   } finally {
     pageLoading.value = false;
