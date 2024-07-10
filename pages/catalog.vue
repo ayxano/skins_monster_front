@@ -10,11 +10,11 @@
           v-if="data.items && data.items.length"
         >
           <SkinsListComponent :list="data.items" />
-          <PaginationComponent @change="paginate" :page="meta.page" :meta="meta" :total="data.total" />
           <LoadingCircleIndicator class="catalog-page__filter-loading" v-if="filterLoading" title="" />
         </div>
         <LoadingCircleIndicator v-else-if="pageLoading || filterLoading" />
         <span v-else>No skins...</span>
+        <PaginationComponent @change="paginate" :page="meta.page" :meta="meta" :total="data.total" />
       </div>
       <BottomPageBannerComponent v-if="!fullpage" />
     </div>
