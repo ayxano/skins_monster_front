@@ -44,18 +44,12 @@ export default {
     alt() {
       return this.img?.alt || this.title || "";
     },
-    host_endpoint() {
-      return useDefaultStore().HOST_ENDPOINT;
-    },
-    media_endpoint() {
-      return useDefaultStore().MEDIA_ENDPOINT;
-    },
     srcPath() {
       return this.src || this.source;
     },
     source() {
       if (this.img && this.img.path) {
-        return `${this.host_endpoint}/storage/${this.img.path}`;
+        return `${process.env.HOST_ENDPOINT}/storage/${this.img.path}`;
       }
       return "/images/no-image.jpg";
     },
