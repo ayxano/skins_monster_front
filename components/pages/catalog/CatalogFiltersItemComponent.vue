@@ -1,7 +1,7 @@
 <template>
   <div v-if="showFilter" class="category-filters__item" :class="{ 'category-filters__item--expand': expand }">
     <button @click="expand = !expand" class="category-filters__item-header btn">
-      <span class="category-filters__item-title"> {{ title }} </span>
+      <span class="category-filters__item-title"> {{ modifiedTitle }} </span>
       <span v-if="checkedList.length && !onlyInputs" class="category-filters__item-count small-tag">
         {{ checkedList.length }}
       </span>
@@ -102,6 +102,14 @@ export default {
     },
     showSearch() {
       return (this.search && this.list && this.list.length > 15) || this.onlyInputs;
+    },
+    modifiedTitle() {
+      let title = this.title;
+      if (title) {
+        title = title.replace("_", " ");
+        title = title.charAt(0).toUpperCase() + title.slice(1);
+      }
+      return title;
     },
   },
   methods: {
