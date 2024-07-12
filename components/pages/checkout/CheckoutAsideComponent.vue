@@ -19,10 +19,10 @@
       </div>
       <div class="checkout-aside__prices">
         <div class="checkout-aside__prices-list">
-          <div class="checkout-aside__prices-item">
-            <span class="checkout-aside__prices-item-title"> Suggested price </span>
-            <span class="checkout-aside__prices-item-value"> €{{ basketPrice }} </span>
-          </div>
+          <!--          <div class="checkout-aside__prices-item">-->
+          <!--            <span class="checkout-aside__prices-item-title"> Suggested price </span>-->
+          <!--            <span class="checkout-aside__prices-item-value"> €{{ basketPrice }} </span>-->
+          <!--          </div>-->
           <!--          <div class="checkout-aside__prices-item">-->
           <!--            <span class="checkout-aside__prices-item-title"> You save </span>-->
           <!--            <span class="checkout-aside__prices-item-value"> -€0.00 </span>-->
@@ -161,7 +161,7 @@ const balance = computed(() => {
 });
 
 const balanceDeficit = computed(() => {
-  return basketPrice.value - balance.value;
+  return (basketPrice.value - balance.value).toFixed(2);
 });
 
 const submitDisabled = computed(() => {

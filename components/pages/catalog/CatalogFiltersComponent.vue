@@ -65,12 +65,11 @@ import SelectComponent from "~/components/inputs/select/index.vue";
 import { useDefaultStore } from "~/stores/default";
 import FiltersMenu from "~/components/menus/components/FiltersMenu.vue";
 import { useFiltersStore } from "~/stores/filters";
-import { useRoute, useRouter } from "#app";
+import { useRoute } from "#app";
 
 const filtersStore = useFiltersStore();
 const defaultStore = useDefaultStore();
 const route = useRoute();
-const router = useRouter();
 
 const tabs = [
   {
@@ -161,10 +160,7 @@ function queryUpdate() {
 
 function handleTypeChange(e) {
   const filters = e ? JSON.stringify({ type: [e.title] }) : undefined;
-  router.push({
-    name: "catalog",
-    query: { filters },
-  });
+  setParams({ filters });
 }
 
 function appidUpdate() {
