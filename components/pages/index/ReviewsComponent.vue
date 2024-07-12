@@ -37,9 +37,11 @@ const sliderOptions = {
   breakpoints: {
     400: {
       spaceBetween: 40,
+      slidesPerView: "auto",
     },
     786: {
       spaceBetween: 80,
+      slidesPerView: "auto",
     },
   },
   on: {
