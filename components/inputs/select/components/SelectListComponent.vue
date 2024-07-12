@@ -17,7 +17,7 @@
         </button>
       </li>
     </template>
-    <li v-else class="select-list__empty">Пусто</li>
+    <li v-else class="select-list__empty">Empty</li>
   </ul>
 </template>
 
@@ -87,6 +87,7 @@ export default {
   display flex
   flex-direction column
   align-items flex-start
+	gap: 2px
   overflow auto
   padding 5px
   scrollbar-width thin

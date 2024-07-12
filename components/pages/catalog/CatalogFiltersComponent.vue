@@ -16,18 +16,19 @@
       </div>
       <div class="filters-row">
         <TabsComponent v-model="form.appid" :tabs="tabs" @update:model-value="appidUpdate" small />
-        <!--        <SelectComponent-->
-        <!--          class="filters-item"-->
-        <!--          placeholder="Category"-->
-        <!--          v-model="form.sort"-->
-        <!--          :options="categories"-->
-        <!--          :icon-rotate="false"-->
-        <!--          clearable-->
-        <!--        >-->
-        <!--          <template #icon>-->
-        <!--            <IconComponent name="category-2" />-->
-        <!--          </template>-->
-        <!--        </SelectComponent>-->
+        <SelectComponent
+          class="filters-item"
+          placeholder="Type"
+          v-model="form.type"
+          :options="types"
+          :icon-rotate="false"
+          clearable
+          @update:model-value="handleTypeChange"
+        >
+          <template #icon>
+            <IconComponent name="category-2" />
+          </template>
+        </SelectComponent>
         <button @click.prevent="showFilters" class="filters-item btn btn--md btn--hollow">
           <span>Filters</span>
           <span v-if="filtersCount" class="filters-item__count">{{ filtersCount }}</span>
@@ -64,11 +65,12 @@ import SelectComponent from "~/components/inputs/select/index.vue";
 import { useDefaultStore } from "~/stores/default";
 import FiltersMenu from "~/components/menus/components/FiltersMenu.vue";
 import { useFiltersStore } from "~/stores/filters";
-import { useRoute } from "#app";
+import { useRoute, useRouter } from "#app";
 
 const filtersStore = useFiltersStore();
 const defaultStore = useDefaultStore();
 const route = useRoute();
+const router = useRouter();
 
 const tabs = [
   {
@@ -104,6 +106,7 @@ const sortOptions = [
 
 let form = ref({
   sort: null,
+  type: null,
   appid: tabs[0],
   query: null,
 });
@@ -119,6 +122,18 @@ watch(
   },
   { deep: true }
 );
+
+const types = computed(() => {
+  const code = form.value.appid?.code;
+  if (code) {
+    const list = filtersStore.filters[code];
+    const types = list && list.length ? list.find((item) => item.name === "type")?.values : [];
+    return types.map((i) => ({
+      title: i,
+    }));
+  }
+  return [];
+});
 
 const filtersCount = computed(() => {
   const filters = filtersStore.queryParams.filters;
@@ -144,6 +159,14 @@ function queryUpdate() {
   }, 500);
 }
 
+function handleTypeChange(e) {
+  const filters = e ? JSON.stringify({ type: [e.title] }) : undefined;
+  router.push({
+    name: "catalog",
+    query: { filters },
+  });
+}
+
 function appidUpdate() {
   setParams({ filters: null, query: null, page: 1 });
   updateData();
@@ -160,8 +183,10 @@ function setParams(params = {}) {
 function updateData() {
   const query = filtersStore.queryParams;
   form.value.appid = tabs.find((i) => i.code === query.appid) || tabs[0];
-  form.value.sort = sortOptions.find((i) => i.by === query.sort) || null;
+  form.value.sort = sortOptions.find((i) => i.by === query.sort) || undefined;
   form.value.query = query.query || undefined;
+  const filterTypes = query.filters?.type || [];
+  form.value.type = types.value.find((i) => filterTypes.includes(i.title));
 }
 </script>
 
