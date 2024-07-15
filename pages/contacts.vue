@@ -36,11 +36,11 @@
           <h3 class="contacts-page__feedback-title">Write to us</h3>
           <form @submit.prevent="submit" class="contacts-page__feedback-form">
             <InputComponent v-model="form.phone.value" :errors="form.phone.errors" placeholder="Phone" />
-            <InputComponent v-model="form.email.value" :errors="form.email.errors" placeholder="Email" />
+            <InputComponent v-model="form.email.value" :errors="form.email.errors" placeholder="Email*" />
             <TextareaComponent
               v-model="form.content.value"
               :errors="form.content.errors"
-              placeholder="Message"
+              placeholder="Message*"
             />
             <button class="contacts-page__feedback-submit btn btn--lg btn--main">
               <span>Send</span>
@@ -48,9 +48,6 @@
               <IconComponent v-else name="arrow-right-1" />
             </button>
             <div class="contacts-page__feedback-bottom">
-              <span v-if="!authorized" class="contacts-page__feedback-error">
-                You need to <a @click.prevent="showAuthModal" href="#">Log in</a> to send feedback message
-              </span>
               <span class="contacts-page__feedback-terms">
                 By use form, you agree to the
                 <nuxt-link :to="{ name: 'dynamic-id', query: { 'positions[]': 'privacy_policy' } }"
@@ -69,7 +66,7 @@
 <script setup>
 import { computed, ref, shallowRef } from "vue";
 import { useGlobalStore } from "~/stores/global";
-import { parseError, query, resetErrors, resetForm, showAuthModal } from "~/utils/global";
+import { parseError, query, resetErrors, resetForm } from "~/utils/global";
 import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
 import AlertModal from "~/components/modals/components/AlertModal.vue";
 import { useDefaultStore } from "~/stores/default";
@@ -84,16 +81,7 @@ const company = computed(() => {
   return globalStore.company;
 });
 
-const authorized = computed(() => {
-  return authStore.user && authStore.user.id;
-});
-
 const form = ref({
-  name: {
-    value: null,
-    errors: [],
-    default: null,
-  },
   email: {
     value: null,
     errors: [],
@@ -116,37 +104,32 @@ const user = computed(() => {
 });
 
 async function submit() {
-  if (authorized.value) {
-    submitLoading.value = true;
-    resetErrors(form.value);
-    let variables = {};
-    variables.name = form.value.name.value;
-    variables.email = form.value.email.value;
-    variables.phone = form.value.phone.value;
-    variables.content = form.value.content.value;
-    variables.name = user.value?.name;
-    try {
-      await query(
-        "/feedback",
-        {},
-        {
-          method: "POST",
-          body: JSON.stringify(variables),
-        }
-      );
-      showAlertModal({
-        title: "SUCCESS",
-        text: "Your message successfully sent",
-        noBtn: true,
-      });
-      resetForm(form.value);
-    } catch ({ errors }) {
-      parseError(errors, form.value);
-    } finally {
-      submitLoading.value = false;
-    }
-  } else {
-    showAuthModal();
+  submitLoading.value = true;
+  resetErrors(form.value);
+  let variables = {};
+  variables.email = form.value.email.value;
+  variables.phone = form.value.phone.value;
+  variables.content = form.value.content.value;
+  variables.name = user.value?.name;
+  try {
+    await query(
+      "/feedback",
+      {},
+      {
+        method: "POST",
+        body: JSON.stringify(variables),
+      }
+    );
+    showAlertModal({
+      title: "SUCCESS",
+      text: "Your message successfully sent",
+      noBtn: true,
+    });
+    resetForm(form.value);
+  } catch ({ errors }) {
+    parseError(errors, form.value);
+  } finally {
+    submitLoading.value = false;
   }
 }
 

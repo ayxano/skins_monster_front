@@ -181,6 +181,7 @@ main_class = ".orders-accordion"
 
 		&-info {
 			display flex
+			flex-wrap: wrap
 			align-items center
 			gap: 10px
 			padding-bottom 10px
