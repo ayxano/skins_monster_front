@@ -66,7 +66,7 @@
 <script setup>
 import { computed, ref, shallowRef } from "vue";
 import { useGlobalStore } from "~/stores/global";
-import { parseError, query, resetErrors, resetForm } from "~/utils/global";
+import { parseError, query, resetErrors, resetForm, csrf } from "~/utils/global";
 import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
 import AlertModal from "~/components/modals/components/AlertModal.vue";
 import { useDefaultStore } from "~/stores/default";
@@ -112,6 +112,7 @@ async function submit() {
   variables.content = form.value.content.value;
   variables.name = user.value?.name;
   try {
+    await csrf();
     await query(
       "/feedback",
       {},

@@ -12,8 +12,6 @@
 </template>
 
 <script>
-import { useDefaultStore } from "~/stores/default";
-
 export default {
   name: "ImgComponent",
   props: {
