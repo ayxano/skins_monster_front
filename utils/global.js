@@ -3,14 +3,7 @@ import queryString from "query-string";
 import { useGlobalStore } from "~/stores/global";
 import { shallowRef } from "vue";
 import AuthModal from "~/components/modals/components/AuthModal.vue";
-
-export function getCookie(name) {
-  let cookie = document.cookie.split(";").find((c) => c.startsWith(name));
-  if (cookie) {
-    return cookie.substring(name.length + 1);
-  }
-  return null;
-}
+import Cookies from "js-cookie";
 
 export function csrf() {
   return fetch(process.env.HOST_ENDPOINT + "/sanctum/csrf-cookie", {
@@ -33,7 +26,7 @@ export function query(url, params = {}, options = {}, prefix = "/api/v1", json =
     Accept: "application/json",
     "Content-Type": "application/json;charset=utf-8",
   };
-  let csrf = getCookie("XSRF-TOKEN");
+  let csrf = Cookies.get("XSRF-TOKEN");
   if (csrf) {
     headers["X-XSRF-TOKEN"] = decodeURIComponent(csrf);
   }
