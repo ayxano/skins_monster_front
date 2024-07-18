@@ -63,7 +63,7 @@ main_class = ".menu"
 	top: 0
   width: 100%
   height: 100%
-  z-index: 999
+  z-index: var(--z-index-menu)
   overflow: hidden
   background: var(--black-o5)
 	opacity: 0
