@@ -54,6 +54,9 @@ const form = ref({
 });
 
 async function submit() {
+  if (loading.value) {
+    return;
+  }
   loading.value = true;
   let variables = {
     title: form.value.title.value,
