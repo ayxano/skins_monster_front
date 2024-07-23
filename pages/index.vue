@@ -46,7 +46,15 @@ function scrollToHash() {
   }, 0);
 }
 
-async function get() {
+function get() {
+  getBanners();
+  getPopularSkins();
+  getAdvantages();
+  getFaqCategories();
+  getReviews();
+}
+
+async function getBanners() {
   if (!(homeStore.welcome_banners && homeStore.welcome_banners.length)) {
     const { data } = await query("/banners", {
       page: 1,
@@ -55,7 +63,9 @@ async function get() {
     });
     homeStore.welcome_banners = data || [];
   }
+}
 
+async function getPopularSkins() {
   if (!(homeStore.popular_skins && homeStore.popular_skins.length)) {
     const { items } = await query("/skins", {
       limit: 8,
@@ -63,7 +73,9 @@ async function get() {
     });
     homeStore.popular_skins = items || [];
   }
+}
 
+async function getAdvantages() {
   if (!(homeStore.advantages && homeStore.advantages.length)) {
     query("/advantages", {
       page: 1,
@@ -72,7 +84,9 @@ async function get() {
       homeStore.advantages = data || [];
     });
   }
+}
 
+async function getFaqCategories() {
   if (!(homeStore.faqCategories && homeStore.faqCategories.length)) {
     query("/faq/categories", {
       page: 1,
@@ -82,7 +96,9 @@ async function get() {
       scrollToHash();
     });
   }
+}
 
+async function getReviews() {
   if (!(homeStore.reviews && homeStore.reviews.length)) {
     query("/reviews", {
       page: 1,

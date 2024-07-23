@@ -20,12 +20,14 @@ export function csrf() {
  * @param json - данные в виде json или text
  * @returns {Promise<unknown>}
  */
-export function query(url, params = {}, options = {}, prefix = "/api/v1", json = true) {
+export function query(url, params = {}, options = {}, prefix = "/api/v1", contentType = true) {
   useDefaultStore().loading.push(true);
   let headers = {
     Accept: "application/json",
-    "Content-Type": "application/json;charset=utf-8",
   };
+  if (contentType) {
+    headers["Content-Type"] = "application/json;charset=utf-8";
+  }
   let csrf = Cookies.get("XSRF-TOKEN");
   if (csrf) {
     headers["X-XSRF-TOKEN"] = decodeURIComponent(csrf);
@@ -40,17 +42,10 @@ export function query(url, params = {}, options = {}, prefix = "/api/v1", json =
       ...{ mode: "cors", credentials: "include", headers },
     })
       .then(async (response) => {
-        // if (response.status === 401) {
-        //   showAuthModal();
-        // } else
         if (response.status === 204) {
           response.ok ? res(response) : rej(response);
         } else {
-          if (json) {
-            response.ok ? res(await response.json()) : rej(await response.json());
-          } else {
-            response.ok ? res(await response.text()) : rej(response);
-          }
+          response.ok ? res(await response.json()) : rej(await response.json());
         }
       })
       .catch((err) => {
@@ -177,7 +172,7 @@ export function showAuthModal() {
   });
 }
 
-export function parseError(errors, form) {
+export function parseErrors(errors, form) {
   if (errors) {
     Object.keys(errors).forEach((key) => {
       if (form[key] && errors[key]) {

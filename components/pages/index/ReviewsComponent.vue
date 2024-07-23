@@ -1,6 +1,12 @@
 <template>
   <div v-if="list && list.length" id="reviews" class="reviews">
-    <h3 class="reviews-title">Reviews</h3>
+    <div class="reviews-header">
+      <h3 class="reviews-title">Reviews</h3>
+      <button @click="addReview" class="btn btn--md btn--main">
+        <IconComponent name="message-add-1" />
+        <span>Leave a review</span>
+      </button>
+    </div>
     <div class="reviews-content">
       <SliderComponent :slider-options="sliderOptions" :items="list" v-slot="{ item }" class="reviews-slider">
         <div class="reviews-slider__item" data-size="100px">
@@ -19,7 +25,11 @@
 
 <script setup>
 import SliderComponent from "~/components/SliderComponent.vue";
-import { ref, computed } from "vue";
+import { ref, computed, shallowRef } from "vue";
+import { useAuthStore } from "~/stores/auth";
+import { showAuthModal } from "~/utils/global";
+import { useDefaultStore } from "~/stores/default";
+import NewReviewModal from "~/components/modals/components/NewReviewModal.vue";
 
 const props = defineProps({
   list: {
@@ -52,10 +62,26 @@ const sliderOptions = {
 };
 
 const activeIndex = ref(0);
+const authStore = useAuthStore();
+const defaultStore = useDefaultStore();
 
 const active = computed(() => {
   return props.list[activeIndex.value];
 });
+
+const authorized = computed(() => {
+  return authStore.user && authStore.user.id;
+});
+
+function addReview() {
+  if (!authorized.value) {
+    showAuthModal();
+    return;
+  }
+  defaultStore.modals.push({
+    component: shallowRef(NewReviewModal),
+  });
+}
 </script>
 
 <style lang="stylus">
@@ -69,6 +95,18 @@ const active = computed(() => {
 	+below(540px) {
 		padding: 0
 		border none
+	}
+
+	&-header {
+		display flex
+		gap: 10px
+		justify-content space-between
+		align-items center
+		margin-bottom 40px
+	}
+
+	&-title {
+		margin: 0
 	}
 
 	&-content {
@@ -99,6 +137,7 @@ const active = computed(() => {
 		}
 
 		&__item {
+			position relative
 			width 60px
 			height: 60px
 			margin auto
