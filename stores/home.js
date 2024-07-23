@@ -8,5 +8,6 @@ export const useHomeStore = defineStore({
     advantages: [],
     faqCategories: [],
     reviews: [],
+    payments: [],
   }),
 });

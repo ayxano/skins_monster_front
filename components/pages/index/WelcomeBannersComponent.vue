@@ -13,12 +13,12 @@
           class="welcome-banners__item-img welcome-banners__item-img--mobile"
           :img="item.mobile_image"
         />
-        <div class="welcome-banners__item-cover">
-          <button class="btn btn--lg btn--main">
-            <span>Check this</span>
-            <IconComponent name="arrow-right-1" />
-          </button>
-        </div>
+        <!--        <div class="welcome-banners__item-cover">-->
+        <!--          <button class="btn btn&#45;&#45;lg btn&#45;&#45;main">-->
+        <!--            <span>Check this</span>-->
+        <!--            <IconComponent name="arrow-right-1" />-->
+        <!--          </button>-->
+        <!--        </div>-->
       </nuxt-link>
     </SliderComponent>
     <div class="welcome-banners__bullets"></div>

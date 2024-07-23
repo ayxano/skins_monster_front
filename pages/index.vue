@@ -7,7 +7,7 @@
       <BenefitsComponent :list="advantages" />
       <FaqComponent :list="faqCategories" />
       <ReviewsComponent :list="reviews" />
-      <PaymentsComponent />
+      <PaymentsComponent :list="payments" />
       <BottomPageBannerComponent />
     </div>
   </main>
@@ -34,6 +34,7 @@ const popular_skins = computed(() => homeStore.popular_skins);
 const advantages = computed(() => homeStore.advantages);
 const faqCategories = computed(() => homeStore.faqCategories);
 const reviews = computed(() => homeStore.reviews);
+const payments = computed(() => homeStore.payments);
 
 function scrollToHash() {
   setTimeout(() => {
@@ -52,6 +53,7 @@ function get() {
   getAdvantages();
   getFaqCategories();
   getReviews();
+  getPayments();
 }
 
 async function getBanners() {
@@ -106,6 +108,17 @@ async function getReviews() {
     }).then(({ data }) => {
       homeStore.reviews = data || [];
       scrollToHash();
+    });
+  }
+}
+
+async function getPayments() {
+  if (!(homeStore.payments && homeStore.payments.length)) {
+    query("/icons", {
+      page: 1,
+      first: 10,
+    }).then(({ data }) => {
+      homeStore.payments = data || [];
     });
   }
 }

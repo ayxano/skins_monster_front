@@ -1,5 +1,5 @@
 <template>
-  <div v-if="list && list.length" id="reviews" class="reviews">
+  <div id="reviews" class="reviews">
     <div class="reviews-header">
       <h3 class="reviews-title">Reviews</h3>
       <button @click="addReview" class="btn btn--md btn--main">
@@ -7,7 +7,7 @@
         <span>Leave a review</span>
       </button>
     </div>
-    <div class="reviews-content">
+    <div v-if="list && list.length" class="reviews-content">
       <SliderComponent :slider-options="sliderOptions" :items="list" v-slot="{ item }" class="reviews-slider">
         <div class="reviews-slider__item" data-size="100px">
           <ImgComponent class="reviews-slider__item-img" :img="item.image" />
@@ -20,6 +20,7 @@
         <span class="reviews-author__name">{{ active.title }}</span>
       </div>
     </div>
+    <span v-else>No reviews yet</span>
   </div>
 </template>
 
