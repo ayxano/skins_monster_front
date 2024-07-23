@@ -84,6 +84,20 @@ const active = computed(() => {
 	}
 
 	&-slider {
+		position relative
+
+		&:before {
+			content: ""
+			display block
+			height 1px
+			background var(--dark-light-2)
+			position absolute
+			top: 50%
+			left 0
+			right 0
+			z-index 0
+		}
+
 		&__item {
 			width 60px
 			height: 60px

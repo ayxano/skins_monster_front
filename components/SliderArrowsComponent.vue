@@ -47,7 +47,7 @@ export default {
   &__item {
     z-index: 1;
     margin auto
-    background: var(--green-o5);
+    background: var(--green-dark-2);
     border: 1px solid transparent
 		color: var(--dark)
     box-sizing: border-box;
