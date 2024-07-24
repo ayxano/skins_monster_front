@@ -10,4 +10,4 @@ RUN yarn build
 
 CMD ["pm2-runtime", "ecosystem.config.cjs"]
 
-EXPOSE 8083
+EXPOSE 9090
