@@ -12,8 +12,6 @@
 </template>
 
 <script>
-import { useDefaultStore } from "~/stores/default";
-
 export default {
   name: "ImgComponent",
   props: {
@@ -44,33 +42,12 @@ export default {
     alt() {
       return this.img?.alt || this.title || "";
     },
-    host_endpoint() {
-      return useDefaultStore().HOST_ENDPOINT;
-    },
-    media_endpoint() {
-      return useDefaultStore().MEDIA_ENDPOINT;
-    },
     srcPath() {
       return this.src || this.source;
     },
     source() {
-      // let link = null;
-      // if (this.img && this.img.id) {
-      //   const urlParams = new URLSearchParams();
-      //   if (this.quality) urlParams.append("quality", this.quality);
-      //   if (this.width) urlParams.append("width", "" + this.width);
-      //   if (this.height) urlParams.append("height", "" + this.height);
-      //   const urlParamsString = urlParams.toString();
-      //   if (this.img.links) {
-      //     link = this.img.links.find((i) => i.query === urlParamsString);
-      //     if (link) {
-      //       return this.media_endpoint + link.path;
-      //     }
-      //   }
-      //   return `${this.host_endpoint}/action/img/${this.img.id}?${urlParamsString}`;
-      // }
       if (this.img && this.img.path) {
-        return this.img.path;
+        return `${process.env.HOST_ENDPOINT}/storage/${this.img.path}`;
       }
       return "/images/no-image.jpg";
     },

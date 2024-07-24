@@ -139,6 +139,7 @@ main_class = ".tabs"
 		&--active.btn {
 			background var(--main)
 			color var(--dark)
+			pointer-events none
 		}
 	}
 }

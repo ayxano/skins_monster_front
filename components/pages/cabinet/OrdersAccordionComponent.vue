@@ -7,93 +7,72 @@
       :class="{ 'orders-accordion__item--active': i === activeItemIndex }"
     >
       <div @click="setActive($event, i)" class="orders-accordion__item-header">
-        <span class="orders-accordion__item-title">{{ item.title }}</span>
-        <span class="orders-accordion__item-date">{{ item.date }}</span>
+        <span class="orders-accordion__item-title">Order #{{ item.id }}</span>
+        <span class="orders-accordion__item-date">{{ createdDate(item) }}</span>
         <IconComponent name="arrow-down-1" />
       </div>
       <div ref="accItemBody" class="orders-accordion__item-body">
         <div class="orders-accordion__item-skins">
-          <SkinCardHorizontalComponent v-for="(skin, index) in item.skins" :key="index" :data="skin" />
+          <div class="orders-accordion__item-info">
+            <div class="orders-accordion__item-info-row">
+              <span>Status: </span>
+              <span
+                class="orders-accordion__item-status"
+                :class="{
+                  'orders-accordion__item-status--created': item.status === 'created',
+                  'orders-accordion__item-status--active': item.status === 'active',
+                  'orders-accordion__item-status--ended': item.status === 'ended',
+                  'orders-accordion__item-status--error': item.status === 'error',
+                }"
+              >
+                {{ item.status }}
+              </span>
+            </div>
+            <div v-if="showPayLink(item)" class="orders-accordion__item-pay orders-accordion__item-info-row">
+              <span>Payment: </span>
+              <a :href="item.guavapay_payment_url"> Pay for the order </a>
+            </div>
+          </div>
+          <SkinCardHorizontalComponent
+            v-for="(skin, index) in item.items"
+            :key="index"
+            :data="getSkin(skin)"
+            order-item
+          />
         </div>
       </div>
     </div>
+    <span v-if="!(list && list.length)">No orders</span>
   </div>
 </template>
 
 <script setup>
 import { ref } from "vue";
 import { elementInViewport } from "~/utils/global";
+import dayjs from "dayjs";
 
-const skins = [
-  {
-    id: 1,
-    title: "AK-47",
-    subtitle: "Inheritance",
-    img: "/images/tmp/skin_card_1.png",
-    price: "$778",
-    float: 0.34054558,
-    exterior: "Field-Tested",
-    rarity: "Covert",
-    paintIndex: "707",
-  },
-  {
-    id: 2,
-    title: "MAC-10 | Heat",
-    subtitle: "Inheritance",
-    img: "/images/tmp/skin_card_2.png",
-    price: "$778",
-    old_price: "$2395.16",
-    float: 0.34054558,
-    exterior: "Field-Tested",
-    rarity: "Covert",
-    paintIndex: "707",
-  },
-  {
-    id: 3,
-    title: "Blue Steel",
-    subtitle: "Inheritance",
-    img: "/images/tmp/skin_card_3.png",
-    price: "$880",
-    old_price: "$2395.16",
-    float: 0.34054558,
-    exterior: "Field-Tested",
-    rarity: "Covert",
-    paintIndex: "707",
-  },
-  {
-    id: 4,
-    title: "Chrome Cannon",
-    subtitle: "Inheritance",
-    img: "/images/tmp/skin_card_4.png",
-    price: "$778",
-    old_price: "$1020.56",
-    float: 0.34054558,
-    exterior: "Field-Tested",
-    rarity: "Covert",
-    paintIndex: "707",
-  },
-];
-
-const list = [
-  {
-    title: "Order #123",
-    date: "17.02.2024",
-    skins: skins,
-  },
-  {
-    title: "Order #325",
-    date: "13.02.2024",
-    skins: skins,
-  },
-  {
-    title: "Order #325",
-    date: "13.01.2024",
-    skins: skins,
-  },
-];
+defineProps({
+  list: Array,
+});
 
 const activeItemIndex = ref(null);
 const accItemBody = ref(null);
+
+function showPayLink(item) {
+  return ["created"].includes(item.status) && item.guavapay_payment_url;
+}
+
+function createdDate(item) {
+  return dayjs(item.created_at).format("DD.MM.YYYY");
+}
+
+function getSkin(data) {
+  return {
+    ...data.item,
+    price: data.price,
+    status: data.status,
+  };
+}
 
 function setActive(e, i) {
   const el = accItemBody.value[i];
@@ -162,6 +141,7 @@ main_class = ".orders-accordion"
 			}
 
 			.icon {
+				margin-left auto
 				width 14px
 				height 14px
 				transition transform var(--transition)
@@ -173,11 +153,64 @@ main_class = ".orders-accordion"
 			line-height: 26px;
 		}
 
+		&-status {
+			font-size 0.875rem
+			padding: 0 10px
+			background-color var(--gray-dark-2)
+			border-radius 5px
+
+			&--active {
+				background-color var(--green-dark)
+			}
+
+			&--ended {
+				background-color var(--green-dark)
+			}
+
+			&--error {
+				background-color var(--red)
+			}
+		}
+
 		&-date {
 			flex-grow 1
 			color: var(--white-o5);
 			font-size: 0.75rem
 			line-height: normal;
+		}
+
+		&-info {
+			display flex
+			flex-wrap: wrap
+			align-items center
+			gap: 10px
+			padding-bottom 10px
+
+			&-row {
+				display flex
+				align-items center
+				gap: 10px
+				align-self flex-start
+			}
+		}
+
+		&-pay {
+			display flex
+			align-items center
+			gap: 10px
+			align-self flex-start
+
+			a {
+				font-size 0.875rem
+				display flex
+				background-color var(--gray-dark-2)
+				padding: 0 10px
+				border-radius 5px
+
+				&:hover {
+					text-decoration underline
+				}
+			}
 		}
 
 		&-body {

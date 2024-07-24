@@ -1,17 +1,23 @@
 <template>
-  <div v-if="list && list.length" class="skins-list" :class="{ 'skins-list--row': row }">
+  <div
+    v-if="list && list.length"
+    class="skins-list"
+    :class="{ 'skins-list--row': row, 'skins-list--low': low }"
+  >
     <div v-if="title" class="skins-list__header">
       <h3 class="skins-list__title no-margin">{{ title }}</h3>
       <nuxt-link v-if="route" :to="route" class="skins-list__more">Show more</nuxt-link>
     </div>
     <div class="skins-list__content">
-      <SkinCardComponent v-for="(item, i) in list" :key="i" :data="item" :in-row="row" />
+      <SkinCardComponent v-for="item in list" :key="item.id" :data="item" :in-row="row" />
     </div>
   </div>
 </template>
 
 <script setup>
-defineProps({
+import { computed } from "vue";
+
+const props = defineProps({
   title: String,
   list: {
     type: Array,
@@ -19,6 +25,10 @@ defineProps({
   },
   route: Object,
   row: Boolean,
+});
+
+const low = computed(() => {
+  return props.list?.length < 4;
 });
 </script>
 
@@ -37,6 +47,12 @@ main_class = '.skins-list'
 				margin: 0 calc(var(--sides-padding) * -1)
 				padding: 0 var(--sides-padding)
 			}
+		}
+	}
+
+	&--low {
+		{ main_class }__content {
+			justify-content flex-start
 		}
 	}
 
@@ -62,7 +78,6 @@ main_class = '.skins-list'
 		display grid
 		grid-template-columns repeat(auto-fit, minmax(200px, auto))
 		grid-template-rows 2
-		//justify-content start
 		gap: var(--gap)
 		+below(500px) {
 			grid-template-columns repeat(auto-fit, minmax(140px, auto))

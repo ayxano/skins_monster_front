@@ -3,6 +3,7 @@
     <h3 class="faq-title">Additional information</h3>
     <div class="faq-content">
       <TabsComponent
+        v-if="listFiltered && listFiltered.length > 1"
         @update:model-value="activeItemIndex = null"
         v-model="activeTab"
         :tabs="listFiltered"
@@ -95,9 +96,9 @@ function setActive(i) {
 	}
 
 	.tabs {
-		+below(540px) {
-			width 100%
-		}
+		//+below(540px) {
+		//	width 100%
+		//}
 		+below(400px) {
 			flex-direction column
 		}

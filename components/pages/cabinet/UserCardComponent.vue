@@ -11,6 +11,14 @@
       <div class="user-card__info">
         <span class="user-card__name">{{ user.name }}</span>
         <span class="user-card__registered">Registered on {{ registered }}</span>
+        <div class="user-card__balance">
+          <span class="user-card__balance-value">Balance: €{{ user.eur_balance }}</span>
+          <button @click="refill" class="user-card__balance-refill btn btn--md btn--main">
+            <LoadingCircleIndicator v-if="refillLoading" title="" />
+            <IconComponent v-else name="empty-wallet-add" />
+            <span>Refill</span>
+          </button>
+        </div>
       </div>
       <div class="user-card__actions">
         <button class="btn btn--sm btn--main">Choose avatar</button>
@@ -21,9 +29,10 @@
 </template>
 
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useAuthStore } from "~/stores/auth";
 import dayjs from "dayjs";
+import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
 
 defineProps({
   settings: Boolean,
@@ -31,6 +40,7 @@ defineProps({
 });
 
 const authStore = useAuthStore();
+const refillLoading = ref(false);
 
 const user = computed(() => {
   return authStore.user || {};
@@ -39,6 +49,20 @@ const user = computed(() => {
 const registered = computed(() => {
   return dayjs(user.value.created_at).format("MMMM DD, YYYY, HH:mm");
 });
+
+async function refill() {
+  refillLoading.value = true;
+  try {
+    const { link } = await authStore.refill();
+    let el = document.createElement("a");
+    el.href = link;
+    el.click();
+  } catch (e) {
+    console.log("Refill error", e);
+  } finally {
+    refillLoading.value = false;
+  }
+}
 </script>
 
 <style lang="stylus">
@@ -132,17 +156,27 @@ main_class = ".user-card"
 		display: flex;
 		flex-direction: column;
 		gap: 10px;
+		+below(620px) {
+			align-items center
+		}
 	}
 
 	&__name {
 		font-size: 1.375rem
 		font-weight: 700;
 		line-height: normal;
+		word-break break-word
 	}
 
 	&__registered {
 		color: var(--gray-dark-2, #516D7D);
 		font-size: 0.875rem
+	}
+
+	&__balance {
+		display flex
+		align-items center
+		gap: 10px
 	}
 }
 </style>

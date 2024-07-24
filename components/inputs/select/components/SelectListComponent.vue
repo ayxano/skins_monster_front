@@ -17,7 +17,7 @@
         </button>
       </li>
     </template>
-    <li v-else class="select-list__empty">Пусто</li>
+    <li v-else class="select-list__empty">Empty</li>
   </ul>
 </template>
 
@@ -83,15 +83,17 @@ export default {
 
 <style lang="stylus">
 .select-list {
-  background: var(--white);
-  border-radius: 10px;
+  border-radius: 5px;
   display flex
   flex-direction column
   align-items flex-start
+	gap: 2px
   overflow auto
-  padding 5px 0
+  padding 5px
   scrollbar-width thin
   scrollbar-color rgba(0, 0, 0, 0.3) transparent
+	background: var(--dark-light)
+	border: 2px solid var(--dark-light-2, #1F3B4B);
 
   &::-webkit-scrollbar {
     width 8px
@@ -133,12 +135,13 @@ export default {
       font-weight: 500;
       font-size: 0.875rem;
       line-height: 18px;
-      color: var(--dark);
+      color: var(--gray-dark);
       text-align left
-      min-height 18px
+      min-height: 18px
+			border-radius: 5px
 
       &:hover {
-        background var(--gray-5)
+        background var(--white-o1)
       }
 
       &__field {
@@ -150,7 +153,7 @@ export default {
 
 		&--active& {
 			button {
-				background: var(--gray-5);
+				background: var(--dark-light-2);
 			}
 		}
 

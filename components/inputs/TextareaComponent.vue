@@ -134,13 +134,6 @@ export default {
   }
 
   &--filled:not(:focus-within) {
-    & ^[0]__container {
-      border-color var(--dark)
-    }
-
-    & .icon svg path {
-      stroke var(--dark)
-    }
   }
 
   &--error& {

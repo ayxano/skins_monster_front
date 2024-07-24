@@ -22,7 +22,9 @@
         :checked="isChecked"
         @input="toggleValue"
       />
-      <slot></slot>
+      <span>
+        <slot></slot>
+      </span>
     </label>
     <div class="checkbox__errors" v-if="errors.length">
       <span v-for="(error, i) in errors" :key="i">{{ error }}</span>
@@ -42,7 +44,7 @@ export default {
   emits: ["update:modelValue", "update:shift:modelValue", "change"],
   props: {
     modelValue: [Array, Boolean],
-    item: Object, // нужно, чтобы отследить элемент в массиве, если modelValue массив
+    item: [Object, String], // нужно, чтобы отследить элемент в массиве, если modelValue массив
     indeterminate: Boolean,
     small: Boolean,
     big: Boolean,
@@ -55,6 +57,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    checkedBy: {
+      type: String,
+      default: "id",
+    },
   },
   data: () => ({
     focused: false,
@@ -62,7 +68,7 @@ export default {
   computed: {
     isChecked() {
       if (this.modelValue && Array.isArray(this.modelValue) && this.item) {
-        return this.modelValue && this.modelValue.length && this.modelValue.includes(this.item.id);
+        return this.modelValue && this.modelValue.length && this.modelValue.includes(this.item);
       }
       return !!this.modelValue;
     },
@@ -71,10 +77,10 @@ export default {
     toggleValue(e) {
       if (this.modelValue && Array.isArray(this.modelValue) && this.item) {
         let value = JSON.parse(JSON.stringify(this.modelValue));
-        if (value.includes(this.item.id)) {
-          value.splice(value.indexOf(this.item.id), 1);
+        if (value.includes(this.item)) {
+          value.splice(value.indexOf(this.item), 1);
         } else {
-          value.push(this.item.id);
+          value.push(this.item);
         }
         this.$emit("update:modelValue", value);
       } else {
@@ -126,6 +132,7 @@ export default {
       height 15px
 			min-width: 5px
 			min-height: 5px
+			margin-top: 1px
 
       svg path {
         fill var(--white)
@@ -139,7 +146,7 @@ export default {
     justify-content flex-start
     gap 5px
     cursor pointer
-    font-size 0.75rem
+    font-size 0.875rem
     line-height normal
     transition color var(--transition)
 

@@ -47,8 +47,8 @@ export default {
   &__item {
     z-index: 1;
     margin auto
-    background: var(--main);
-    border: 1px solid var(--main)
+    background: var(--green-dark-2);
+    border: 1px solid transparent
 		color: var(--dark)
     box-sizing: border-box;
     border-radius: 40px;
@@ -62,6 +62,8 @@ export default {
 
     &:not([disabled]):hover {
 			transform: scale(1.1)
+			background: var(--main);
+			border: 1px solid var(--main)
     }
 
     .icon {

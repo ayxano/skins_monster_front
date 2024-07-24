@@ -1,6 +1,7 @@
 <template>
   <div class="cabinet-favorites">
-    <SkinsListComponent :list="favorites" />
+    <SkinsListComponent v-if="favorites && favorites.length" :list="favorites" />
+    <span v-else>No favorites</span>
   </div>
 </template>
 

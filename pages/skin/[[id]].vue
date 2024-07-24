@@ -2,7 +2,7 @@
   <main class="page skin-page">
     <div class="page__inner">
       <BreadcrumbsComponent :title="routeQuery.hash_name" :links="breadcrumbs" />
-      <LoadingCircleIndicator v-if="defaultStore.loading.length" />
+      <LoadingCircleIndicator v-if="pageLoading" />
       <div v-else-if="data && data.id" class="skin-page__content">
         <SkinPagePreviewComponent
           :data="data"
@@ -36,8 +36,9 @@ import { isCS2, query, showAuthModal } from "~/utils/global";
 import { useAuthStore } from "~/stores/auth";
 import { useBasketStore } from "~/stores/basket";
 import { useFavoritesStore } from "~/stores/favorites";
-import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
+// import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
 import { useDefaultStore } from "~/stores/default";
+import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
 
 const route = useRoute();
 let data = ref({});
@@ -46,6 +47,7 @@ const authStore = useAuthStore();
 const basketStore = useBasketStore();
 const favoritesStore = useFavoritesStore();
 const favoritesLoading = ref(false);
+const pageLoading = ref(true);
 
 const breadcrumbs = [
   {
@@ -119,12 +121,14 @@ const routeQuery = computed(() => {
 });
 
 async function get() {
-  data.value = await query("/skin", {
-    ...routeQuery.value,
-    // skin_id: routeQuery.value.skin_id,
-    // hash_name: decodeURIComponent(routeQuery.value.hash_name),
-    // app_id: routeQuery.value.app_id,
-  });
+  try {
+    data.value = await query("/skin", {
+      ...routeQuery.value,
+      hash_name: decodeURIComponent(routeQuery.value.hash_name),
+    });
+  } finally {
+    pageLoading.value = false;
+  }
 }
 </script>
 

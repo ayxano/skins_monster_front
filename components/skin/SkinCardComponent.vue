@@ -1,7 +1,11 @@
 <template>
   <div v-if="data && data.id" class="skin-card" :class="{ 'skin-card--in-row': inRow }">
     <nuxt-link
-      :to="{ name: 'skin', query: { skin_id: data.id, hash_name: data.hash_name, app_id: data.appid } }"
+      :to="{
+        name: 'skin-id',
+        params: { id: data.id },
+        query: { skin_id: data.id, hash_name: data.hash_name, app_id: data.appid },
+      }"
       class="skin-card__link"
     ></nuxt-link>
     <div class="skin-card__header">
@@ -11,6 +15,7 @@
           @click.prevent="addToFavorites"
           class="skin-card__favorite btn btn--md"
           :class="{ 'skin-card__favorite--active': inFavorites }"
+          v-if="!fullpage"
         >
           <LoadingCircleIndicator v-if="favoritesLoading" title="" />
           <IconComponent v-else name="star" />
@@ -33,12 +38,15 @@
       <div
         class="skin-card__actions"
         :class="{
-          'skin-card__actions--default': !(data.banned || inCart),
+          'skin-card__actions--default': !(data.banned || inCart || inListIndex !== -1),
           'skin-card__actions--banned': data.banned,
-          'skin-card__actions--in-cart': inCart,
+          'skin-card__actions--in-cart': inCart || inListIndex !== -1,
         }"
       >
-        <button @click="addToBasket" class="skin-card__action-cart btn">
+        <button v-if="fullpage" @click="addToList" class="skin-card__action-cart btn">
+          <IconComponent name="add" />
+        </button>
+        <button v-else @click="addToBasket" class="skin-card__action-cart btn">
           <LoadingCircleIndicator v-if="basketLoading" title="" />
           <IconComponent v-else name="bag-2" />
         </button>
@@ -61,19 +69,23 @@
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, inject } from "vue";
 import { useBasketStore } from "~/stores/basket";
 import { useFavoritesStore } from "~/stores/favorites";
-import { isCS2, convertPrice, showAuthModal } from "~/utils/global";
+import { isCS2, convertPrice, showAuthModal, marginPrice } from "~/utils/global";
 import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
 import { removeExterior } from "~/utils/skin";
 import { useAuthStore } from "~/stores/auth";
+import { useCatalogStore } from "~/stores/catalog";
 
 const props = defineProps({
   data: Object,
   inRow: Boolean, // карточка находится в линии, не в гриде
 });
 
+const fullpage = inject("fullpage", false);
+
+const catalogStore = useCatalogStore();
 const authStore = useAuthStore();
 const basketStore = useBasketStore();
 const favoritesStore = useFavoritesStore();
@@ -111,6 +123,14 @@ const inCart = computed(() => {
     .includes(props.data.id);
 });
 
+const inListIndex = computed(() => {
+  return catalogStore.selectedList
+    .filter((i) => i)
+    .findIndex(
+      (i) => i.id === props.data.id && i.hash_name === props.data.hash_name && i.appid === props.data.appid
+    );
+});
+
 const inFavorites = computed(() => {
   return favoritesStore.favorites.map((i) => i.id).includes(props.data.id);
 });
@@ -138,7 +158,7 @@ const skinFloat = computed(() => {
 });
 
 const skinPrice = computed(() => {
-  return convertPrice(props.data.price);
+  return marginPrice(convertPrice(props.data.price));
 });
 
 async function addToBasket() {
@@ -152,6 +172,14 @@ async function addToBasket() {
     basketLoading.value = false;
   } else {
     showAuthModal();
+  }
+}
+
+function addToList() {
+  if (inListIndex.value === -1) {
+    catalogStore.selectedList.push(props.data);
+  } else {
+    catalogStore.selectedList.splice(inListIndex.value, 1);
   }
 }
 
@@ -237,6 +265,7 @@ main_class = ".skin-card"
 		right 0
 		top 0
 		bottom 0
+		z-index 1
 	}
 
 	&__header {
@@ -305,6 +334,7 @@ main_class = ".skin-card"
 		font-size: 0.875rem
 		line-height normal
 		font-weight: 700;
+		max-width 200px
 	}
 
 	&__subtitle {
@@ -326,6 +356,10 @@ main_class = ".skin-card"
 			height 2px
 			border-radius 50%
 			background var(--white-o5)
+		}
+
+		&-value {
+			overflow: hidden;
 		}
 	}
 

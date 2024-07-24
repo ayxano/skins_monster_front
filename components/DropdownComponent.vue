@@ -34,7 +34,7 @@ const props = defineProps({
 const route = useRoute();
 
 watch(
-  () => route.path && route.name,
+  () => route.fullPath,
   () => {
     hide();
   }
@@ -62,6 +62,7 @@ function hide() {
 		position absolute
 		opacity 0
 		visibility hidden
+		pointer-events: none
 		//transform scale(0.1)
 		transform translateY(10px)
 		transition opacity .2s, transform .2s
@@ -79,6 +80,7 @@ function hide() {
 		&--visible {
 			opacity 1
 			visibility visible
+			pointer-events: auto
 			//transform scale(1)
 			transform translateY(0)
 		}

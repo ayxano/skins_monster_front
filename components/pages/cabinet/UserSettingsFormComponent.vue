@@ -15,9 +15,15 @@
     <!--    </div>-->
     <!--    <TextareaComponent placeholder="About" />-->
     <button class="btn btn--lg btn--main">
-      <span>Save</span>
-      <LoadingCircleIndicator v-if="submitLoading" title="" />
-      <IconComponent v-else name="arrow-right-1" />
+      <template v-if="saved">
+        <span>Saved</span>
+        <IconComponent name="check-line" />
+      </template>
+      <template v-else>
+        <span>Save</span>
+        <LoadingCircleIndicator v-if="submitLoading" title="" />
+        <IconComponent v-else name="arrow-right-1" />
+      </template>
     </button>
   </form>
 </template>
@@ -30,6 +36,7 @@ import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
 
 const authStore = useAuthStore();
 let submitLoading = ref(false);
+let saved = ref(false);
 
 const form = ref({
   trade_link: {
@@ -51,7 +58,7 @@ async function submit() {
   let variables = {};
   variables.link = form.value.trade_link.value;
   variables.trade_link = form.value.trade_link.value;
-  const res = await query(
+  await query(
     "/user/trade",
     {},
     {
@@ -59,7 +66,12 @@ async function submit() {
       body: JSON.stringify(variables),
     }
   );
+  await authStore.get();
   submitLoading.value = false;
+  saved.value = true;
+  setTimeout(() => {
+    saved.value = false;
+  }, 3000);
 }
 </script>
 

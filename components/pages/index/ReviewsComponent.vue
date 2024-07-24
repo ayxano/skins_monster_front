@@ -1,25 +1,43 @@
 <template>
   <div id="reviews" class="reviews">
-    <h3 class="reviews-title">Reviews</h3>
-    <div class="reviews-content">
+    <div class="reviews-header">
+      <h3 class="reviews-title">Reviews</h3>
+      <button @click="addReview" class="btn btn--md btn--main">
+        <IconComponent name="message-add-1" />
+        <span>Leave a review</span>
+      </button>
+    </div>
+    <div v-if="list && list.length" class="reviews-content">
       <SliderComponent :slider-options="sliderOptions" :items="list" v-slot="{ item }" class="reviews-slider">
         <div class="reviews-slider__item" data-size="100px">
-          <ImgComponent class="reviews-slider__item-img" :src="item.img" />
+          <ImgComponent class="reviews-slider__item-img" :img="item.image" />
         </div>
       </SliderComponent>
-      <div class="reviews-author">
+      <div v-if="active" class="reviews-author">
         <span class="reviews-author__quote">
-          Easy functionality, very fair pricing, but I will say the absolute key is their instance customer
-          service!
+          {{ active.content }}
         </span>
-        <span class="reviews-author__name">Mike, Gamer</span>
+        <span class="reviews-author__name">{{ active.title }}</span>
       </div>
     </div>
+    <span v-else>No reviews yet</span>
   </div>
 </template>
 
 <script setup>
 import SliderComponent from "~/components/SliderComponent.vue";
+import { ref, computed, shallowRef } from "vue";
+import { useAuthStore } from "~/stores/auth";
+import { showAuthModal } from "~/utils/global";
+import { useDefaultStore } from "~/stores/default";
+import NewReviewModal from "~/components/modals/components/NewReviewModal.vue";
+
+const props = defineProps({
+  list: {
+    type: Array,
+    default: () => [],
+  },
+});
 
 const sliderOptions = {
   slidesPerView: "auto",
@@ -30,55 +48,41 @@ const sliderOptions = {
   breakpoints: {
     400: {
       spaceBetween: 40,
+      slidesPerView: "auto",
     },
     786: {
       spaceBetween: 80,
+      slidesPerView: "auto",
+    },
+  },
+  on: {
+    slideChange(swiper) {
+      activeIndex.value = swiper.activeIndex || 0;
     },
   },
 };
 
-const list = [
-  {
-    name: "Mike, Gamer",
-    text: "Easy functionality, very fair pricing, but I will say the absolute key is their instance customer service!",
-    img: "/images/tmp/review_author_1.png",
-  },
-  {
-    name: "Deimos, Superman",
-    text: "Easy functionality, very fair pricing, but I will say the absolute key is their instance customer service!Easy functionality, very fair pricing, but I will say the absolute key is their instance customer service!",
-    img: "/images/tmp/review_author_2.png",
-  },
-  {
-    name: "Mike, Gamer",
-    text: "Easy functionality, very fair pricing, the absolute key is their instance customer service!",
-    img: "/images/tmp/review_author_3.png",
-  },
-  {
-    name: "Deimos, Superman",
-    text: "Easy functionality, very fair pricing, but I will say the absolute key is their instance customer service!Easy functionality, very fair pricing, but I will say the absolute key is their instance customer service!",
-    img: "/images/tmp/review_author_4.png",
-  },
-  {
-    name: "Deimos, Superman",
-    text: "Easy functionality, very fair pricing, but I will say the absolute key is their instance customer service!Easy functionality, very fair pricing, but I will say the absolute key is their instance customer service!",
-    img: "/images/tmp/skin_card_1.png",
-  },
-  {
-    name: "Mike, Gamer",
-    text: "Easy functionality, very fair pricing, the absolute key is their instance customer service!",
-    img: "/images/tmp/review_author_3.png",
-  },
-  {
-    name: "Deimos, Superman",
-    text: "Easy functionality, very fair pricing, but I will say the absolute key is their instance customer service!Easy functionality, very fair pricing, but I will say the absolute key is their instance customer service!",
-    img: "/images/tmp/review_author_4.png",
-  },
-  {
-    name: "Deimos, Superman",
-    text: "Easy functionality, very fair pricing, but I will say the absolute key is their instance customer service!Easy functionality, very fair pricing, but I will say the absolute key is their instance customer service!",
-    img: "/images/tmp/skin_card_2.png",
-  },
-];
+const activeIndex = ref(0);
+const authStore = useAuthStore();
+const defaultStore = useDefaultStore();
+
+const active = computed(() => {
+  return props.list[activeIndex.value];
+});
+
+const authorized = computed(() => {
+  return authStore.user && authStore.user.id;
+});
+
+function addReview() {
+  if (!authorized.value) {
+    showAuthModal();
+    return;
+  }
+  defaultStore.modals.push({
+    component: shallowRef(NewReviewModal),
+  });
+}
 </script>
 
 <style lang="stylus">
@@ -94,6 +98,18 @@ const list = [
 		border none
 	}
 
+	&-header {
+		display flex
+		gap: 10px
+		justify-content space-between
+		align-items center
+		margin-bottom 40px
+	}
+
+	&-title {
+		margin: 0
+	}
+
 	&-content {
 		display flex
 		flex-direction column
@@ -107,7 +123,22 @@ const list = [
 	}
 
 	&-slider {
+		position relative
+
+		&:before {
+			content: ""
+			display block
+			height 1px
+			background var(--dark-light-2)
+			position absolute
+			top: 50%
+			left 0
+			right 0
+			z-index 0
+		}
+
 		&__item {
+			position relative
 			width 60px
 			height: 60px
 			margin auto

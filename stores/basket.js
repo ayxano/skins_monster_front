@@ -1,23 +1,28 @@
 import { defineStore } from "pinia";
-import { query } from "~/utils/global";
+import { convertPrice, marginPrice, query } from "~/utils/global";
 
 export const useBasketStore = defineStore({
   id: "basket",
   state: () => ({
-    basket: [],
+    basket_list: [],
   }),
   getters: {
+    basket(state) {
+      return state.basket_list.filter((i) => i && i.id);
+    },
     price: (state) =>
-      state.basket
-        .filter((i) => i)
-        .reduce((acc, item) => {
-          return acc + item.price;
-        }, 0),
+      parseFloat(
+        state.basket
+          .reduce((acc, item) => {
+            return acc + marginPrice(convertPrice(item.price));
+          }, 0)
+          .toFixed(2)
+      ),
   },
   actions: {
     async get() {
       const { items } = await query("/basket");
-      this.basket = items || [];
+      this.basket_list = items || [];
     },
     async add(data) {
       let variables = {};

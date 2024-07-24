@@ -16,9 +16,9 @@
         <span>Screenshot</span>
       </a>
       <a
-        v-if="data.extra"
+        v-if="data.extra && data.extra.inspect_link"
         :href="data.extra.inspect_link"
-        class="skin-page-preview__action btn btn--md btn--dark-light"
+        class="skin-page-preview__action skin-page-preview__action-inspect btn btn--md btn--dark-light"
       >
         <IconComponent name="mouse-circle" />
         <span>Inspect in game</span>
@@ -45,11 +45,15 @@ const props = defineProps({
 });
 
 const skinImg = computed(() => {
-  return `https://steamcommunity-a.akamaihd.net/economy/image/${props.data.icon_url}`;
+  const steamUrl = "https://steamcommunity-a.akamaihd.net/economy/image/";
+  if (props.data.icon_url_large) {
+    return steamUrl + props.data.icon_url_large;
+  }
+  return steamUrl + props.data.icon_url;
 });
 
 const steamLink = computed(() => {
-  return `https://steamcommunity.com/market/listings/730/${props.data.hash_name}`;
+  return `https://steamcommunity.com/market/listings/${props.data.appid}/${props.data.hash_name}`;
 });
 </script>
 
@@ -84,6 +88,12 @@ const steamLink = computed(() => {
 	&__action {
 		border: 1px solid var(--dark-light-2, #1F3B4B);
 		background: var(--black-o05)
+
+		&-inspect {
+			+below(1024px) {
+				display none
+			}
+		}
 
 		.icon {
 			width 20px

@@ -64,7 +64,7 @@
 
 <script setup>
 import { computed, ref } from "vue";
-import { convertPrice, isCS2, showAuthModal } from "~/utils/global";
+import { convertPrice, isCS2, marginPrice, showAuthModal } from "~/utils/global";
 import { useAuthStore } from "~/stores/auth";
 import { useBasketStore } from "~/stores/basket";
 import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
@@ -92,7 +92,7 @@ const tags = computed(() => {
 });
 
 const skinPrice = computed(() => {
-  return convertPrice(props.data.price);
+  return marginPrice(convertPrice(props.data.price));
 });
 
 const skinTitle = computed(() => {
@@ -240,12 +240,12 @@ async function addToBasket() {
 			align-items center
 			justify-content space-between
 			gap: 15px
-			color: var(--gray-dark, #D4F0FF);
 			font-size: 0.875rem
 			padding: 5px
 
 			span:first-child {
 				flex-grow 1
+				color: var(--gray-dark, #D4F0FF);
 			}
 
 			span:last-child {

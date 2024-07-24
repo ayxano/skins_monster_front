@@ -26,12 +26,18 @@
 	display flex
 	align-items center
 	justify-content center
+	+below(480px) {
+		padding: 30px
+	}
 
 	&__content {
 		display flex
 		flex-direction column
 		align-items center
 		gap: 20px
+		+below(480px) {
+			gap: 10px
+		}
 
 		.btn {
 			color var(--main)
@@ -46,15 +52,25 @@
 		display flex
 		align-items center
 		gap: 20px
+		+below(480px) {
+			flex-direction column
+			text-align center
+			justify-content center
+			align-items center
+		}
 	}
 
 	&__img {
 		width 48px
 		height 58px
+		flex-shrink 0
 	}
 
 	&__title {
 		margin 0
+		+below(480px) {
+			font-size 1.25rem
+		}
 	}
 
 	&__text {

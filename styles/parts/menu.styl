@@ -3,9 +3,13 @@
   width 90vw
   max-width 373px
   height 100vh
-  background: var(--white);
+  background: var(--dark, #00141F);
+  //border-left 1px solid var(--gray-dark-2)
   display flex
   flex-direction column
+  +below(440px) {
+    max-width 313px
+  }
 
   &__header {
     position relative
@@ -17,44 +21,38 @@
       display flex
       justify-content space-between
       align-items center
-      padding 12px 20px 12px var(--sides-padding)
+      padding 20px
       min-height 50px
     }
   }
 
   &__title {
-    color: var(--brown)
     font-weight: 700;
+    color: var(--gray-dark);
   }
 
   &__close {
-    width 40px
-    height 40px
-    background none
-    padding 0
-    border-radius var(--small-radius, 5px)
-    border none
-    transition var(--transition)
-    display inline-flex
-    align-items center
-    justify-content center
-    cursor pointer
-    margin-left auto
-
-    .icon {
-      width 24px
-      height 24px
-
-      svg path {
-        fill var(--dark-light)
-        transition var(--transition)
-      }
-    }
+    width: 50px;
+    height: 50px;
+    padding: 0;
+    border-radius: var(--main-radius)
+    border: none;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color var(--gray-dark-2)
+    background-color var(--dark)
 
     &:hover {
-      .icon svg path {
-        fill var(--red)
-      }
+      background-color var(--dark-light-2)
+      color var(--red)
+    }
+
+    .icon {
+      width 16px
+      height 16px
     }
   }
 
@@ -65,7 +63,7 @@
     width 100%
     flex-grow 1
     overflow-y auto
-    padding 0 var(--sides-padding)
+    padding 10px 20px
 
     > * {
       flex-shrink 0

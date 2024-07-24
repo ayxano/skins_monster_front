@@ -49,7 +49,7 @@ const pages = [
   },
   {
     title: "Favorites",
-    icon: "messages-3",
+    icon: "star",
     route: { name: "cabinet-favorites" },
     favorites: false,
     banner: true,

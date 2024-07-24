@@ -1,34 +1,15 @@
 <template>
   <div class="payments">
-    <div v-for="(item, i) in list" :key="i" class="payments__item">
-      <img :src="item.img" alt="" :title="item.title" />
+    <div v-for="(item, i) in list" :key="i" class="payments__item" :title="item.title">
+      <figure class="icon" v-html="item.icon"></figure>
     </div>
   </div>
 </template>
 
 <script setup>
-const list = [
-  {
-    title: "visa",
-    img: "/svg/default/visa.svg",
-  },
-  {
-    title: "mastercard",
-    img: "/svg/default/mastercard.svg",
-  },
-  {
-    title: "G2A",
-    img: "/svg/default/g2a.svg",
-  },
-  {
-    title: "Bitcoin",
-    img: "/svg/default/bitcoin.svg",
-  },
-  {
-    title: "ethereum",
-    img: "/svg/default/ethereum.svg",
-  },
-];
+defineProps({
+  list: Array,
+});
 </script>
 
 <style lang="stylus">
@@ -52,6 +33,15 @@ const list = [
 	&__item {
 		width 100px
 		height 50px
+
+		.icon {
+			width 100%
+			height 100%
+
+			svg path {
+				fill var(--white)
+			}
+		}
 	}
 }
 </style>

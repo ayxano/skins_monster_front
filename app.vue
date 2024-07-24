@@ -1,19 +1,20 @@
 <template>
-  <div id="app" :class="{ 'app--full-page': route.meta.fullPage }">
+  <div id="app" :class="{ 'app--full-page': fullPage }">
     <div class="container-padding">
       <div class="app__inner">
-        <AsideComponent />
+        <AsideComponent v-if="!fullPage" />
         <div class="app__content">
-          <HeaderComponent />
+          <HeaderComponent v-if="!fullPage" />
           <NuxtLayout>
-            <NuxtPage />
+            <NuxtPage :key="$route.path" />
           </NuxtLayout>
-          <FooterComponent />
+          <FooterComponent v-if="!fullPage" />
         </div>
       </div>
     </div>
   </div>
   <ModalsComponent />
+  <MenuComponent />
 </template>
 
 <style lang="stylus">
@@ -21,18 +22,13 @@
 </style>
 
 <script setup>
-import { useHead } from "#app";
+import { useHead, useRoute } from "#app";
 import HeaderComponent from "~/components/header/index.vue";
 import FooterComponent from "~/components/footer/index.vue";
 import AsideComponent from "~/components/aside/index.vue";
-import { onMounted } from "vue";
-import { csrf, query } from "~/utils/global";
-import { useGlobalStore } from "~/stores/global";
+import { computed } from "vue";
 import ModalsComponent from "~/components/modals/index.vue";
-import { useRoute } from "#app";
-import { useAuthStore } from "~/stores/auth";
-import { useBasketStore } from "~/stores/basket";
-import { useFavoritesStore } from "~/stores/favorites";
+import MenuComponent from "~/components/menus/index.vue";
 
 useHead({
   title: "Skins Monster - Buy CS2/Dota 2 skins",
@@ -44,26 +40,21 @@ useHead({
         "Buy skins at a good price in Skins Monster, you can buy CS:GO/CS2/Dota 2 skins quickly and profitably. Skins market with a large number of CS:GO/CS2/Dota 2 items available for buy",
     },
   ],
+  noscript: [
+    {
+      innerHTML:
+        '<iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5K4VZCG7"\n' +
+        'height="0" width="0" style="display:none;visibility:hidden"></iframe>',
+      tagPosition: "bodyOpen",
+    },
+  ],
 });
 
 const route = useRoute();
-const authStore = useAuthStore();
-const globalStore = useGlobalStore();
-const basketStore = useBasketStore();
-const favoritesStore = useFavoritesStore();
 
-onMounted(() => {
-  // check if token expire
-  csrf();
-  getGlobalData();
+const fullPage = computed(() => {
+  return route.meta.fullPage || route.query.fullpage;
 });
-
-function getGlobalData() {
-  globalStore.getCurrency();
-  authStore.get();
-  basketStore.get();
-  favoritesStore.get();
-}
 </script>
 
 <style lang="stylus">

@@ -4,37 +4,59 @@
       <div class="footer-left">
         <span class="footer-left__title">Contacts</span>
         <div class="footer-left__blocks">
-          <div class="footer-left__block">
+          <div v-if="company.addresses && company.addresses.length" class="footer-left__block">
             <span class="footer-left__block-title">Legal</span>
             <span class="footer-left__block-description">
-              2nd floor, flat/office 205, 1061, Nicosia, Cyprus
+              <span v-for="(item, i) in company.addresses" :key="i">
+                <span v-if="item.name">{{ item.name }}:</span>
+                {{ item.address }}
+              </span>
             </span>
           </div>
-          <div class="footer-left__block">
+          <div v-if="company.emails && company.emails.length" class="footer-left__block">
             <span class="footer-left__block-title">Email</span>
             <span class="footer-left__block-description">
-              Support: help@skinmonster.com <br />
-              Privacy: privacy@skinmonster.com <br />
-              Official inquiries: official-inquiries@skinmonster.com <br />
-              Partners: partner@skinmonster.com
+              <span v-for="(item, i) in company.emails" :key="i">
+                <span v-if="item.name">{{ item.name }}:</span>
+                <a :href="`mailto:${item.email}`">{{ item.email }}</a>
+              </span>
             </span>
           </div>
-          <div class="footer-left__block">
+          <div v-if="company.phones && company.phones.length" class="footer-left__block">
             <span class="footer-left__block-title">Phones</span>
-            <span class="footer-left__block-description"> +101 77 2347 9985 </span>
+            <span class="footer-left__block-description">
+              <span v-for="(item, i) in company.phones" :key="i">
+                <span v-if="item.name">{{ item.name }}:</span>
+                <a :href="`tel:${item.phone}`">{{ item.phone }}</a>
+              </span>
+            </span>
           </div>
           <SocialsComponent />
         </div>
       </div>
       <div class="footer-right">
         <div class="footer-columns">
-          <div v-for="(col, i) in columns" :key="i" class="footer-column">
-            <span class="footer-column__title">{{ col.title }}</span>
+          <div class="footer-column">
+            <span class="footer-column__title">Links</span>
             <ul class="footer-column__links">
-              <li v-for="(link, index) in col.links" :key="index">
+              <li v-for="(link, i) in links" :key="i">
                 <nuxt-link class="footer-column__links-link" :to="link.route">
                   <IconComponent name="arrow-right-3" />
                   <span>{{ link.title }}</span>
+                </nuxt-link>
+              </li>
+            </ul>
+          </div>
+          <div class="footer-column">
+            <span class="footer-column__title">Terms</span>
+            <ul class="footer-column__links">
+              <li v-for="(link, i) in pages" :key="i">
+                <nuxt-link
+                  class="footer-column__links-link"
+                  :to="{ name: 'dynamic-id', params: { id: link.id } }"
+                >
+                  <IconComponent name="arrow-right-3" />
+                  <span>{{ link.name }}</span>
                 </nuxt-link>
               </li>
             </ul>
@@ -47,58 +69,41 @@
 </template>
 
 <script setup>
-const columns = [
+import { useGlobalStore } from "~/stores/global";
+import { computed } from "vue";
+
+const globalStore = useGlobalStore();
+
+const links = [
   {
-    title: "Links",
-    links: [
-      {
-        title: "Catalog",
-        route: { name: "catalog" },
-      },
-      {
-        title: "About",
-        route: { name: "about" },
-      },
-      {
-        title: "Reviews",
-        route: { name: "index", hash: "#reviews" },
-      },
-      {
-        title: "FAQ",
-        route: { name: "index", hash: "#faq" },
-      },
-      {
-        title: "Contacts",
-        route: { name: "contacts" },
-      },
-      {
-        title: "Cancellations & Refunds",
-        route: { name: "dynamic" },
-      },
-    ],
+    title: "Catalog",
+    route: { name: "catalog" },
   },
   {
-    title: "Terms",
-    links: [
-      {
-        title: "Terms Of Use",
-        route: { name: "index" },
-      },
-      {
-        title: "Privacy Policy",
-        route: { name: "index" },
-      },
-      {
-        title: "Cookie Policy",
-        route: { name: "index" },
-      },
-      {
-        title: "Consent Preferences",
-        route: { name: "index" },
-      },
-    ],
+    title: "About",
+    route: { name: "dynamic-id", query: { "positions[]": ["about"] } },
+  },
+  {
+    title: "Reviews",
+    route: { name: "index", hash: "#reviews" },
+  },
+  {
+    title: "FAQ",
+    route: { name: "index", hash: "#faq" },
+  },
+  {
+    title: "Contacts",
+    route: { name: "contacts" },
   },
 ];
+
+const company = computed(() => {
+  return globalStore.company;
+});
+
+const pages = computed(() => {
+  return globalStore.pages;
+});
 </script>
 
 <style lang="stylus">
@@ -145,6 +150,8 @@ const columns = [
 			&-description {
 				color: var(--gray-dark-2, #516D7D);
 				font-size: 0.875rem
+				display flex
+				flex-direction column
 			}
 		}
 	}
@@ -153,7 +160,7 @@ const columns = [
 		display flex
 		gap: 40px
 		+above(641px) {
-			justify-content flex-end
+			justify-content space-between
 		}
 	}
 

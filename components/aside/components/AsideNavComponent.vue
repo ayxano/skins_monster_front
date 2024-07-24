@@ -44,6 +44,11 @@ function isRouteActive(route) {
   if (route.hash) {
     return route.name === currentRoute.name && route.hash === currentRoute.hash;
   }
+  if (route.query) {
+    return (
+      route.name === currentRoute.name && JSON.stringify(route.query) === JSON.stringify(currentRoute.query)
+    );
+  }
   return route.name === currentRoute.name;
 }
 </script>
