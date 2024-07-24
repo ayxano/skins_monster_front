@@ -162,6 +162,7 @@ export default {
         this.$emit("update:modelValue", files);
       } else {
         this.$emit("update:modelValue", null);
+        this.$refs.input.value = null;
       }
     },
     async upload(files) {
