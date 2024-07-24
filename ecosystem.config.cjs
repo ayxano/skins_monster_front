@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'Skins',
-      port: '8083',
+      port: '9090',
       exec_mode: 'cluster',
       instances: 'max',
       script: './.output/server/index.mjs'
