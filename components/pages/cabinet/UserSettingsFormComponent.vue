@@ -8,12 +8,7 @@
         </a>
       </template>
     </InputComponent>
-    <!--    <InputComponent placeholder="Email" />-->
-    <!--    <div class="col col-2">-->
-    <!--      <InputComponent placeholder="Name" />-->
-    <!--      <InputComponent placeholder="Surname" />-->
-    <!--    </div>-->
-    <!--    <TextareaComponent placeholder="About" />-->
+    <!--    <InputComponent v-model="form.email.value" placeholder="Email" title="Email" />-->
     <button class="btn btn--lg btn--main">
       <template v-if="saved">
         <span>Saved</span>
@@ -40,6 +35,10 @@ let saved = ref(false);
 
 const form = ref({
   trade_link: {
+    value: null,
+    errors: [],
+  },
+  email: {
     value: null,
     errors: [],
   },

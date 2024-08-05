@@ -13,9 +13,10 @@
       </div>
     </div>
     <div class="checkout-aside__block checkout-aside__block--divider">
+      <InputComponent v-model="form.email.value" title="Email" placeholder="Email" />
       <div class="checkout-aside__payment">
         <span class="checkout-aside__payment-title">Payment method</span>
-        <TabsComponent v-model="paymentMethod" :tabs="methods" small same-tabs />
+        <TabsComponent v-model="form.payment_method.value" :tabs="methods" small same-tabs />
       </div>
       <div class="checkout-aside__prices">
         <div class="checkout-aside__prices-list">
@@ -31,7 +32,7 @@
             <span class="checkout-aside__prices-item-title"> Total </span>
             <span class="checkout-aside__prices-item-value"> €{{ basketPrice }} </span>
           </div>
-          <template v-if="paymentMethod.type === 'balance'">
+          <template v-if="form.payment_method.value.type === 'balance'">
             <div class="checkout-aside__prices-item">
               <span class="checkout-aside__prices-item-title"> Balance </span>
               <span class="checkout-aside__prices-item-value"> €{{ balance }} </span>
@@ -48,7 +49,7 @@
       </div>
       <button
         @click.prevent="refill"
-        v-if="balanceDeficit > 0 && paymentMethod.type === 'balance'"
+        v-if="balanceDeficit > 0 && form.payment_method.value.type === 'balance'"
         class="btn btn--lg btn--main"
       >
         <span>Refill the balance</span>
@@ -59,6 +60,10 @@
         Set your Steam trade link in
         <nuxt-link :to="{ name: 'cabinet-settings' }">Profile settings</nuxt-link>.
       </div>
+      <!--      <div v-if="!email" class="checkout-aside__trade-link">-->
+      <!--        Set your Email in-->
+      <!--        <nuxt-link :to="{ name: 'cabinet-settings' }">Profile settings</nuxt-link>.-->
+      <!--      </div>-->
     </div>
     <div class="checkout-aside__block">
       <div class="checkout-aside__agreement">
@@ -142,7 +147,16 @@ const methods = [
   },
 ];
 
-const paymentMethod = ref(methods[0]);
+const form = ref({
+  payment_method: {
+    value: methods[0],
+    errors: [],
+  },
+  email: {
+    value: null,
+    errors: [],
+  },
+});
 
 const basketPrice = computed(() => {
   return basketStore.price;
@@ -166,7 +180,7 @@ const balanceDeficit = computed(() => {
 
 const submitDisabled = computed(() => {
   const disabled = !agreement.value || !trade_link.value;
-  if (paymentMethod.value.type === "balance") {
+  if (form.value.payment_method.value?.type === "balance") {
     return disabled || balanceDeficit.value > 0;
   }
   return disabled;
@@ -175,7 +189,8 @@ const submitDisabled = computed(() => {
 async function submit() {
   submitLoading.value = true;
   let variables = {};
-  variables.payment_type = paymentMethod.value.type;
+  variables.payment_type = form.value.payment_method.value?.type;
+  variables.email = form.value.email.value;
   try {
     const { data } = await ordersStore.add(variables);
     if (data && data.guavapay_payment_url) {
