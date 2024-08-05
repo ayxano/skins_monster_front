@@ -5,7 +5,7 @@
     loading="lazy"
     class="img"
     decoding="async"
-    :class="{ lazy: loader && !src, loaded, 'img--contain': contain }"
+    :class="{ lazy: loader && !src, loaded, 'img--contain': contain, 'img--no-user': user && !img }"
     @load="loaded = true"
     @error="loaded = true"
   />
@@ -32,6 +32,7 @@ export default {
       default: true,
     },
     contain: Boolean,
+    user: Boolean,
   },
   data() {
     return {
@@ -49,7 +50,7 @@ export default {
       if (this.img && this.img.path) {
         return `${process.env.HOST_ENDPOINT}/storage/${this.img.path}`;
       }
-      return "/images/no-image.jpg";
+      return this.user ? "/svg/icons/user.svg" : "/images/no-image.jpg";
     },
   },
 };
@@ -63,6 +64,10 @@ export default {
   &--contain {
     object-fit contain
   }
+
+	&--no-user {
+		padding: 10px
+	}
 }
 
 .lazy {

@@ -10,7 +10,7 @@
     <div v-if="list && list.length" class="reviews-content">
       <SliderComponent :slider-options="sliderOptions" :items="list" v-slot="{ item }" class="reviews-slider">
         <div class="reviews-slider__item" data-size="100px">
-          <ImgComponent class="reviews-slider__item-img" :img="item.image" />
+          <ImgComponent class="reviews-slider__item-img" :img="item.image" user />
         </div>
       </SliderComponent>
       <div v-if="active" class="reviews-author">

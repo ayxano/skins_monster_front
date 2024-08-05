@@ -1,5 +1,5 @@
 <template>
-  <div class="payments">
+  <div v-if="list && list.length" class="payments">
     <div v-for="(item, i) in list" :key="i" class="payments__item" :title="item.title">
       <figure class="icon" v-html="item.icon"></figure>
     </div>

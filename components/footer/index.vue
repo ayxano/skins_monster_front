@@ -4,11 +4,17 @@
       <div class="footer-left">
         <span class="footer-left__title">Contacts</span>
         <div class="footer-left__blocks">
+          <div v-if="company.name" class="footer-left__block">
+            <span class="footer-left__block-title">Company</span>
+            <span class="footer-left__block-description">
+              {{ company.name }}
+            </span>
+          </div>
           <div v-if="company.addresses && company.addresses.length" class="footer-left__block">
             <span class="footer-left__block-title">Legal</span>
             <span class="footer-left__block-description">
               <span v-for="(item, i) in company.addresses" :key="i">
-                <span v-if="item.name">{{ item.name }}:</span>
+                <span v-if="item.name">{{ item.name }}: </span>
                 {{ item.address }}
               </span>
             </span>
@@ -17,7 +23,7 @@
             <span class="footer-left__block-title">Email</span>
             <span class="footer-left__block-description">
               <span v-for="(item, i) in company.emails" :key="i">
-                <span v-if="item.name">{{ item.name }}:</span>
+                <span v-if="item.name">{{ item.name }}: </span>
                 <a :href="`mailto:${item.email}`">{{ item.email }}</a>
               </span>
             </span>
@@ -26,7 +32,7 @@
             <span class="footer-left__block-title">Phones</span>
             <span class="footer-left__block-description">
               <span v-for="(item, i) in company.phones" :key="i">
-                <span v-if="item.name">{{ item.name }}:</span>
+                <span v-if="item.name">{{ item.name }}: </span>
                 <a :href="`tel:${item.phone}`">{{ item.phone }}</a>
               </span>
             </span>
