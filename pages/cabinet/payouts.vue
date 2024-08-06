@@ -1,7 +1,7 @@
 <template>
   <div class="cabinet-payouts">
     <div class="cabinet-payouts__content">
-      <div class="cabinet-payouts__list">
+      <div v-if="payouts && payouts.length" class="cabinet-payouts__list">
         <div v-for="item in payouts" :key="item.id" class="cabinet-payouts__item">
           <div class="cabinet-payouts__item-info">
             <span class="cabinet-payouts__item-field cabinet-payouts__item-name">
@@ -33,6 +33,7 @@
           </div>
         </div>
       </div>
+      <span v-else>You have no payouts</span>
     </div>
   </div>
 </template>
@@ -156,7 +157,7 @@ function get() {
 			}
 
 			&--processing span {
-				background-color var(--green-dark)
+				background-color var(--gray-dark-2)
 			}
 
 			&--success span {
