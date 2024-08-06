@@ -14,19 +14,21 @@
           <span class="user-card__registered">Registered on {{ registered }}</span>
           <div class="user-card__balance">
             <span class="user-card__balance-value">Balance: €{{ balance }}</span>
-            <button @click="refill" class="user-card__balance-refill btn btn--md btn--main">
-              <LoadingCircleIndicator v-if="refillLoading" title="" />
-              <IconComponent v-else name="empty-wallet-add" />
-              <span>Refill</span>
-            </button>
-            <button
-              v-show="balance"
-              @click="payout"
-              class="user-card__balance-refill btn btn--md btn--hollow"
-            >
-              <IconComponent name="wallet-minus" />
-              <span>Pay out</span>
-            </button>
+            <div class="user-card__balance-actions">
+              <button @click="refill" class="user-card__balance-refill btn btn--md btn--main">
+                <LoadingCircleIndicator v-if="refillLoading" title="" />
+                <IconComponent v-else name="empty-wallet-add" />
+                <span>Refill</span>
+              </button>
+              <button
+                v-show="balance"
+                @click="payout"
+                class="user-card__balance-refill btn btn--md btn--hollow"
+              >
+                <IconComponent name="wallet-minus" />
+                <span>Pay out</span>
+              </button>
+            </div>
           </div>
         </div>
         <div class="user-card__actions">
@@ -195,10 +197,17 @@ main_class = ".user-card"
 		font-size: 0.875rem
 	}
 
-	&__balance {
+	&__balance,
+	&__balance-actions {
 		display flex
 		align-items center
 		gap: 10px
+	}
+
+	&__balance {
+		+below(480px) {
+			flex-direction column
+		}
 	}
 }
 </style>
