@@ -127,17 +127,33 @@ main_class = ".orders-accordion"
 		}
 
 		&-header {
+			position: relative
 			padding: 15px 20px
 			display flex
 			align-items center
 			gap: 15px
 			cursor: pointer;
 			border-radius var(--small-radius)
-			border-bottom: 1px solid var(--dark-light-2, #1F3B4B);
 			transition background-color var(--transition)
 
 			&:hover {
 				background var(--dark-light-2)
+
+				&:after {
+					display none
+				}
+			}
+
+			&:after {
+				content: ""
+				display: block
+				height: 1px
+				width 100%
+				background: var(--dark-light-2, #1F3B4B)
+				position absolute
+				left 0
+				right 0
+				top: 100%
 			}
 
 			.icon {
