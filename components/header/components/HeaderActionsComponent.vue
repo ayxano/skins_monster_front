@@ -121,7 +121,7 @@ function showMainMenu() {
 			position absolute
 			top: 100%
 			right 0
-			z-index 2
+			z-index 3
 			opacity 0
 			pointer-events none
 			transition opacity var(--transition)

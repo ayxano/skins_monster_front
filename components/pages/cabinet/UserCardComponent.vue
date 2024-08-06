@@ -1,38 +1,50 @@
 <template>
-  <div class="user-card" :class="{ 'user-card--settings': settings, 'user-card--small': small }">
-    <div v-if="!small" class="user-card__top">
-      <div class="user-card__actions">
-        <button class="btn btn--sm btn--dark-light">Upload cover</button>
-        <button class="user-card__action--remove btn btn--sm btn--dark-light">Remove</button>
-      </div>
-    </div>
-    <div class="user-card__content">
-      <ImgComponent v-if="!small" class="user-card__avatar" src="/images/tmp/user.jpg" />
-      <div class="user-card__info">
-        <span class="user-card__name">{{ user.name }}</span>
-        <span class="user-card__registered">Registered on {{ registered }}</span>
-        <div class="user-card__balance">
-          <span class="user-card__balance-value">Balance: €{{ user.eur_balance }}</span>
-          <button @click="refill" class="user-card__balance-refill btn btn--md btn--main">
-            <LoadingCircleIndicator v-if="refillLoading" title="" />
-            <IconComponent v-else name="empty-wallet-add" />
-            <span>Refill</span>
-          </button>
+  <ClientOnly>
+    <div class="user-card" :class="{ 'user-card--settings': settings, 'user-card--small': small }">
+      <div v-if="!small" class="user-card__top">
+        <div class="user-card__actions">
+          <button class="btn btn--sm btn--dark-light">Upload cover</button>
+          <button class="user-card__action--remove btn btn--sm btn--dark-light">Remove</button>
         </div>
       </div>
-      <div class="user-card__actions">
-        <button class="btn btn--sm btn--main">Choose avatar</button>
-        <button class="user-card__action--remove btn btn--sm btn--dark-light">Remove</button>
+      <div class="user-card__content">
+        <ImgComponent v-if="!small" class="user-card__avatar" src="/images/tmp/user.jpg" />
+        <div class="user-card__info">
+          <span class="user-card__name">{{ user.name }}</span>
+          <span class="user-card__registered">Registered on {{ registered }}</span>
+          <div class="user-card__balance">
+            <span class="user-card__balance-value">Balance: €{{ balance }}</span>
+            <button @click="refill" class="user-card__balance-refill btn btn--md btn--main">
+              <LoadingCircleIndicator v-if="refillLoading" title="" />
+              <IconComponent v-else name="empty-wallet-add" />
+              <span>Refill</span>
+            </button>
+            <button
+              v-show="balance"
+              @click="payout"
+              class="user-card__balance-refill btn btn--md btn--hollow"
+            >
+              <IconComponent name="wallet-minus" />
+              <span>Pay out</span>
+            </button>
+          </div>
+        </div>
+        <div class="user-card__actions">
+          <button class="btn btn--sm btn--main">Choose avatar</button>
+          <button class="user-card__action--remove btn btn--sm btn--dark-light">Remove</button>
+        </div>
       </div>
     </div>
-  </div>
+  </ClientOnly>
 </template>
 
 <script setup>
-import { computed, ref } from "vue";
+import { computed, ref, shallowRef } from "vue";
 import { useAuthStore } from "~/stores/auth";
 import dayjs from "dayjs";
 import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
+import { useDefaultStore } from "~/stores/default";
+import PayoutModal from "~/components/modals/components/PayoutModal.vue";
 
 defineProps({
   settings: Boolean,
@@ -50,6 +62,10 @@ const registered = computed(() => {
   return dayjs(user.value.created_at).format("MMMM DD, YYYY, HH:mm");
 });
 
+const balance = computed(() => {
+  return parseFloat(authStore.user?.eur_balance) || 0;
+});
+
 async function refill() {
   refillLoading.value = true;
   try {
@@ -62,6 +78,12 @@ async function refill() {
   } finally {
     refillLoading.value = false;
   }
+}
+
+async function payout() {
+  useDefaultStore().modals.push({
+    component: shallowRef(PayoutModal),
+  });
 }
 </script>
 

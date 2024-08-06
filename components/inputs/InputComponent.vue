@@ -39,15 +39,17 @@
         :value="modelValue"
         @input="input"
         @focus="focus"
+        @blur="blur"
         @keyup.enter="$emit('enter')"
-        @blur="$emit('blur', $event.target.value)"
         :disabled="disabled"
         :inputmode="inputmode"
         :min="min"
         :max="max"
       />
     </span>
-    <span v-if="subtitle" class="input__subtitle">{{ subtitle }}</span>
+    <slot name="subtitle">
+      <span v-if="subtitle" class="input__subtitle">{{ subtitle }}</span>
+    </slot>
     <div v-if="errors && errors.length" class="input__errors">
       <pre v-for="(e, i) in errors" :key="i">{{ e }}</pre>
     </div>
@@ -107,8 +109,19 @@ export default {
   methods: {
     input($event) {
       let value = $event.target.value;
+      this.$emit("update:model-value", value);
+    },
+    focus() {
+      if (!this.modelValue && this.isPhone && this.mask) {
+        this.$emit("update:model-value", " ");
+      }
+      this.focused = true;
+      this.$emit("focus");
+    },
+    blur($event) {
+      let value = $event.target.value;
       if (this.numbersOnly && value) {
-        value = value ? parseFloat(value.replace(/[\s-()]/g, "")) : 0;
+        value = value ? parseFloat(value.replace(/[\s-()]/g, "")) || 0 : 0;
         if (this.min && value < this.min) {
           value = this.min;
         }
@@ -118,13 +131,7 @@ export default {
       }
       $event.target.value = value;
       this.$emit("update:model-value", value);
-    },
-    focus() {
-      if (!this.modelValue && this.isPhone && this.mask) {
-        this.$emit("update:model-value", " ");
-      }
-      this.focused = true;
-      this.$emit("focus");
+      this.$emit("blur", value);
     },
   },
   directives: { maska: vMaska },
@@ -262,9 +269,14 @@ export default {
     font-weight: normal;
     font-size: 0.75rem;
     line-height: 20px;
-    color: var(--dark-light);
-    opacity .5
-    padding-left: 20px
+		display flex
+		align-items center
+		gap: 10px
+		color: var(--white-o5)
+
+		.btn {
+			height 22px
+		}
   }
 
   &__required {
