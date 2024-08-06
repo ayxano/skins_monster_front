@@ -53,7 +53,7 @@
               </li>
             </ul>
           </div>
-          <div class="footer-column">
+          <div v-if="pages && pages.length" class="footer-column">
             <span class="footer-column__title">Terms</span>
             <ul class="footer-column__links">
               <li v-for="(link, i) in pages" :key="i">

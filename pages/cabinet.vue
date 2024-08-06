@@ -48,6 +48,13 @@ const pages = [
     banner: true,
   },
   {
+    title: "Payouts",
+    icon: "wallet-minus",
+    route: { name: "cabinet-payouts" },
+    favorites: false,
+    banner: true,
+  },
+  {
     title: "Favorites",
     icon: "star",
     route: { name: "cabinet-favorites" },

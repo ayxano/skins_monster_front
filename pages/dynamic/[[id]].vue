@@ -3,7 +3,8 @@
     <div class="page__inner">
       <BreadcrumbsComponent :title="page.name" />
       <div class="dynamic-page__content">
-        <EditorJSComponent :text="page.content || {}" />
+        <EditorJSComponent v-if="page.content" :text="page.content || {}" />
+        <span v-else>No data</span>
       </div>
       <BenefitsComponent :list="advantages" />
       <PaymentsComponent :list="payments" />

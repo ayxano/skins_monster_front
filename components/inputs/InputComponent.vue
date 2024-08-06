@@ -133,6 +133,19 @@ export default {
       this.$emit("update:model-value", value);
       this.$emit("blur", value);
     },
+    extractNumber(val) {
+      let value = val;
+      if (this.numbersOnly && value) {
+        value = value ? parseFloat(value.replace(/[\s-()]/g, "")) || 0 : 0;
+        if (this.min && value < this.min) {
+          value = this.min;
+        }
+        if (this.max && value > this.max) {
+          value = this.max;
+        }
+      }
+      this.$emit("update:model-value", value);
+    },
   },
   directives: { maska: vMaska },
 };

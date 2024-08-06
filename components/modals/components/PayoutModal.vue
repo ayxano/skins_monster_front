@@ -1,16 +1,16 @@
 <template>
   <div class="default-modal new-review-modal">
     <div class="default-modal__header">
-      <span class="default-modal__title new-review-modal__title">Pay out</span>
+      <span class="default-modal__title new-review-modal__title">Pay out request</span>
       <button type="button" class="default-modal__close btn" @click="$emit('closeAll')">
         <IconComponent name="close" />
       </button>
     </div>
     <div class="default-modal__body">
       <form @submit.prevent="submit" class="new-review-modal__form">
-        <InputComponent v-model="form.name.value" :errors="form.name.errors" placeholder="Your name" />
+        <InputComponent v-model.trim="form.name.value" :errors="form.name.errors" placeholder="Your name" />
         <InputComponent
-          v-model="form.surname.value"
+          v-model.trim="form.surname.value"
           :errors="form.surname.errors"
           placeholder="Your surname"
         />
@@ -48,15 +48,17 @@
 
 <script setup>
 import { computed, ref, shallowRef } from "vue";
-import { parseErrors, resetErrors, query } from "~/utils/global";
+import { parseErrors, resetErrors } from "~/utils/global";
 import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
 import AlertModal from "~/components/modals/components/AlertModal.vue";
 import { useDefaultStore } from "~/stores/default";
 import { useAuthStore } from "~/stores/auth";
+import { useOrdersStore } from "~/stores/orders";
 
 let loading = ref(false);
 const defaultStore = useDefaultStore();
 const authStore = useAuthStore();
+const ordersStore = useOrdersStore();
 const form = ref({
   name: {
     value: null,
@@ -97,14 +99,7 @@ async function submit() {
   };
   resetErrors(form.value);
   try {
-    await query(
-      "/guavapay/payout",
-      {},
-      {
-        method: "POST",
-        body: JSON.stringify(variables),
-      }
-    );
+    await ordersStore.createPayout(variables);
     showAlertModal();
   } catch ({ errors }) {
     parseErrors(errors, form.value);

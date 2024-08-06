@@ -9,6 +9,7 @@
             placeholder="€ Min"
             inputmode="numeric"
             numbers-only
+            type="number"
             class="category-filters__price-input"
           />
           <span class="category-filters__price-divider">
@@ -20,6 +21,7 @@
             placeholder="€ Max"
             inputmode="numeric"
             numbers-only
+            type="number"
             class="category-filters__price-input"
           />
         </template>

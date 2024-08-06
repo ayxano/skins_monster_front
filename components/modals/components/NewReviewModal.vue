@@ -8,8 +8,12 @@
     </div>
     <div class="default-modal__body">
       <form @submit.prevent="submit" class="new-review-modal__form">
-        <InputComponent v-model="form.title.value" :errors="form.title.errors" placeholder="Your name" />
-        <TextareaComponent v-model="form.content.value" :errors="form.content.errors" placeholder="Review" />
+        <InputComponent v-model.trim="form.title.value" :errors="form.title.errors" placeholder="Your name" />
+        <TextareaComponent
+          v-model.trim="form.content.value"
+          :errors="form.content.errors"
+          placeholder="Review"
+        />
         <FilesUploadComponent
           v-model="form.image_id.value"
           :errors="form.image_id.errors"
