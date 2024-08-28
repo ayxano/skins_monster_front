@@ -104,7 +104,7 @@ async function getReviews() {
   if (!(homeStore.reviews && homeStore.reviews.length)) {
     query("/reviews", {
       page: 1,
-      first: 99,
+      first: 10,
     }).then(({ data }) => {
       homeStore.reviews = data || [];
       scrollToHash();

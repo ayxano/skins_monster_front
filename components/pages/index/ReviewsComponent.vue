@@ -19,6 +19,10 @@
         </span>
         <span class="reviews-author__name">{{ active.title }}</span>
       </div>
+      <button v-if="list.length > 3" @click="openReviewsModal" class="btn btn--md btn--main">
+        <IconComponent name="arrow-square-down" />
+        <span>Show all</span>
+      </button>
     </div>
     <span v-else>No reviews yet</span>
   </div>
@@ -31,6 +35,7 @@ import { useAuthStore } from "~/stores/auth";
 import { showAuthModal } from "~/utils/global";
 import { useDefaultStore } from "~/stores/default";
 import NewReviewModal from "~/components/modals/components/NewReviewModal.vue";
+import ReviewsModal from "~/components/modals/components/ReviewsModal.vue";
 
 const props = defineProps({
   list: {
@@ -81,6 +86,12 @@ function addReview() {
   }
   defaultStore.modals.push({
     component: shallowRef(NewReviewModal),
+  });
+}
+
+function openReviewsModal() {
+  useDefaultStore().modals.push({
+    component: shallowRef(ReviewsModal),
   });
 }
 </script>
