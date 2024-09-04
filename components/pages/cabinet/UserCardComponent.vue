@@ -20,14 +20,14 @@
                 <IconComponent v-else name="empty-wallet-add" />
                 <span>Refill</span>
               </button>
-              <button
-                v-show="balance"
-                @click="payout"
-                class="user-card__balance-refill btn btn--md btn--hollow"
-              >
-                <IconComponent name="wallet-minus" />
-                <span>Pay out</span>
-              </button>
+              <!--              <button-->
+              <!--                v-show="balance"-->
+              <!--                @click="payout"-->
+              <!--                class="user-card__balance-refill btn btn&#45;&#45;md btn&#45;&#45;hollow"-->
+              <!--              >-->
+              <!--                <IconComponent name="wallet-minus" />-->
+              <!--                <span>Pay out</span>-->
+              <!--              </button>-->
             </div>
           </div>
         </div>

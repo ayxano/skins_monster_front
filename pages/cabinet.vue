@@ -47,13 +47,13 @@ const pages = [
     favorites: false,
     banner: true,
   },
-  {
-    title: "Payouts",
-    icon: "wallet-minus",
-    route: { name: "cabinet-payouts" },
-    favorites: false,
-    banner: true,
-  },
+  // {
+  //   title: "Payouts",
+  //   icon: "wallet-minus",
+  //   route: { name: "cabinet-payouts" },
+  //   favorites: false,
+  //   banner: true,
+  // },
   {
     title: "Favorites",
     icon: "star",
