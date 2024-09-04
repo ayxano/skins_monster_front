@@ -14,13 +14,6 @@
           :errors="form.content.errors"
           placeholder="Review"
         />
-        <FilesUploadComponent
-          v-model="form.image_id.value"
-          :errors="form.image_id.errors"
-          title="Image"
-          @error="form.image_id.errors = [$event]"
-          accept="image/*"
-        />
         <button class="btn btn--lg btn--main">
           <LoadingCircleIndicator v-if="loading" />
           <span v-else>Send your review</span>
@@ -50,11 +43,6 @@ const form = ref({
     errors: [],
     default: null,
   },
-  image_id: {
-    value: null,
-    errors: [],
-    default: null,
-  },
 });
 
 async function submit() {
@@ -65,7 +53,6 @@ async function submit() {
   let variables = {
     title: form.value.title.value,
     content: form.value.content.value,
-    image_id: form.value.image_id.value ? form.value.image_id.value[0].id : null,
   };
   resetErrors(form.value);
   try {
