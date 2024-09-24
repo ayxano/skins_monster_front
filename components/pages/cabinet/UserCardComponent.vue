@@ -28,6 +28,10 @@
               <!--                <IconComponent name="wallet-minus" />-->
               <!--                <span>Pay out</span>-->
               <!--              </button>-->
+              <button @click="showAlert" class="user-card__balance-refill btn btn--md btn--hollow">
+                <IconComponent name="wallet-minus" />
+                <span>Pay out</span>
+              </button>
             </div>
           </div>
         </div>
@@ -47,6 +51,7 @@ import dayjs from "dayjs";
 import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
 import { useDefaultStore } from "~/stores/default";
 import PayoutModal from "~/components/modals/components/PayoutModal.vue";
+import AlertModal from "~/components/modals/components/AlertModal.vue";
 
 defineProps({
   settings: Boolean,
@@ -85,6 +90,16 @@ async function refill() {
 async function payout() {
   useDefaultStore().modals.push({
     component: shallowRef(PayoutModal),
+  });
+}
+
+function showAlert() {
+  useDefaultStore().modals.push({
+    component: shallowRef(AlertModal),
+    options: {
+      title: "Pay out request",
+      text: "Coming soon...",
+    },
   });
 }
 </script>
