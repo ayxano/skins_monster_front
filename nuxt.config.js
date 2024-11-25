@@ -35,6 +35,10 @@ export default defineNuxtConfig({
             "'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);\n" +
             "})(window,document,'script','dataLayer','GTM-5K4VZCG7');",
         },
+        {
+          src: "//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js",
+          async: true,
+        },
       ],
       htmlAttrs: {
         lang: "en",

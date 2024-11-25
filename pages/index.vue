@@ -7,6 +7,7 @@
       <BenefitsComponent :list="advantages" />
       <FaqComponent :list="faqCategories" />
       <ReviewsComponent :list="reviews" />
+      <TrustpilotComponent />
       <PaymentsComponent :list="payments" />
       <BottomPageBannerComponent />
     </div>
