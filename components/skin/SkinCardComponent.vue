@@ -9,7 +9,7 @@
       class="skin-card__link"
     ></nuxt-link>
     <div class="skin-card__header">
-      <ImgComponent :src="skinImg" class="skin-card__img" :loader="false" />
+      <ImgComponent :src="skinImg" class="skin-card__img" :loader="false" contain />
       <div class="skin-card__header-cover">
         <button
           @click.prevent="addToFavorites"
