@@ -1,6 +1,10 @@
 .aside-nav {
   display flex
   flex-direction column
+  +above(1025px) {
+    position sticky
+    top: 20px
+  }
 
   &--no-menu &__item {
     padding-right 5px
