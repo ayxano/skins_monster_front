@@ -124,6 +124,9 @@ const inCart = computed(() => {
 });
 
 const inListIndex = computed(() => {
+  if (!catalogStore?.selectedList?.length) {
+    return -1;
+  }
   return catalogStore.selectedList
     .filter((i) => i)
     .findIndex(
