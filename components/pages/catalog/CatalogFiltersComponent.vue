@@ -48,7 +48,7 @@
           </template>
         </SelectComponent>
         <nuxt-link
-          :to="{ name: 'catalog' }"
+          :to="{ name: 'catalog', query: { sort: 'price_min' } }"
           class="filters-item filters-item--clear btn btn--md btn--dark-light no-hover"
         >
           <span>Clear</span>

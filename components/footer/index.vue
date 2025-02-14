@@ -83,7 +83,7 @@ const globalStore = useGlobalStore();
 const links = [
   {
     title: "Catalog",
-    route: { name: "catalog" },
+    route: { name: "catalog", query: { sort: "price_min" } },
   },
   {
     title: "About",

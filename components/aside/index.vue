@@ -15,7 +15,7 @@
 const links = [
   {
     title: "Catalog",
-    route: { name: "catalog" },
+    route: { name: "catalog", query: { sort: "price_min" } },
     icon: "category-2",
     menu: true,
   },

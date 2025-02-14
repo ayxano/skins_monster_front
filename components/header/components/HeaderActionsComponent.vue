@@ -2,7 +2,7 @@
   <div class="header-actions">
     <nuxt-link
       v-if="showSearch"
-      :to="{ name: 'catalog' }"
+      :to="{ name: 'catalog', query: { sort: 'price_min' } }"
       class="header-actions__item header-actions__item--search btn btn--lg btn--dark-light"
     >
       <IconComponent class="icon--lg" name="search-normal-1" />

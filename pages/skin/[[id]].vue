@@ -52,7 +52,7 @@ const pageLoading = ref(true);
 const breadcrumbs = [
   {
     title: "Catalog",
-    route: { name: "catalog" },
+    route: { name: "catalog", query: { sort: "price_min" } },
   },
 ];
 
