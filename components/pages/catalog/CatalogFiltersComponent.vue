@@ -104,7 +104,7 @@ const sortOptions = [
 ];
 
 let form = ref({
-  sort: null,
+  sort: sortOptions[0],
   type: null,
   appid: tabs[0],
   query: null,
