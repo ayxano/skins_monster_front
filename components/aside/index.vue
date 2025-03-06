@@ -54,6 +54,7 @@ const links = [
 	display flex
 	flex-direction column
 	gap: 30px
+	z-index 3
 	+below(1200px) {
 		padding-right 0
 	}
