@@ -25,7 +25,7 @@
         @get="getSkins"
       />
     </div>
-    <SocialsComponent class="header-socials" />
+    <!-- <SocialsComponent class="header-socials" /> --> 
     <HeaderActionsComponent :show-search="showSearch" />
   </header>
 </template>

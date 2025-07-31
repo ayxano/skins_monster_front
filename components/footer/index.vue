@@ -37,7 +37,7 @@
               </span>
             </span>
           </div>
-          <SocialsComponent />
+          
         </div>
       </div>
       <div class="footer-right">
@@ -66,11 +66,15 @@
                 </nuxt-link>
               </li>
             </ul>
+            <div class="aside__footer">
+      <CopyrightComponent class="aside__footer-copyright" />
+    </div>
           </div>
         </div>
       </div>
-      <CopyrightComponent class="footer-copyright" />
     </div>
+
+    <SocialsComponent />
   </footer>
 </template>
 

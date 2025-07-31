@@ -5,9 +5,9 @@
     </nuxt-link>
     <AsideNavComponent :links="links" />
     <AsideFavoritesComponent />
-    <div class="aside__footer">
+    <!-- <div class="aside__footer">
       <CopyrightComponent class="aside__footer-copyright" />
-    </div>
+    </div> -->
   </aside>
 </template>
 
