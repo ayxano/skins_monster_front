@@ -76,6 +76,7 @@
 
     <SocialsComponent />
   </footer>
+  <AdditionalLinksComponent />
 </template>
 
 <script setup>
@@ -116,9 +117,10 @@ const pages = computed(() => {
 });
 </script>
 
+
 <style lang="stylus">
 .footer {
-	padding-bottom: 50px
+	
 
   &__inner {
 		display grid
