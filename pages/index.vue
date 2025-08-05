@@ -8,9 +8,10 @@
       <BenefitsComponent :list="advantages" />
      
       <FaqComponent :list="faqCategories" />
+      <TrustpilotComponent />
       <ReviewsComponent :list="reviews" />
        <Payments />
-      <TrustpilotComponent />
+      
      
       
 

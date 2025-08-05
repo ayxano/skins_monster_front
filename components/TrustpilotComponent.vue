@@ -13,19 +13,10 @@ onMounted(async () => {
 
 <template>
   <ClientOnly>
-    <!-- TrustBox widget - Slider -->
-    <div
-      ref="trustbox"
-      class="trustpilot-widget"
-      data-locale="en-GB"
-      data-template-id="539ad0ffdec7e10e686debd7"
-      data-businessunit-id="66d85277321310cee73da429"
-      data-style-height="350px"
-      data-style-width="100%"
-      data-theme="dark"
-      data-stars="1,2,3,4,5"
-      data-review-languages="en"
-    >
+    <!-- TrustBox widget - Review Collector -->
+    <div ref="trustbox" class="trustpilot-widget" data-locale="en-GB" data-template-id="56278e9abfbbba0bdcd568bc"
+      data-businessunit-id="66d85277321310cee73da429" data-style-height="52px" data-style-width="100%"
+      data-token="772af708-be12-405b-93fe-2f0b3908723e">
       <a href="https://uk.trustpilot.com/review/skins.monster" target="_blank" rel="noopener">Trustpilot</a>
     </div>
     <!-- End TrustBox widget -->
