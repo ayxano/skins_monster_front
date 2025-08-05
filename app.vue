@@ -39,7 +39,7 @@ useHead({
       content:
         "Buy skins at a good price in Skins Monster, you can buy CS:GO/CS2/Dota 2 skins quickly and profitably. Skins market with a large number of CS:GO/CS2/Dota 2 items available for buy",
     },
-  ],
+  ], 
   noscript: [
     {
       innerHTML:
