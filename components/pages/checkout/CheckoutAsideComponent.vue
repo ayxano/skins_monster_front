@@ -79,6 +79,15 @@
         </CheckboxComponent>
       </div>
     </div>
+    
+    <!-- reCAPTCHA widget -->
+    <div
+      class="g-recaptcha"
+      :data-sitekey="siteKey"
+      :data-callback="onCaptchaVerified"
+      :data-expired-callback="onCaptchaExpired"
+    ></div>
+
     <div class="checkout-aside__block">
       <div class="checkout-aside__submit">
         <button @click="submit" class="btn btn--lg btn--main no-hover" :disabled="submitDisabled">
@@ -111,6 +120,7 @@ import pluralize from "pluralize";
 import { useOrdersStore } from "~/stores/orders";
 import AlertModal from "~/components/modals/components/AlertModal.vue";
 import { useRouter } from "#app";
+import { ChildProcess } from "child_process";
 
 // const emits = defineEmits(["submit"]);
 const props = defineProps({
@@ -125,6 +135,9 @@ const basketStore = useBasketStore();
 const agreement = ref(false);
 const submitLoading = ref(false);
 const refillLoading = ref(false);
+
+const captchaToken = null;
+const siteKey = process.env.RECAPTCHA_SITE_KEY;
 
 const methods = [
   {
@@ -179,7 +192,7 @@ const balanceDeficit = computed(() => {
 });
 
 const submitDisabled = computed(() => {
-  const disabled = !agreement.value || !trade_link.value;
+  const disabled = !agreement.value || !trade_link.value || !captchaToken;
   if (form.value.payment_method.value?.type === "balance") {
     return disabled || balanceDeficit.value > 0;
   }
@@ -191,6 +204,8 @@ async function submit() {
   let variables = {};
   variables.payment_type = form.value.payment_method.value?.type;
   variables.email = form.value.email.value;
+  variables.recaptcha_token = captchaToken;
+  
   try {
     const { data } = await ordersStore.add(variables);
     if (data && data.guavapay_payment_url) {
@@ -244,6 +259,14 @@ function showAlertModal(options) {
     component: shallowRef(AlertModal),
     options,
   });
+}
+
+function onCaptchaVerified(token) {
+  captchaToken = token;
+}
+
+function onCaptchaExpired() {
+  captchaToken = null
 }
 </script>
 

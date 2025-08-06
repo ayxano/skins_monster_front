@@ -39,6 +39,11 @@ export default defineNuxtConfig({
           src: "//widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js",
           async: true,
         },
+        {
+          src: 'https://www.google.com/recaptcha/api.js',
+          async: true,
+          defer: true
+        }
       ],
       htmlAttrs: {
         lang: "en",
@@ -81,6 +86,7 @@ export default defineNuxtConfig({
     define: {
       "process.env.HOST_ENDPOINT": JSON.stringify(process.env.HOST_ENDPOINT),
       "process.env.MEDIA_ENDPOINT": JSON.stringify(process.env.MEDIA_ENDPOINT),
+      "process.env.RECAPTCHA_SITE_KEY": JSON.stringify(process.env.RECAPTCHA_SITE_KEY),
     },
   },
 });
