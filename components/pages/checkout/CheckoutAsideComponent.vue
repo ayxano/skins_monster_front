@@ -81,12 +81,13 @@
     </div>
     
     <!-- reCAPTCHA widget -->
-    <div
+    <div ref="recaptchaContainer"></div>
+    <!-- <div
       class="g-recaptcha"
       :data-sitekey="siteKey"
       :data-callback="onCaptchaVerified"
       :data-expired-callback="onCaptchaExpired"
-    ></div>
+    ></div> -->
 
     <div class="checkout-aside__block">
       <div class="checkout-aside__submit">
@@ -111,7 +112,7 @@
 </template>
 
 <script setup>
-import { ref, computed, shallowRef } from "vue";
+import { ref, computed, shallowRef, onMounted } from "vue";
 import { useBasketStore } from "~/stores/basket";
 import { useDefaultStore } from "~/stores/default";
 import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
@@ -136,7 +137,8 @@ const agreement = ref(false);
 const submitLoading = ref(false);
 const refillLoading = ref(false);
 
-const captchaToken = null;
+const captchaToken = ref(null)
+const recaptchaContainer = ref(null)
 const siteKey = process.env.RECAPTCHA_SITE_KEY;
 
 const methods = [
@@ -192,7 +194,7 @@ const balanceDeficit = computed(() => {
 });
 
 const submitDisabled = computed(() => {
-  const disabled = !agreement.value || !trade_link.value || !captchaToken;
+  const disabled = !agreement.value || !trade_link.value || !captchaToken.value;
   if (form.value.payment_method.value?.type === "balance") {
     return disabled || balanceDeficit.value > 0;
   }
@@ -204,8 +206,8 @@ async function submit() {
   let variables = {};
   variables.payment_type = form.value.payment_method.value?.type;
   variables.email = form.value.email.value;
-  variables.recaptcha_token = captchaToken;
-  
+  variables.recaptcha_token = captchaToken.value;
+
   try {
     const { data } = await ordersStore.add(variables);
     if (data && data.guavapay_payment_url) {
@@ -261,13 +263,23 @@ function showAlertModal(options) {
   });
 }
 
-function onCaptchaVerified(token) {
-  captchaToken = token;
-}
+onMounted(() => {
+  if (typeof window.grecaptcha === 'undefined') {
+    console.error('reCAPTCHA not loaded')
+    return
+  }
 
-function onCaptchaExpired() {
-  captchaToken = null
-}
+  // Render reCAPTCHA manually
+  window.grecaptcha.render(recaptchaContainer.value, {
+    sitekey: siteKey,
+    callback: (token) => {
+      captchaToken.value = token
+    },
+    'expired-callback': () => {
+      captchaToken.value = null
+    }
+  })
+})
 </script>
 
 <style lang="stylus">
