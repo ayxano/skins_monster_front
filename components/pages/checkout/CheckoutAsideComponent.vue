@@ -3,46 +3,38 @@
     <div class="checkout-aside__block checkout-aside__block--divider">
       <div class="checkout-aside__header">
         <div>
-          <h3 class="checkout-aside__title">Confirm order</h3>
-          <span class="checkout-aside__count">{{ basket.length }} {{ basketItemsPlural }} in cart</span>
+          <h3 class="checkout-aside__title">{{ $t("Confirm order") }}</h3>
+          <span class="checkout-aside__count">{{ basket.length }} {{ $t("items in cart") }}</span>
         </div>
         <nuxt-link :to="{ name: 'index', hash: '#faq' }" class="checkout-aside__faq btn btn--sm btn--hollow">
           <IconComponent name="messages" />
-          <span>FAQ</span>
+          <span>{{ $t("FAQ") }}</span>
         </nuxt-link>
       </div>
     </div>
     <div class="checkout-aside__block checkout-aside__block--divider">
-      <InputComponent v-model="form.email.value" title="Email" placeholder="Email" />
+      <InputComponent v-model="form.email.value" :title="$t('Email')" :placeholder="$t('Email')" />
       <div class="checkout-aside__payment">
-        <span class="checkout-aside__payment-title">Payment method</span>
-        <TabsComponent v-model="form.payment_method.value" :tabs="methods" small same-tabs />
+        <span class="checkout-aside__payment-title">{{ $t("Payment method") }}</span>
+        <TabsComponent v-model="form.payment_method.value" :tabs="translatedMethods" small same-tabs />
       </div>
       <div class="checkout-aside__prices">
         <div class="checkout-aside__prices-list">
-          <!--          <div class="checkout-aside__prices-item">-->
-          <!--            <span class="checkout-aside__prices-item-title"> Suggested price </span>-->
-          <!--            <span class="checkout-aside__prices-item-value"> €{{ basketPrice }} </span>-->
-          <!--          </div>-->
-          <!--          <div class="checkout-aside__prices-item">-->
-          <!--            <span class="checkout-aside__prices-item-title"> You save </span>-->
-          <!--            <span class="checkout-aside__prices-item-value"> -€0.00 </span>-->
-          <!--          </div>-->
           <div class="checkout-aside__prices-item checkout-aside__prices-item--total">
-            <span class="checkout-aside__prices-item-title"> Total </span>
-            <span class="checkout-aside__prices-item-value"> €{{ basketPrice }} </span>
+            <span class="checkout-aside__prices-item-title"> {{ $t("Total") }} </span>
+            <span class="checkout-aside__prices-item-value"> {{ $price(basketPrice) }} </span>
           </div>
           <template v-if="form.payment_method.value.type === 'balance'">
             <div class="checkout-aside__prices-item">
-              <span class="checkout-aside__prices-item-title"> Balance </span>
-              <span class="checkout-aside__prices-item-value"> €{{ balance }} </span>
+              <span class="checkout-aside__prices-item-title"> {{ $t("Balance") }} </span>
+              <span class="checkout-aside__prices-item-value"> {{ $price(balance) }} </span>
             </div>
             <div
               v-if="balanceDeficit > 0"
               class="checkout-aside__prices-item checkout-aside__prices-item--error"
             >
-              <span class="checkout-aside__prices-item-title"> Low balance, You need </span>
-              <span class="checkout-aside__prices-item-value"> €{{ balanceDeficit }} </span>
+              <span class="checkout-aside__prices-item-title"> {{ $t("Low balance, You need") }} </span>
+              <span class="checkout-aside__prices-item-value"> {{ $price(balanceDeficit) }} </span>
             </div>
           </template>
         </div>
@@ -52,13 +44,14 @@
         v-if="balanceDeficit > 0 && form.payment_method.value.type === 'balance'"
         class="btn btn--lg btn--main"
       >
-        <span>Refill the balance</span>
+        <span>{{ $t("Refill the balance") }}</span>
         <LoadingCircleIndicator v-if="refillLoading" title="" />
         <IconComponent v-else name="arrow-right-1" />
       </button>
       <div v-if="!trade_link" class="checkout-aside__trade-link">
-        Set your Steam trade link in
-        <nuxt-link :to="{ name: 'cabinet-settings' }">Profile settings</nuxt-link>.
+        {{ $t("Set your Steam trade link in") }}
+        <nuxt-link :to="{ name: 'cabinet-settings' }">{{ $t("Profile settings") }}</nuxt-link
+        >.
       </div>
       <!--      <div v-if="!email" class="checkout-aside__trade-link">-->
       <!--        Set your Email in-->
@@ -69,17 +62,20 @@
       <div class="checkout-aside__agreement">
         <CheckboxComponent v-model="agreement">
           <span>
-            I have read and understood my
+            {{ $t("I have read and understood my") }}
             <nuxt-link :to="{ name: 'dynamic-id', query: { 'positions[]': 'cancellations_refunds' } }">
-              right of cancellation.
+              {{ $t("right of cancellation") }}.
             </nuxt-link>
-            I agree to the beginning of the contract execution before the end of the cancellation period. I am
-            aware that I thereby lose my right of cancellation.
+            {{
+              $t(
+                "I agree to the beginning of the contract execution before the end of the cancellation period. I am aware that I thereby lose my right of cancellation."
+              )
+            }}
           </span>
         </CheckboxComponent>
       </div>
     </div>
-    
+
     <!-- reCAPTCHA widget -->
     <div ref="recaptchaContainer"></div>
     <!-- <div
@@ -92,18 +88,18 @@
     <div class="checkout-aside__block">
       <div class="checkout-aside__submit">
         <button @click="submit" class="btn btn--lg btn--main no-hover" :disabled="submitDisabled">
-          <span>Proceed to checkout</span>
+          <span>{{ $t("Proceed to checkout") }}</span>
           <LoadingCircleIndicator v-if="submitLoading" title="" />
           <IconComponent v-else name="arrow-right-1" />
         </button>
         <span class="checkout-aside__terms">
-          By clicking Proceed to Checkout, you agree to our
+          {{ $t("By clicking Proceed to Checkout, you agree to our") }}
           <nuxt-link :to="{ name: 'dynamic-id', query: { 'positions[]': 'terms_of_service' } }">
-            Terms of Service
+            {{ $t("Terms of Service") }}
           </nuxt-link>
-          and that you have read our
+          {{ $t("and that you have read our") }}
           <nuxt-link :to="{ name: 'dynamic-id', query: { 'positions[]': 'privacy_policy' } }">
-            Privacy Policy </nuxt-link
+            {{ $t("Privacy Policy") }} </nuxt-link
           >.
         </span>
       </div>
@@ -121,6 +117,7 @@ import pluralize from "pluralize";
 import { useOrdersStore } from "~/stores/orders";
 import AlertModal from "~/components/modals/components/AlertModal.vue";
 import { useRouter } from "#app";
+import { convertPrice } from "~/utils/global";
 import { ChildProcess } from "child_process";
 
 // const emits = defineEmits(["submit"]);
@@ -137,8 +134,8 @@ const agreement = ref(false);
 const submitLoading = ref(false);
 const refillLoading = ref(false);
 
-const captchaToken = ref(null)
-const recaptchaContainer = ref(null)
+const captchaToken = ref(null);
+const recaptchaContainer = ref(null);
 const siteKey = process.env.RECAPTCHA_SITE_KEY;
 
 const methods = [
@@ -161,6 +158,10 @@ const methods = [
     },
   },
 ];
+
+const translatedMethods = computed(() => {
+  return methods.map((m) => ({ ...m, title: useNuxtApp().$t(m.title) }));
+});
 
 const form = ref({
   payment_method: {
@@ -186,11 +187,11 @@ const basketItemsPlural = computed(() => {
 });
 
 const balance = computed(() => {
-  return parseFloat(authStore.user?.eur_balance) || 0;
+  return parseFloat(convertPrice(authStore.user?.eur_balance, undefined, "eur")) || 0;
 });
 
 const balanceDeficit = computed(() => {
-  return (basketPrice.value - balance.value).toFixed(2);
+  return parseFloat((basketPrice.value - balance.value).toFixed(2));
 });
 
 const submitDisabled = computed(() => {
@@ -264,22 +265,22 @@ function showAlertModal(options) {
 }
 
 onMounted(() => {
-  if (typeof window.grecaptcha === 'undefined') {
-    console.error('reCAPTCHA not loaded')
-    return
+  if (typeof window.grecaptcha === "undefined") {
+    console.error("reCAPTCHA not loaded");
+    return;
   }
 
   // Render reCAPTCHA manually
   window.grecaptcha.render(recaptchaContainer.value, {
     sitekey: siteKey,
     callback: (token) => {
-      captchaToken.value = token
+      captchaToken.value = token;
     },
-    'expired-callback': () => {
-      captchaToken.value = null
-    }
-  })
-})
+    "expired-callback": () => {
+      captchaToken.value = null;
+    },
+  });
+});
 </script>
 
 <style lang="stylus">

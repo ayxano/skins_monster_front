@@ -29,6 +29,14 @@ import AsideComponent from "~/components/aside/index.vue";
 import { computed } from "vue";
 import ModalsComponent from "~/components/modals/index.vue";
 import MenuComponent from "~/components/menus/index.vue";
+import { useLocaleStore } from "~/stores/locale";
+import { useGlobalStore } from "~/stores/global";
+
+const localeStore = useLocaleStore();
+const globalStore = useGlobalStore();
+
+localeStore.initLocale();
+globalStore.initCurrency();
 
 useHead({
   title: "Skins Monster - Buy CS2/Dota 2 skins",
@@ -39,7 +47,7 @@ useHead({
       content:
         "Buy skins at a good price in Skins Monster, you can buy CS:GO/CS2/Dota 2 skins quickly and profitably. Skins market with a large number of CS:GO/CS2/Dota 2 items available for buy",
     },
-  ], 
+  ],
   noscript: [
     {
       innerHTML:

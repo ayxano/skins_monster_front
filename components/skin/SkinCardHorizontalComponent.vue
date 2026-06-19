@@ -42,7 +42,7 @@
     <div class="skin-card-hz__right">
       <div class="skin-card-hz__prices">
         <!--      <span class="skin-card-hz__price-old" v-if="data.old_price">{{ data.old_price }}</span>-->
-        <span class="skin-card-hz__price">€{{ skinPrice }}</span>
+        <span class="skin-card-hz__price">{{ $price(skinPrice) }}</span>
       </div>
       <a
         v-if="data.trade_offer_id"

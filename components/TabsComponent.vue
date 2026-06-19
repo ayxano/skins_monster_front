@@ -16,7 +16,7 @@
       :class="{ 'tabs__item--active': isActive(item, i) }"
     >
       <IconComponent v-if="item.icon" :name="item.icon.name" :category="item.icon.category" />
-      <span>{{ item[labelField] }}</span>
+      <span>{{ $t(item[labelField]) }}</span>
     </button>
   </div>
 </template>

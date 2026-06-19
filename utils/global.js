@@ -99,54 +99,60 @@ export function elementInViewport(el) {
  * @param fromCurrCode - код валюты, из которой конвертируем
  * @returns {*}
  */
-export function convertPrice(price, toCurrCode = "eur", fromCurrCode = "rub") {
-  const currencies = useGlobalStore().currencies || [];
-  let toCurrency = currencies[0];
-  let fromCurrency = currencies[0];
-  let rate = 1;
+export function convertPrice(price, toCurrCode, fromCurrCode = "rub") {
+  const globalStore = useGlobalStore();
+  const targetCurr = toCurrCode || globalStore.selectedCurrencyCode || "eur";
+  const currencies = globalStore.currencies || [];
+
   let convertedPrice = parseFloat(price) || 0;
+
   if (price && currencies && currencies.length) {
-    toCurrency = currencies.find((item) => item.code === toCurrCode);
-    fromCurrency = currencies.find((item) => item.code === fromCurrCode);
-    if (fromCurrCode === "rub") {
-      rate = toCurrency.rate;
-    } else {
-      rate = 1 / fromCurrency.rate;
-    }
-    if (toCurrency) {
-      convertedPrice = parseFloat(price) / rate;
-    }
+    const toCurrency = currencies.find((item) => item.code === targetCurr);
+    const fromCurrency = currencies.find((item) => item.code === fromCurrCode);
+
+    const fromRate = fromCurrency ? fromCurrency.rate : 1;
+    const toRate = toCurrency ? toCurrency.rate : 1;
+
+    convertedPrice = (parseFloat(price) * fromRate) / toRate;
   }
+
   return parseFloat(convertedPrice.toFixed(2));
 }
 
 /**
  * Цена с наценкой
- * @param price - цена в евро
+ * @param price - цена в выбранной на сайте валюте
  * @returns {*}
  */
 export function marginPrice(price) {
-  const company = useGlobalStore().company || {};
+  const globalStore = useGlobalStore();
+  const company = globalStore.company || {};
   let result = parseFloat(price);
   if (company.margin_percent) {
     result = result + (result * parseFloat(company.margin_percent)) / 100;
   }
   if (company.margin_amount) {
-    result += parseFloat(company.margin_amount);
+    const selectedCurrency = globalStore.selectedCurrencyCode || "eur";
+    const marginAmountConverted = convertPrice(company.margin_amount, selectedCurrency, "eur");
+    result += marginAmountConverted;
   }
-  return parseFloat(result.toFixed(2));
+  const res = parseFloat(result.toFixed(2));
+  return res;
 }
 
 /**
  * Цена без накидки
- * @param price - цена в евро
+ * @param price - цена в выбранной на сайте валюте
  * @returns {*}
  */
 export function unmarginPrice(price) {
-  const company = useGlobalStore().company || {};
+  const globalStore = useGlobalStore();
+  const company = globalStore.company || {};
   let result = parseFloat(price);
   if (company.margin_amount) {
-    result -= parseFloat(company.margin_amount);
+    const selectedCurrency = globalStore.selectedCurrencyCode || "eur";
+    const marginAmountConverted = convertPrice(company.margin_amount, selectedCurrency, "eur");
+    result -= marginAmountConverted;
   }
   if (company.margin_percent) {
     result = (result * 100) / (parseFloat(company.margin_percent) + 100);

@@ -34,7 +34,7 @@
           </template>
         </div>
       </div>
-      <span v-if="skinPrice" class="skin-card__price">€{{ skinPrice }}</span>
+      <span v-if="skinPrice" class="skin-card__price">{{ $price(skinPrice) }}</span>
       <div
         class="skin-card__actions"
         :class="{

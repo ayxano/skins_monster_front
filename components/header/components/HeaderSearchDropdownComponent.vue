@@ -9,7 +9,7 @@
         search-item
       />
     </div>
-    <span v-else>Nothing found</span>
+    <span v-else>{{ $t("Nothing found") }}</span>
   </div>
 </template>
 

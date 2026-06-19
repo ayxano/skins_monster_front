@@ -6,7 +6,7 @@
           <InputComponent
             :model-value="form?.price?.min"
             @update:model-value="priceUpdate($event, 'min')"
-            placeholder="€ Min"
+            :placeholder="`${$currSymbol()} Min`"
             inputmode="numeric"
             numbers-only
             type="number"
@@ -18,7 +18,7 @@
           <InputComponent
             :model-value="form?.price?.max"
             @update:model-value="priceUpdate($event, 'max')"
-            placeholder="€ Max"
+            :placeholder="`${$currSymbol()} Max`"
             inputmode="numeric"
             numbers-only
             type="number"

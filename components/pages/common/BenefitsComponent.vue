@@ -2,8 +2,8 @@
   <div v-if="list && list.length" class="benefits">
     <div v-for="(item, i) in list" :key="i" class="benefits-item">
       <ImgComponent :img="item.image" class="benefits-item__icon" />
-      <span class="benefits-item__title">{{ item.title }}</span>
-      <span class="benefits-item__subtitle">{{ item.description }}</span>
+      <span class="benefits-item__title">{{ $t(item.title) }}</span>
+      <span class="benefits-item__subtitle">{{ $t(item.description) }}</span>
     </div>
   </div>
 </template>

@@ -1,32 +1,40 @@
 <template>
   <div class="default-modal new-review-modal">
     <div class="default-modal__header">
-      <span class="default-modal__title new-review-modal__title">Pay out request</span>
+      <span class="default-modal__title new-review-modal__title">{{ $t("Pay out request") }}</span>
       <button type="button" class="default-modal__close btn" @click="$emit('closeAll')">
         <IconComponent name="close" />
       </button>
     </div>
     <div class="default-modal__body">
       <form @submit.prevent="submit" class="new-review-modal__form">
-        <InputComponent v-model.trim="form.name.value" :errors="form.name.errors" placeholder="Your name" />
+        <InputComponent
+          v-model.trim="form.name.value"
+          :errors="form.name.errors"
+          :placeholder="$t('Your name')"
+        />
         <InputComponent
           v-model.trim="form.surname.value"
           :errors="form.surname.errors"
-          placeholder="Your surname"
+          :placeholder="$t('Your surname')"
         />
         <InputComponent
           v-model="form.amount.value"
           :errors="form.amount.errors"
-          placeholder="Amount (€)"
+          :placeholder="`${$t('Amount')} (${$currSymbol()})`"
           inputmode="numeric"
           numbers-only
           :max="balance"
         >
           <template #subtitle>
             <div class="input__subtitle">
-              <span>Minimum: 4€. Your balance: {{ balance }}€</span>
+              <span>{{
+                $t("Minimum: 4€. Your balance: {balance}")
+                  .replace("{minimum}", $price(minPayout))
+                  .replace("{balance}", $price(balance))
+              }}</span>
               <button @click="form.amount.value = balance" type="button" class="btn btn--sm btn--main">
-                All
+                {{ $t("All") }}
               </button>
             </div>
           </template>
@@ -34,12 +42,12 @@
         <InputComponent
           v-model="form.pan.value"
           :errors="form.pan.errors"
-          placeholder="Your card number"
+          :placeholder="$t('Your card number')"
           mask="#### #### #### ####"
         />
         <button class="btn btn--lg btn--main">
           <LoadingCircleIndicator v-if="loading" />
-          <span v-else>Confirm</span>
+          <span v-else>{{ $t("Confirm") }}</span>
         </button>
       </form>
     </div>
@@ -48,7 +56,7 @@
 
 <script setup>
 import { computed, ref, shallowRef } from "vue";
-import { parseErrors, resetErrors } from "~/utils/global";
+import { parseErrors, resetErrors, convertPrice } from "~/utils/global";
 import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
 import AlertModal from "~/components/modals/components/AlertModal.vue";
 import { useDefaultStore } from "~/stores/default";
@@ -83,7 +91,11 @@ const form = ref({
 });
 
 const balance = computed(() => {
-  return parseFloat(authStore.user?.eur_balance) || 0;
+  return parseFloat(convertPrice(authStore.user?.eur_balance, undefined, "eur")) || 0;
+});
+
+const minPayout = computed(() => {
+  return parseFloat(convertPrice(4, undefined, "eur")) || 4;
 });
 
 async function submit() {
@@ -113,8 +125,8 @@ function showAlertModal() {
   defaultStore.modals.push({
     component: shallowRef(AlertModal),
     options: {
-      title: "Success",
-      text: "Your request has been successfully sent.",
+      title: useNuxtApp().$t("SUCCESS"),
+      text: useNuxtApp().$t("Your request has been successfully sent."),
     },
   });
 }

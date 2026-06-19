@@ -3,22 +3,24 @@
     <div class="user-card" :class="{ 'user-card--settings': settings, 'user-card--small': small }">
       <div v-if="!small" class="user-card__top">
         <div class="user-card__actions">
-          <button class="btn btn--sm btn--dark-light">Upload cover</button>
-          <button class="user-card__action--remove btn btn--sm btn--dark-light">Remove</button>
+          <button class="btn btn--sm btn--dark-light">{{ $t("Upload cover") }}</button>
+          <button class="user-card__action--remove btn btn--sm btn--dark-light">{{ $t("Remove") }}</button>
         </div>
       </div>
       <div class="user-card__content">
         <ImgComponent v-if="!small" class="user-card__avatar" src="/images/tmp/user.jpg" />
         <div class="user-card__info">
           <span class="user-card__name">{{ user.name }}</span>
-          <span class="user-card__registered">Registered on {{ registered }}</span>
+          <span class="user-card__registered">{{ $t("Registered on") }} {{ registered }}</span>
           <div class="user-card__balance">
-            <span class="user-card__balance-value">Balance: €{{ balance }}</span>
+            <span class="user-card__balance-value"
+              >{{ $t("Balance:") }} {{ $price(convertPrice(balance, undefined, "eur")) }}</span
+            >
             <div class="user-card__balance-actions">
               <button @click="refill" class="user-card__balance-refill btn btn--md btn--main">
                 <LoadingCircleIndicator v-if="refillLoading" title="" />
                 <IconComponent v-else name="empty-wallet-add" />
-                <span>Refill</span>
+                <span>{{ $t("Refill") }}</span>
               </button>
               <!--              <button-->
               <!--                v-show="balance"-->
@@ -30,14 +32,14 @@
               <!--              </button>-->
               <button @click="showAlert" class="user-card__balance-refill btn btn--md btn--hollow">
                 <IconComponent name="wallet-minus" />
-                <span>Pay out</span>
+                <span>{{ $t("Pay out") }}</span>
               </button>
             </div>
           </div>
         </div>
         <div class="user-card__actions">
-          <button class="btn btn--sm btn--main">Choose avatar</button>
-          <button class="user-card__action--remove btn btn--sm btn--dark-light">Remove</button>
+          <button class="btn btn--sm btn--main">{{ $t("Choose avatar") }}</button>
+          <button class="user-card__action--remove btn btn--sm btn--dark-light">{{ $t("Remove") }}</button>
         </div>
       </div>
     </div>
@@ -52,6 +54,7 @@ import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
 import { useDefaultStore } from "~/stores/default";
 import PayoutModal from "~/components/modals/components/PayoutModal.vue";
 import AlertModal from "~/components/modals/components/AlertModal.vue";
+import { convertPrice } from "~/utils/global";
 
 defineProps({
   settings: Boolean,

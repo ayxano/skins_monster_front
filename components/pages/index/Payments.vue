@@ -1,10 +1,16 @@
 <template>
-
-<div class="bonus__body" data-v-3764a00c="">
-  <div class="bonus-methods" data-v-0e2c7714="" data-v-3764a00c=""><img alt="Maestro" loading="lazy" src="/svg/icons/maestro.svg" data-v-0e2c7714=""> <img alt="Visa" loading="lazy" src="/svg/icons/visa.svg" data-v-0e2c7714=""> </div>
-<div class="bonus-description" data-v-164012a8="" data-v-3764a00c="">
-  <span class="base-header" data-v-70550540="" data-v-164012a8=""><strong>Various payment methods </strong></span> <p data-v-164012a8="">   </p>  </div>
-</div> 
+  <div class="bonus__body" data-v-3764a00c="">
+    <div class="bonus-methods" data-v-0e2c7714="" data-v-3764a00c="">
+      <img alt="Maestro" loading="lazy" src="/svg/icons/maestro.svg" data-v-0e2c7714="" />
+      <img alt="Visa" loading="lazy" src="/svg/icons/visa.svg" data-v-0e2c7714="" />
+    </div>
+    <div class="bonus-description" data-v-164012a8="" data-v-3764a00c="">
+      <span class="base-header" data-v-70550540="" data-v-164012a8=""
+        ><strong>{{ $t("Various payment methods") }}</strong></span
+      >
+      <p data-v-164012a8=""></p>
+    </div>
+  </div>
 </template>
 
 <style lang="stylus">
@@ -104,5 +110,4 @@
 
     }
 }
-
 </style>

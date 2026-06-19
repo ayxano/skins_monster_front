@@ -1,10 +1,10 @@
 <template>
   <div id="reviews" class="reviews">
     <div class="reviews-header">
-      <h3 class="reviews-title">Reviews</h3>
+      <h3 class="reviews-title">{{ $t("Reviews") }}</h3>
       <button @click="addReview" class="btn btn--md btn--main">
         <IconComponent name="message-add-1" />
-        <span>Leave a review</span>
+        <span>{{ $t("Leave a review") }}</span>
       </button>
     </div>
     <div v-if="list && list.length" class="reviews-content">
@@ -21,10 +21,10 @@
       </div>
       <button v-if="list.length > 3" @click="openReviewsModal" class="btn btn--md btn--main">
         <IconComponent name="arrow-square-down" />
-        <span>Show all</span>
+        <span>{{ $t("Show all") }}</span>
       </button>
     </div>
-    <span v-else>No reviews yet</span>
+    <span v-else>{{ $t("No reviews yet") }}</span>
   </div>
 </template>
 

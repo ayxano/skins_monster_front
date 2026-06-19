@@ -1,7 +1,7 @@
 <template>
   <main class="page catalog-page" :class="{ 'catalog-page--fullpage': fullpage }">
     <div class="page__inner catalog-page__inner">
-      <BreadcrumbsComponent v-if="!fullpage" title="Catalog" :subtitle="data.total" />
+      <BreadcrumbsComponent v-if="!fullpage" :title="$t('Catalog')" :subtitle="data.total" />
       <div ref="pageBody" class="catalog-page__content">
         <CatalogFiltersComponent />
         <div
@@ -13,7 +13,7 @@
           <LoadingCircleIndicator class="catalog-page__filter-loading" v-if="filterLoading" title="" />
         </div>
         <LoadingCircleIndicator v-else-if="pageLoading || filterLoading" />
-        <span v-else>No skins...</span>
+        <span v-else>{{ $t("No skins...") }}</span>
         <PaginationComponent @change="paginate" :page="meta.page" :meta="meta" :total="data.total" />
       </div>
       <BottomPageBannerComponent v-if="!fullpage" />
@@ -132,8 +132,9 @@ function getModifiedQuery() {
   let price = filters?.price;
   if (price) {
     // почему то цену нужно указывать в копейках, даже не в рублях
-    price.min = price.min ? convertPrice(unmarginPrice(price.min), "rub", "eur") * 100 : 0;
-    price.max = price.max ? convertPrice(unmarginPrice(price.max), "rub", "eur") * 100 : 999999999;
+    const fromCurrency = globalStore.selectedCurrencyCode || "eur";
+    price.min = price.min ? convertPrice(unmarginPrice(price.min), "rub", fromCurrency) * 100 : 0;
+    price.max = price.max ? convertPrice(unmarginPrice(price.max), "rub", fromCurrency) * 100 : 999999999;
 
     return {
       ...route.query,

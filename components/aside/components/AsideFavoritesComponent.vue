@@ -1,7 +1,7 @@
 <template>
   <div v-if="skins && skins.length" class="aside-favorites">
     <nuxt-link :to="{ name: 'cabinet-favorites' }" class="aside-favorites__header">
-      <span class="aside-favorites__header-title">Favorites</span>
+      <span class="aside-favorites__header-title">{{ $t("Favorites") }}</span>
       <button class="aside-favorites__header-btn btn btn--sm btn--hollow">
         <IconComponent class="icon--sm" name="arrow-right-3" />
       </button>

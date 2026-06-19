@@ -5,8 +5,8 @@
     :class="{ 'skins-list--row': row, 'skins-list--low': low }"
   >
     <div v-if="title" class="skins-list__header">
-      <h3 class="skins-list__title no-margin">{{ title }}</h3>
-      <nuxt-link v-if="route" :to="route" class="skins-list__more">Show more</nuxt-link>
+      <h3 class="skins-list__title no-margin">{{ $t(title) }}</h3>
+      <nuxt-link v-if="route" :to="route" class="skins-list__more">{{ $t("Show more") }}</nuxt-link>
     </div>
     <div class="skins-list__content">
       <SkinCardComponent v-for="item in list" :key="item.id" :data="item" :in-row="row" />

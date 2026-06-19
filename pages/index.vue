@@ -3,17 +3,14 @@
     <div class="page__inner">
       <!--      <LoadingCircleIndicator v-if="defaultStore.loading.length" />-->
       <WelcomeBannersComponent :list="welcome_banners" />
-       <StatsComponent />
-      <SkinsListComponent title="Popular" :list="popular_skins" row />
+      <StatsComponent />
+      <SkinsListComponent :title="$t('Popular')" :list="popular_skins" row />
       <BenefitsComponent :list="advantages" />
-     
+
       <FaqComponent :list="faqCategories" />
       <TrustpilotComponent />
       <ReviewsComponent :list="reviews" />
-       <Payments />
-      
-     
-      
+      <Payments />
 
       <PaymentsComponent :list="payments" />
       <BottomPageBannerComponent />
@@ -80,7 +77,7 @@ async function getPopularSkins() {
     const { items } = await query("/skins", {
       limit: 8,
       page: 0,
-      filters: JSON.stringify({ hash_name: { exclude: "Fracture Case" } })
+      filters: JSON.stringify({ hash_name: { exclude: "Fracture Case" } }),
     });
     homeStore.popular_skins = items || [];
   }

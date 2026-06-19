@@ -8,7 +8,7 @@
         v-if="showSearch"
         class="header-search"
         v-model="search"
-        placeholder="Skins search"
+        :placeholder="$t('search_placeholder')"
         icon-position="right"
         @update:model-value="handleSearchInput"
         @focus="dropdownVisible = true"
@@ -25,7 +25,7 @@
         @get="getSkins"
       />
     </div>
-    <!-- <SocialsComponent class="header-socials" /> --> 
+    <!-- <SocialsComponent class="header-socials" /> -->
     <HeaderActionsComponent :show-search="showSearch" />
   </header>
 </template>

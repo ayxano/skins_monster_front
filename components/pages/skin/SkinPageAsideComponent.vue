@@ -7,14 +7,14 @@
       </div>
       <span class="skin-aside-block__title">{{ skinTitle.name }}</span>
       <div class="skin-aside__prices">
-        <span class="skin-aside__price">€{{ skinPrice }}</span>
+        <span class="skin-aside__price">{{ $price(skinPrice) }}</span>
         <!--        <span class="skin-aside__price-steam"> Steam price: <span>$1,178.68</span> </span>-->
       </div>
     </div>
     <div class="skin-aside__actions">
       <button @click="addToBasket" class="btn btn--lg btn--main">
-        <span v-if="inCart">Added to cart</span>
-        <span v-else>Add to cart</span>
+        <span v-if="inCart">{{ $t("Added to cart") }}</span>
+        <span v-else>{{ $t("Add to cart") }}</span>
         <LoadingCircleIndicator v-if="basketLoading" title="" />
         <IconComponent v-else name="bag-2" />
       </button>
@@ -29,31 +29,31 @@
     </div>
     <div v-if="float && float.value" class="skin-aside__float skin-aside-block">
       <span class="skin-aside-block__title skin-aside__float-title">
-        <span>Wear Range</span>
+        <span>{{ $t("Wear Range") }}</span>
         <!--        <IconComponent name="info-circle" />-->
       </span>
       <SkinFloatComponent :float="float" />
     </div>
     <div v-if="tags && tags.length" class="skin-aside__details skin-aside-block">
       <div class="skin-aside-block__title skin-aside__details-title">
-        <span>Summary</span>
+        <span>{{ $t("Summary") }}</span>
         <!--        <IconComponent name="info-circle" />-->
       </div>
       <ul class="skin-aside__details-list">
         <li v-if="float && float.value" class="skin-aside__details-item">
-          <span>Float</span>
+          <span>{{ $t("Float") }}</span>
           <span>{{ float.value }}</span>
         </li>
         <li v-if="data.extra && data.extra.paintseed" class="skin-aside__details-item">
-          <span>Paint seed</span>
+          <span>{{ $t("Paint seed") }}</span>
           <span>{{ data.extra.paintseed }}</span>
         </li>
         <li v-if="data.extra && data.extra.paintindex" class="skin-aside__details-item">
-          <span>Paint index</span>
+          <span>{{ $t("Paint index") }}</span>
           <span>{{ data.extra.paintindex }}</span>
         </li>
         <li v-for="(item, i) in tags" :key="i" class="skin-aside__details-item">
-          <span>{{ item.category }}</span>
+          <span>{{ $t(item.category) }}</span>
           <span>{{ item.name }}</span>
         </li>
       </ul>

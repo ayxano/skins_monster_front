@@ -40,10 +40,10 @@ export default defineNuxtConfig({
           async: true,
         },
         {
-          src: 'https://www.google.com/recaptcha/api.js',
+          src: "https://www.google.com/recaptcha/api.js",
           async: true,
-          defer: true
-        }
+          defer: true,
+        },
       ],
       htmlAttrs: {
         lang: "en",

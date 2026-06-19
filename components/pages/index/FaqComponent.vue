@@ -1,6 +1,6 @@
 <template>
   <div v-if="listFiltered && listFiltered.length" class="faq" id="faq">
-    <h3 class="faq-title">Additional information</h3>
+    <h3 class="faq-title">{{ $t("Additional information") }}</h3>
     <div class="faq-content">
       <TabsComponent
         v-if="listFiltered && listFiltered.length > 1"
@@ -18,12 +18,12 @@
           :class="{ 'faq-list__item--active': i === activeItemIndex }"
         >
           <div @click="setActive(i)" class="faq-list__item-header">
-            <span class="faq-list__item-title">{{ item.title }}</span>
+            <span class="faq-list__item-title">{{ $t(item.title) }}</span>
             <IconComponent v-if="i === activeItemIndex" name="minus" />
             <IconComponent v-else name="add" />
           </div>
           <div ref="accItemBody" class="faq-list__item-body">
-            <div class="faq-list__item-description">{{ item.description }}</div>
+            <div class="faq-list__item-description">{{ $t(item.description) }}</div>
           </div>
         </div>
       </div>

@@ -11,11 +11,7 @@ module.exports = {
     Atomics: "readonly",
     SharedArrayBuffer: "readonly",
   },
-  extends: [
-    "plugin:vue/vue3-essential",
-    "eslint:recommended",
-    "@vue/eslint-config-prettier",
-  ],
+  extends: ["plugin:vue/vue3-essential", "eslint:recommended", "@vue/eslint-config-prettier"],
   plugins: ["vue"],
   rules: {
     "vue/multi-word-component-names": "off",

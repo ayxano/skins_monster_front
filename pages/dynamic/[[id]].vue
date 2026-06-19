@@ -1,7 +1,7 @@
 <template>
   <main class="page dynamic-page">
     <div class="page__inner">
-      <BreadcrumbsComponent :title="page.name" />
+      <BreadcrumbsComponent :title="$t(page.name)" />
       <div class="dynamic-page__content">
         <EditorJSComponent v-if="page.content" :text="page.content || {}" />
         <span v-else>No data</span>

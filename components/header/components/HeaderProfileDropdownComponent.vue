@@ -3,7 +3,9 @@
     <div class="profile-dropdown__header">
       <div class="profile-dropdown__header-info">
         <span class="profile-dropdown__header-name">{{ user.name }}</span>
-        <span class="profile-dropdown__header-balance">{{ user.eur_balance }}€</span>
+        <span class="profile-dropdown__header-balance">{{
+          $price(convertPrice(user.eur_balance, undefined, "eur"))
+        }}</span>
       </div>
       <button @click="refill" class="profile-dropdown__header-deposit btn" title="Refill your balance">
         <LoadingCircleIndicator v-if="refillLoading" title="" />
@@ -15,7 +17,7 @@
         <li v-for="(item, i) in links" :key="i">
           <nuxt-link :to="item.route" class="profile-dropdown__link no-hover">
             <IconComponent :name="item.icon" />
-            <span>{{ item.title }}</span>
+            <span>{{ $t(item.title) }}</span>
           </nuxt-link>
         </li>
         <li>
@@ -26,7 +28,7 @@
           >
             <LoadingCircleIndicator v-if="logoutLoading" title="" />
             <IconComponent v-else name="logout" />
-            <span>Log out</span>
+            <span>{{ $t("Log out") }}</span>
           </a>
         </li>
       </ul>
@@ -41,6 +43,7 @@ import LoadingCircleIndicator from "~/components/LoadingComponent.vue";
 import { useRouter } from "#app";
 import { useBasketStore } from "~/stores/basket";
 import { useFavoritesStore } from "~/stores/favorites";
+import { convertPrice } from "~/utils/global";
 
 const links = [
   {

@@ -5,18 +5,18 @@
         <div v-for="item in payouts" :key="item.id" class="cabinet-payouts__item">
           <div class="cabinet-payouts__item-info">
             <span class="cabinet-payouts__item-field cabinet-payouts__item-name">
-              Name: <span>{{ item.name }}</span>
+              {{ $t("Name:") }} <span>{{ item.name }}</span>
             </span>
             <span class="cabinet-payouts__item-field cabinet-payouts__item-surname">
-              Surname: <span>{{ item.surname }}</span>
+              {{ $t("Surname:") }} <span>{{ item.surname }}</span>
             </span>
             <span class="cabinet-payouts__item-field cabinet-payouts__item-pan">
-              Card: <span>{{ item.pan }}</span>
+              {{ $t("Card:") }} <span>{{ item.pan }}</span>
             </span>
           </div>
           <div class="cabinet-payouts__item-state">
             <span class="cabinet-payouts__item-field cabinet-payouts__item-amount">
-              <span>{{ item.amount }}€</span>
+              <span>{{ $price(convertPrice(item.amount, undefined, "eur")) }}</span>
             </span>
             <span
               class="cabinet-payouts__item-field cabinet-payouts__item-status"
@@ -27,13 +27,13 @@
               }"
             >
               <span>
-                {{ item.status }}
+                {{ $t(item.status) }}
               </span>
             </span>
           </div>
         </div>
       </div>
-      <span v-else>You have no payouts</span>
+      <span v-else>{{ $t("You have no payouts") }}</span>
     </div>
   </div>
 </template>
@@ -41,6 +41,7 @@
 <script setup>
 import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { useOrdersStore } from "~/stores/orders";
+import { convertPrice } from "~/utils/global";
 
 const ordersStore = useOrdersStore();
 let interval = ref({});

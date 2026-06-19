@@ -1,11 +1,11 @@
 <template>
   <main class="page contacts-page">
     <div class="page__inner">
-      <BreadcrumbsComponent title="Contacts" />
+      <BreadcrumbsComponent :title="$t('Contacts')" />
       <div class="contacts-page__content">
         <div class="contacts-page__info">
           <div v-if="company.addresses && company.addresses.length" class="contacts-page__block">
-            <span class="contacts-page__block-title">Legal</span>
+            <span class="contacts-page__block-title">{{ $t("Legal") }}</span>
             <div class="contacts-page__block-value">
               <span v-for="(item, i) in company.addresses" :key="i">
                 <span v-if="item.name">{{ item.name }}:</span>
@@ -14,7 +14,7 @@
             </div>
           </div>
           <div v-if="company.emails && company.emails.length" class="contacts-page__block">
-            <span class="contacts-page__block-title">Email</span>
+            <span class="contacts-page__block-title">{{ $t("Email") }}</span>
             <span class="contacts-page__block-value">
               <span v-for="(item, i) in company.emails" :key="i">
                 <span v-if="item.name">{{ item.name }}:</span>
@@ -23,7 +23,7 @@
             </span>
           </div>
           <div v-if="company.phones && company.phones.length" class="contacts-page__block">
-            <span class="contacts-page__block-title">Phones</span>
+            <span class="contacts-page__block-title">{{ $t("Phones") }}</span>
             <span class="contacts-page__block-value">
               <span v-for="(item, i) in company.phones" :key="i">
                 <span v-if="item.name">{{ item.name }}:</span>
@@ -33,25 +33,34 @@
           </div>
         </div>
         <div class="contacts-page__feedback">
-          <h3 class="contacts-page__feedback-title">Write to us</h3>
+          <h3 class="contacts-page__feedback-title">{{ $t("Write to us") }}</h3>
           <form @submit.prevent="submit" class="contacts-page__feedback-form">
-            <InputComponent v-model="form.phone.value" :errors="form.phone.errors" placeholder="Phone" />
-            <InputComponent v-model="form.email.value" :errors="form.email.errors" placeholder="Email*" />
+            <InputComponent
+              v-model="form.phone.value"
+              :errors="form.phone.errors"
+              :placeholder="$t('Phone')"
+            />
+            <InputComponent
+              v-model="form.email.value"
+              :errors="form.email.errors"
+              :placeholder="$t('Email*')"
+            />
             <TextareaComponent
               v-model="form.content.value"
               :errors="form.content.errors"
-              placeholder="Message*"
+              :placeholder="$t('Message*')"
             />
             <button class="contacts-page__feedback-submit btn btn--lg btn--main">
-              <span>Send</span>
+              <span>{{ $t("Send") }}</span>
               <LoadingCircleIndicator v-if="submitLoading" title="" />
               <IconComponent v-else name="arrow-right-1" />
             </button>
             <div class="contacts-page__feedback-bottom">
               <span class="contacts-page__feedback-terms">
-                By use form, you agree to the
-                <nuxt-link :to="{ name: 'dynamic-id', query: { 'positions[]': 'privacy_policy' } }"
-                  >User Agreement and Privacy Policy</nuxt-link
+                {{ $t("By use form, you agree to the") }}
+                <nuxt-link :to="{ name: 'dynamic-id', query: { 'positions[]': 'privacy_policy' } }">{{
+                  $t("User Agreement and Privacy Policy")
+                }}</nuxt-link
                 >.
               </span>
             </div>
@@ -122,8 +131,8 @@ async function submit() {
       }
     );
     showAlertModal({
-      title: "SUCCESS",
-      text: "Your message successfully sent",
+      title: useNuxtApp().$t("SUCCESS"),
+      text: useNuxtApp().$t("Your message successfully sent"),
       noBtn: true,
     });
     resetForm(form.value);

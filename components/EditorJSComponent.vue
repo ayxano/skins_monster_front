@@ -1,9 +1,9 @@
 <template>
   <div :class="cls" v-if="haveBlocks">
     <template v-for="({ data, type, id }, i) in parsedText.blocks">
-      <p :class="`${cls}__${type}`" :key="i" v-if="type === 'paragraph'" v-html="data.text" :id="id"></p>
+      <p :class="`${cls}__${type}`" :key="i" v-if="type === 'paragraph'" v-html="$t(data.text)" :id="id"></p>
       <div :class="`${cls}__${type}`" v-if="type === 'embed' && data.embed" :key="i" :id="id">
-        <span v-html="data.caption"></span>
+        <span v-html="$t(data.caption)"></span>
         <iframe v-if="data.embed.includes('<iframe')" :src="data.embed"></iframe>
         <div v-else v-html="data.embed"></div>
       </div>
@@ -13,7 +13,7 @@
         v-if="type === 'header' && data.level === 2"
         :class="`${cls}__${type} ${cls}__${type}--${data.level}`"
       >
-        {{ data.text }}
+        {{ $t(data.text) }}
       </h2>
       <h3
         :id="id"
@@ -21,7 +21,7 @@
         v-if="type === 'header' && data.level === 3"
         :class="`${cls}__${type} ${cls}__${type}--${data.level}`"
       >
-        {{ data.text }}
+        {{ $t(data.text) }}
       </h3>
       <h4
         :id="id"
@@ -29,7 +29,7 @@
         v-if="type === 'header' && data.level === 4"
         :class="`${cls}__${type} ${cls}__${type}--${data.level}`"
       >
-        {{ data.text }}
+        {{ $t(data.text) }}
       </h4>
       <h5
         :id="id"
@@ -37,7 +37,7 @@
         v-if="type === 'header' && data.level === 5"
         :class="`${cls}__${type} ${cls}__${type}--${data.level}`"
       >
-        {{ data.text }}
+        {{ $t(data.text) }}
       </h5>
       <h6
         :id="id"
@@ -45,7 +45,7 @@
         v-if="type === 'header' && data.level === 6"
         :class="`${cls}__${type} ${cls}__${type}--${data.level}`"
       >
-        {{ data.text }}
+        {{ $t(data.text) }}
       </h6>
       <pre :id="id" :key="i" v-if="type === 'code'" :class="`${cls}__${type}`">{{ data.code }}</pre>
       <div :id="id" :key="i" v-if="type === 'quote'" :class="`${cls}__${type}`">
@@ -56,34 +56,39 @@
             />
           </g>
         </svg>
-        <div :class="`${cls}__${type}-text`">{{ data.text }}</div>
+        <div :class="`${cls}__${type}-text`">{{ $t(data.text) }}</div>
         <div :class="`${cls}__${type}-header`">
-          <img v-if="data.image" :src="data.image.url" :class="`${cls}__${type}-image`" :alt="data.caption" />
+          <img
+            v-if="data.image"
+            :src="data.image.url"
+            :class="`${cls}__${type}-image`"
+            :alt="$t(data.caption)"
+          />
           <div :class="`${cls}__${type}-author`">
-            <span>{{ data.caption }}</span>
-            <span>{{ data.post }}</span>
+            <span>{{ $t(data.caption) }}</span>
+            <span>{{ $t(data.post) }}</span>
           </div>
         </div>
       </div>
       <hr :id="id" :key="i" v-if="type === 'delimiter'" :class="`${cls}__${type}`" />
       <div :id="id" :key="i" v-if="type === 'raw'" :class="`${cls}__${type}`" v-html="data.html"></div>
       <div :id="id" :key="i" v-if="type === 'warning'" :class="`${cls}__${type}`">
-        <span>{{ data.title }}</span>
-        <p>{{ data.message }}</p>
+        <span>{{ $t(data.title) }}</span>
+        <p>{{ $t(data.message) }}</p>
       </div>
       <div v-if="type === 'table' && data.content && data.content.length" :key="i" :class="`${cls}__${type}`">
         <table :id="id" :key="i">
           <tbody v-if="data.withHeadings">
             <tr v-for="(row, i) in data.content.slice(0, 1)" :key="i">
-              <th v-for="(column, j) in row" :key="j" v-html="column"></th>
+              <th v-for="(column, j) in row" :key="j" v-html="$t(column)"></th>
             </tr>
             <tr v-for="(row, i) in data.content.slice(1)" :key="i">
-              <td v-for="(column, j) in row" :key="j" v-html="column"></td>
+              <td v-for="(column, j) in row" :key="j" v-html="$t(column)"></td>
             </tr>
           </tbody>
           <tbody v-else>
             <tr v-for="(row, i) in data.content" :key="i">
-              <td v-for="(column, j) in row" :key="j" v-html="column"></td>
+              <td v-for="(column, j) in row" :key="j" v-html="$t(column)"></td>
             </tr>
           </tbody>
         </table>
@@ -94,7 +99,7 @@
         v-if="type === 'list' && data.style === 'unordered'"
         :class="`${cls}__${type}--${data.style}`"
       >
-        <li v-for="(item, i) in data.items" :key="i" v-html="item"></li>
+        <li v-for="(item, i) in data.items" :key="i" v-html="$t(item)"></li>
       </ul>
       <ol
         :id="id"
@@ -102,7 +107,7 @@
         v-if="type === 'list' && data.style === 'ordered'"
         :class="`${cls}__${type}--${data.style}`"
       >
-        <li v-for="(item, i) in data.items" :key="i" v-html="item"></li>
+        <li v-for="(item, i) in data.items" :key="i" v-html="$t(item)"></li>
       </ol>
       <a
         :id="id"
@@ -113,13 +118,13 @@
         :class="`${cls}__${type}`"
         rel="nofollow"
       >
-        <img v-if="data.meta.image.url.length" :src="data.meta.image.url" :alt="data.meta.title" />
+        <img v-if="data.meta.image.url.length" :src="data.meta.image.url" :alt="$t(data.meta.title)" />
         <div :class="`${cls}__${type}-content`">
           <span :class="`${cls}__${type}-content-title`">
-            {{ data.meta.title ? data.meta.title : data.link }}
+            {{ data.meta.title ? $t(data.meta.title) : data.link }}
           </span>
           <span :class="`${cls}__${type}-content-description`" v-if="data.meta.description">
-            {{ data.meta.description }}
+            {{ $t(data.meta.description) }}
           </span>
         </div>
       </a>
@@ -138,9 +143,9 @@
             <img
               :style="{ height: 980 / parseInt(data.countItemEachRow) + 'px' }"
               :src="img.url"
-              :alt="img.caption"
+              :alt="$t(img.caption)"
             />
-            <span>{{ img.caption }}</span>
+            <span>{{ $t(img.caption) }}</span>
           </a>
         </li>
       </ul>
@@ -156,8 +161,8 @@
       >
         <li v-for="(img, i) in data.items" :key="i">
           <a :href="img.url" @click.prevent="showGallery(data.items, i)">
-            <img :src="img.url" :alt="img.caption" />
-            <span v-if="img.caption">{{ img.caption }}</span>
+            <img :src="img.url" :alt="$t(img.caption)" />
+            <span v-if="img.caption">{{ $t(img.caption) }}</span>
           </a>
         </li>
       </ul>
@@ -170,15 +175,15 @@
         :href="data.file.url"
         target="_blank"
       >
-        <img :src="data.file.url" :alt="data.caption" />
-        <span v-if="data.caption">{{ data.caption }}</span>
+        <img :src="data.file.url" :alt="$t(data.caption)" />
+        <span v-if="data.caption">{{ $t(data.caption) }}</span>
       </a>
       <div :id="id" :class="`${cls}__${type}`" :key="i" v-if="type === 'video' && data.video">
-        <span>{{ data.title }}</span>
+        <span>{{ $t(data.title) }}</span>
         <video controls :src="data.video.url"></video>
       </div>
       <div :id="id" :class="`${cls}__${type}`" :key="i" v-if="type === 'audio' && data.audio">
-        <span>{{ data.title }}</span>
+        <span>{{ $t(data.title) }}</span>
         <img :src="data.cover.url" v-if="data.cover" alt="" />
         <audio controls :src="data.audio.url" v-if="data.audio"></audio>
       </div>
